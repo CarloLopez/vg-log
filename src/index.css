@@ -1,4 +1,5 @@
 #root {
+  
   font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
@@ -12,4 +13,9 @@
   -moz-osx-font-smoothing: grayscale;
 
   min-height: 100vh;
+}
+
+ul {
+  padding: 0;
+  margin: 0;
 }
