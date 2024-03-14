@@ -3,6 +3,7 @@ import { useParams } from "react-router-dom";
 import getGame from "../../../api/getGame";
 import gameTypes from "../../../api/apiTypes";
 import GameHeader from "./GameHeader/GameHeader";
+import GameBody from "./GameBody/GameBody";
 
 // create gameData object context for passing down to UI elements, avoid prop drilling
 export const GameDataContext = createContext<gameTypes>({
@@ -53,7 +54,10 @@ const GamePage = () => {
   if (gameData) {
     return (
       <GameDataContext.Provider value={gameData}>
+        <hr />
         <GameHeader />
+        <hr />
+        <GameBody />
       </GameDataContext.Provider>
     );
   } else {
