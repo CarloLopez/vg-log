@@ -1,4 +1,4 @@
-type AgeRating = {
+export type AgeRating = {
   id: number;
   category: number;
   rating: number;
@@ -20,7 +20,7 @@ export type NameObj = {
   name: string;
 }
 
-type Company = {
+export type Company = {
   id: number;
   company: NameObj;
   developer: boolean;
@@ -37,13 +37,6 @@ type Game = {
 export type Platform = {
   id: number;
   abbreviation: string;
-}
-
-type ReleaseDate = {
-  id: number;
-  human: string;
-  platform: Platform;
-  region: number;
 }
 
 type Video = {
@@ -64,19 +57,18 @@ type gameTypes = {
   age_ratings?: AgeRating[];
   artworks?: Image[];
   cover: Image;
-  dlcs?: DLC[];
-  expansions?: DLC[];
+  dlcs?: DLC[]; // 
+  expansions?: DLC[]; //
   first_release_date?: number;
   game_modes?: NameObj[];
   genres?: NameObj[];
   involved_companies?: Company[];
   name: string;
-  parent_game?: Game;
+  parent_game?: Game; //
   platforms?: Platform[];
   player_perspectives?: NameObj[];
-  release_dates?: ReleaseDate[];
   screenshots?: Image[];
-  similar_games?: Game[];
+  similar_games?: Game[]; // 
   storyline?: string;
   summary: string;
   themes?: NameObj[];

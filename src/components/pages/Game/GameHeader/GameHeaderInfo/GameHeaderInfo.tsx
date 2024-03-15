@@ -1,8 +1,8 @@
 import moment from "moment";
 import { useContext } from "react";
 import { GameDataContext } from "../../GamePage";
-import NameButtonArray from "../../../../common/ButtonArray/NameButtonArray";
-import PlatformButtonArray from "../../../../common/ButtonArray/PlatformButtonArray";
+import LinkArray from "../../../../common/LinkArray/LinkArray";
+import GameHeaderPlatforms from "./GameHeaderPlatforms/GameHeaderPlatforms";
 
 const GameHeaderInfo = () => {
   
@@ -22,20 +22,23 @@ const GameHeaderInfo = () => {
 
       <div>
         <h4>Summary</h4>
-        <div>{gameData.summary}</div>
+        <div>
+          <div>{gameData.summary}</div>
+          {gameData.storyline && <div>{gameData.storyline}</div>}
+        </div>
       </div>
 
       <div>
         <h4>Genres</h4>
         <ul>
-          {gameData.genres && <NameButtonArray items={gameData.genres} />}
+          {gameData.genres && <LinkArray items={gameData.genres} />}
         </ul>
       </div>
 
       <div>
         <h4>Platforms</h4>
         <ul>
-          {gameData.platforms && <PlatformButtonArray items={gameData.platforms} />}
+          {gameData.platforms && <GameHeaderPlatforms items={gameData.platforms} />}
         </ul>
       </div>
       

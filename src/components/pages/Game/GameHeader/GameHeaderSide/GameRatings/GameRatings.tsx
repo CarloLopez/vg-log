@@ -1,3 +1,4 @@
+
 type GameRatingsProps = {
   rating?: number | null;
   rating_count?: number | null;

@@ -10,7 +10,9 @@ const GameBodyContent = ({content}: GameBodyContentProps) => {
   
   return (
     <div>
-      {selectedContent ? <selectedContent.component /> : <>Error: No Content Selected.</>}
+      <div>
+        {selectedContent ? <selectedContent.component /> : <>Error: No Content Selected.</>}
+      </div>
     </div>
   );
 }

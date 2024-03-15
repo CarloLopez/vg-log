@@ -1,20 +1,21 @@
 import { NameObj } from "../../../api/apiTypes";
+import { Link } from "react-router-dom";
 
-type NameButtonArrayProps = {
+type LinkArrayProps = {
   items: NameObj[];
 }
 
-const NameButtonArray = ({ items }: NameButtonArrayProps) => {
+const LinkArray = ({ items }: LinkArrayProps) => {
   return (
     <ul>
       {items.map((item) => {
         return (
           <li key={item.id}>
-            <button>{item.name}</button>
+            <Link to='/'>{item.name}</Link>
           </li>
         )})}
     </ul>
   )
 }
 
-export default NameButtonArray;
+export default LinkArray;
