@@ -28,6 +28,7 @@ const GamePage = () => {
   useEffect(() => {
     // call async function getGame to return JSON response
     if (gameSlug) {
+
       const getGameDetails = async () => {
         try {
           const data = await getGame(gameSlug);

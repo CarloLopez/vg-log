@@ -47,8 +47,7 @@ const getGame = async (gameSlug: string) => {
     videos.name,
     websites.category,
     websites.url;
-  where 
-    slug = "${gameSlug}";`;
+  where slug = "${gameSlug}";`
 
   const url = 'https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/games';
   const headers = {

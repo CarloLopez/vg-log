@@ -10,7 +10,7 @@ const GameBodySidebar = ({ setCurrentSelection }: GameBodySideBar) => {
       {SIDEBAR_ITEMS.map((item) => {
         return (
           // update selected state in GameBody when clicked
-          <li><button onClick={() => setCurrentSelection(item.id)}>{item.label}</button></li>
+          <li key={item.id}><button onClick={() => setCurrentSelection(item.id)}>{item.label}</button></li>
         )
       })}
     </ul>

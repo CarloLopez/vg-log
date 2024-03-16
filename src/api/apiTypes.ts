@@ -46,6 +46,41 @@ export type Website = {
   url: string;
 }
 
+export type Match = 'or' | 'exact' | '';
+
+export type Filter = {
+  values: string | string[];
+  match?: Match;
+}
+
+export type Filters = {
+  [key: string]: Filter;
+}
+
+export type Sort = {
+  fieldSort: string;
+  sortBy: 'asc' | 'desc';
+}
+
+export type Specify = {
+  fieldSpecify: string;
+  operator: string;
+  specifyBy: string;
+}
+
+export type Pagination = {
+  limit?: number;
+  page?: number;
+}
+
+export type FilterList = {
+  where?: Filters;
+  search?: string;
+  sort?: Sort;
+  specify?: Specify;
+  pagination?: Pagination;
+}
+
 
 // define type for Games returned from API query
 type gameTypes = {
