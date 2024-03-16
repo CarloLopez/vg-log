@@ -1,7 +1,7 @@
 import moment from "moment";
 import { useContext } from "react";
 import { GameDataContext } from "../../GamePage";
-import LinkArray from "../../../../common/LinkArray/LinkArray";
+import LinkArray from "../../../../common/Array/LinkArray";
 import GameHeaderPlatforms from "./GameHeaderPlatforms/GameHeaderPlatforms";
 
 const GameHeaderInfo = () => {
@@ -22,10 +22,7 @@ const GameHeaderInfo = () => {
 
       <div>
         <h4>Summary</h4>
-        <div>
-          <div>{gameData.summary}</div>
-          {gameData.storyline && <div>{gameData.storyline}</div>}
-        </div>
+        <div>{gameData.summary}</div>
       </div>
 
       <div>

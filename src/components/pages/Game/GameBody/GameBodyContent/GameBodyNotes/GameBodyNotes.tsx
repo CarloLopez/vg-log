@@ -1,6 +1,6 @@
 const GameBodyNotes = () => {
   return (
-    <>NOTES LIST</>
+    <>NOTES LIST - TO DO WHEN IMPLEMENTING BACKEND</>
   );
 }
 

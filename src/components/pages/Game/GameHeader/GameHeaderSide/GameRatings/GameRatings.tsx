@@ -4,7 +4,6 @@ type GameRatingsProps = {
   rating_count?: number | null;
 }
 
-
 const GameRatings = ({ rating=null, rating_count=null}: GameRatingsProps) => {
   return (
     <div>

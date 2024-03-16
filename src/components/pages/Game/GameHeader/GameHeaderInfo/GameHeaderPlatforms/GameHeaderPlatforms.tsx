@@ -1,5 +1,5 @@
 import { Platform } from "../../../../../../api/apiTypes";
-import LinkArray from "../../../../../common/LinkArray/LinkArray";
+import LinkArray from "../../../../../common/Array/LinkArray";
 
 type GameHeaderPlatformsProps = {
   items: Platform[];

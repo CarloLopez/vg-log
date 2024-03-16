@@ -1,7 +1,7 @@
 
 const GameBodyGoals = () => {
   return (
-    <>GOALS CONTENT</>
+    <>GOALS CONTENT - TO DO WHEN IMPLEMENTING BACKEND</>
   );
 }
 

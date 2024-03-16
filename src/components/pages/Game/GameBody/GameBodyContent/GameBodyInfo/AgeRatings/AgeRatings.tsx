@@ -1,5 +1,5 @@
 import { AgeRating } from "../../../../../../../api/apiTypes";
-import LinkArray from "../../../../../../common/LinkArray/LinkArray";
+import LinkArray from "../../../../../../common/Array/LinkArray";
 
 type AgeRatingProps = {
   ageRatings: AgeRating[];

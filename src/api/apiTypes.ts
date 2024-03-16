@@ -4,15 +4,9 @@ export type AgeRating = {
   rating: number;
 }
 
-type Image = {
+export type Image = {
   id: number;
   image_id: string;
-}
-
-type DLC = {
-  id: number;
-  cover: Image;
-  name: string;
 }
 
 export type NameObj = {
@@ -28,10 +22,11 @@ export type Company = {
   supporting: boolean;
 }
 
-type Game = {
+export type Game = {
   id: number;
   cover: Image;
   name: string;
+  slug?: string;
 }
 
 export type Platform = {
@@ -39,12 +34,13 @@ export type Platform = {
   abbreviation: string;
 }
 
-type Video = {
+export type Video = {
   id: number;
   video_id: string;
+  name: string;
 }
 
-type Website = {
+export type Website = {
   id: number;
   category: number;
   url: string;
@@ -57,18 +53,18 @@ type gameTypes = {
   age_ratings?: AgeRating[];
   artworks?: Image[];
   cover: Image;
-  dlcs?: DLC[]; // 
-  expansions?: DLC[]; //
+  dlcs?: Game[];
+  expansions?: Game[];
   first_release_date?: number;
   game_modes?: NameObj[];
   genres?: NameObj[];
   involved_companies?: Company[];
   name: string;
-  parent_game?: Game; //
+  parent_game?: Game;
   platforms?: Platform[];
   player_perspectives?: NameObj[];
   screenshots?: Image[];
-  similar_games?: Game[]; // 
+  similar_games?: Game[];
   storyline?: string;
   summary: string;
   themes?: NameObj[];
