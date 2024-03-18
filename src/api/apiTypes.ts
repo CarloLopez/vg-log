@@ -46,11 +46,9 @@ export type Website = {
   url: string;
 }
 
-export type Match = 'or' | 'exact' | '';
-
 export type Filter = {
   values: string | string[];
-  match?: Match;
+  exact?: boolean;
 }
 
 export type Filters = {

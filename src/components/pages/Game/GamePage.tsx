@@ -55,7 +55,6 @@ const GamePage = () => {
   if (gameData) {
     return (
       <GameDataContext.Provider value={gameData}>
-        <hr />
         <GameHeader />
         <hr />
         <GameBody />

@@ -8,7 +8,9 @@ type GameCoverProps = {
 }
 
 const GameCover = ({ game, size, link }: GameCoverProps) => {
-  const url = `https://images.igdb.com/igdb/image/upload/t_cover_${size}/${game.cover.image_id}.jpg`;
+
+  const imageID = game.cover ? game.cover.image_id : 'nocover';
+  const url = `https://images.igdb.com/igdb/image/upload/t_cover_${size}/${imageID}.jpg`;
   
   if (link) {
     return <Link to={'/game/' + link}><img src={url} alt={'Cover Image of ' + game.name} /></Link>

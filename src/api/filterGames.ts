@@ -11,7 +11,10 @@ const formatFilters = (filterList: FilterList) => {
 
   if (filterList.where) {
     const filters = filterList.where;
-    let whereQuery = 'where ';
+    
+    // filter non-main games (e.g., DLCs, updates, bundles, mods, etc.)
+    let whereQuery = 'where category = (0, 8, 9, 10, 11, 12) & ';
+    
     const subqueryArray = [];
 
     // Set 'where' query filters
@@ -23,21 +26,17 @@ const formatFilters = (filterList: FilterList) => {
       let valueSubquery = ''
       
       if (Array.isArray(values)) {
-        valueSubquery += values.join(', ')
+        valueSubquery += values.join(', ');
       } else {
         valueSubquery += values;
       }
 
-      // default filtering is AND matching
-      switch(filters[key].match) {
-        case 'exact':
-          //pass
-          break;
-        case 'or':
-          valueSubquery = `(${valueSubquery})`;
-          break;
-        default:
-          valueSubquery = `[${valueSubquery}]`;
+      // if user flags for exact matching, encapsulate in {} if an array, else leave without encapsulation
+      if (filters[key].exact) {
+        if (valueSubquery.includes(',')) valueSubquery = `{${valueSubquery}}`;
+      } else {
+        // else format so that search is not exact matching via [] for arrays and () for single values
+        valueSubquery = valueSubquery.includes(',') ? `[${valueSubquery}]` : `(${valueSubquery})`;
       }
 
       subquery += valueSubquery;
@@ -70,7 +69,7 @@ const formatFilters = (filterList: FilterList) => {
   } 
 
   queryArray.push(`limit ${limit}`);
-  queryArray.push(`offset ${limit * page}`);
+  queryArray.push(`offset ${limit * (page - 1)}`);
 
   // API query sections must be separated with semicolon
   return queryArray.join('; ');

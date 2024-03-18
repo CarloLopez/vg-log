@@ -14,6 +14,7 @@ const NavBar = () => {
         <Link to='discover'>Discover</Link>
         </li>
       </ul>
+      <hr />
     </nav>
   );
 }

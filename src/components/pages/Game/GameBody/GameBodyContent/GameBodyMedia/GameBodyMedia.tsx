@@ -13,21 +13,21 @@ const GameBodyMedia = () => {
       {gameData.screenshots ? (
         <div>
           <h4>Screenshots</h4>
-          <div>{gameData.screenshots.map((screenshot) => <StaticImage image={screenshot} size="screenshot_med"/>)}</div>
+          <div>{gameData.screenshots.map((screenshot) => <StaticImage key={screenshot.id} image={screenshot} size="screenshot_med"/>)}</div>
         </div>
       ) : ""}
 
       {gameData.videos ? (
         <div>
           <h4>Videos</h4>
-          <div>{gameData.videos.map((video) => <GameVideo video={video}/>)}</div>
+          <div>{gameData.videos.map((video) => <GameVideo key={video.id} video={video}/>)}</div>
         </div>
       ) : ""}
 
       {gameData.artworks ? (
         <div>
           <h4>Artwork</h4>
-          <div>{gameData.artworks.map((artwork) => <StaticImage image={artwork} size="720p"/>)}</div>
+          <div>{gameData.artworks.map((artwork) => <StaticImage key={artwork.id} image={artwork} size="720p"/>)}</div>
         </div>
       ) : ""}
 
