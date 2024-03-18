@@ -1,16 +1,12 @@
-import { SetURLSearchParams } from "react-router-dom";
+import { useContext } from "react";
 import FilterButtonArray from "../Array/FilterButtonArray";
 import CurrentFilters from "./CurrentFilters";
-import { gameGenres, gameThemes } from "../../../objects/filterObjects";
-import { filterArrayItem } from "../../pages/Discover/DiscoverPage";
+import { gameGenres, gameThemes, gamePlatforms } from "../../../objects/filterObjects";
+import { DiscoverContext } from "../../pages/Discover/DiscoverPage";
 
-type FilterBarProps = {
-  filterArray: filterArrayItem[];
-  setFilterArray: React.Dispatch<React.SetStateAction<filterArrayItem[]>>;
-  setSearchParams: SetURLSearchParams;
-}
+const FilterBar = () => {
 
-const FilterBar = ({filterArray, setFilterArray, setSearchParams}: FilterBarProps) => {
+  const {filterArray, setFilterArray, setSearchParams} = useContext(DiscoverContext);
   
   const generateSearchParams = () => {
 
@@ -33,16 +29,21 @@ const FilterBar = ({filterArray, setFilterArray, setSearchParams}: FilterBarProp
     <div>
       <div>
         <h4>Genres</h4>
-        <FilterButtonArray items={gameGenres} itemsType="genres" filterArray={filterArray} setFilterArray={setFilterArray}/>
+        <FilterButtonArray items={gameGenres} itemsType="genres" />
       </div>
       <div>
         <h4>Themes</h4>
-        <FilterButtonArray items={gameThemes} itemsType="themes" filterArray={filterArray} setFilterArray={setFilterArray}/>
+        <FilterButtonArray items={gameThemes} itemsType="themes" />
       </div>
       <div>
-        <h4>Current Filters</h4>
-        <CurrentFilters filterArray={filterArray} setFilterArray={setFilterArray}/>
+        <h4>Platforms</h4>
+        <FilterButtonArray items={gamePlatforms} itemsType="platforms" />
       </div>
+    </div>
+    <hr />
+    <div>
+      <h4>Current Filters</h4>
+      <CurrentFilters filterArray={filterArray} setFilterArray={setFilterArray}/>
     </div>
     <button onClick={generateSearchParams}>Filter</button>
     </>

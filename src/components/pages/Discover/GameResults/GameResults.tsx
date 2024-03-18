@@ -1,13 +1,9 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { FilterList, Filter, Filters } from "../../../../api/apiTypes";
-import GameCoverArray from "../../../common/Cover/GameCoverArray";
 import filterGames from "../../../../api/filterGames";
 import { Game } from "../../../../api/apiTypes";
-
-type GameResultsProps = {
-  setFilterList: React.Dispatch<React.SetStateAction<FilterList>>;
-  searchParams: URLSearchParams;
-}
+import { DiscoverContext } from "../DiscoverPage";
+import GameCoverArray from "../../../common/Cover/GameCoverArray";
 
 type ExtractFilterParams = {
   filters: Filters;
@@ -56,12 +52,16 @@ const formatFilterList = (filters: Filters) => {
   if (limit || page) filterList.pagination = {limit, page};
 
   // finally, fill in 'where', if there are any remaining filters
-  if (Object.keys(filters).length > 0) filterList.where = filters;
-
+  if (Object.keys(filters).length > 0) {
+    filterList.where = filters;
+  }
+  
   return(filterList);
 }
 
-const GameResults = ({ setFilterList, searchParams }: GameResultsProps) => {
+const GameResults = () => {
+
+  const { setFilterList, searchParams } = useContext(DiscoverContext)
 
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
@@ -93,17 +93,12 @@ const GameResults = ({ setFilterList, searchParams }: GameResultsProps) => {
       setFilterList(filterList);
       
       try {
-        if(searchParams.size > 0) {
-          const gamesData = await filterGames(filterList);
-          setData(gamesData);
-        }
+        const gamesData = await filterGames(filterList);
+        setData(gamesData);
       } catch (error) {
         setError('Failed to fetch game details. Please try again later.');
       } finally {
         setLoading(false);
-        if(searchParams.size === 0) {
-          setError('Error: No Parameters Set.');
-        }
       }
     }
 

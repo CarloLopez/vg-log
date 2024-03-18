@@ -9,11 +9,12 @@ const formatFilters = (filterList: FilterList) => {
     queryArray.push(`sort ${filterList.sort.fieldSort} ${filterList.sort.sortBy}`);
   }
 
+  // filter non-main games (e.g., DLCs, updates, bundles, mods, alternative versions, etc.), and also games without covers
+  let whereQuery = 'where parent_game = null & version_parent = null & category = (0, 8, 9, 10, 11, 12) & cover != null';
+
   if (filterList.where) {
     const filters = filterList.where;
-    
-    // filter non-main games (e.g., DLCs, updates, bundles, mods, etc.)
-    let whereQuery = 'where category = (0, 8, 9, 10, 11, 12) & ';
+    whereQuery += ' & '; 
     
     const subqueryArray = [];
 
@@ -50,8 +51,9 @@ const formatFilters = (filterList: FilterList) => {
     }
 
     whereQuery += subqueryArray.join(' & ');
-    queryArray.push(whereQuery);
   }
+
+  queryArray.push(whereQuery);
 
   // Set search query filter
   if (filterList.search) {
@@ -78,7 +80,6 @@ const formatFilters = (filterList: FilterList) => {
 const filterGames = async (filterList: FilterList) => {
   
   const query = formatFilters(filterList)
-  console.log(query);
 
   const body = `fields cover.image_id, name, slug; ${query};`
 
@@ -96,6 +97,8 @@ const filterGames = async (filterList: FilterList) => {
       body: body,
       mode: 'cors',
     });
+
+    console.log(`API QUERY SENT. Request: ${query}`);
 
     // throw error with HTTP code if API request failed
     if (!response.ok) {

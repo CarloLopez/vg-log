@@ -1,5 +1,5 @@
 import { filterArrayItem } from "../../pages/Discover/DiscoverPage";
-import { gameThemes, gameGenres } from "../../../objects/filterObjects";
+import { gameThemes, gameGenres, gamePlatforms } from "../../../objects/filterObjects";
 import { NameObj } from "../../../api/apiTypes";
 
 type CurrentFiltersProps = {
@@ -30,14 +30,15 @@ const CurrentFilterItems = ({filterItem, setFilterArray}: CurrentFilterItemsProp
     case 'themes':
       mapping = gameThemes;
       break;
+    case 'platforms':
+      mapping = gamePlatforms;
+      break;
   }
 
   const deleteFromArray = ({key, value}: deleteFromArrayParams) => {
 
     if (filterItem.values.includes(value)) {
 
-      console.log('yes');
-      
       setFilterArray((prevFilterArray) => {
         let newFilterArray = [...prevFilterArray];
 
@@ -57,8 +58,6 @@ const CurrentFilterItems = ({filterItem, setFilterArray}: CurrentFilterItemsProp
   
   return (
     <>
-    <h6>{key.toUpperCase()}</h6>
-    <ul>
       {
         filterItem.values.map((value) => {
           
@@ -74,7 +73,6 @@ const CurrentFilterItems = ({filterItem, setFilterArray}: CurrentFilterItemsProp
 
         })
       }
-    </ul>
     </>
   )
 }
@@ -82,13 +80,13 @@ const CurrentFilterItems = ({filterItem, setFilterArray}: CurrentFilterItemsProp
 const CurrentFilters = ({filterArray, setFilterArray}: CurrentFiltersProps) => {
 
   return (
-    <div>
+    <ul>
       {
         filterArray.map((filterItem) => {
           return <CurrentFilterItems key={filterItem.key} filterItem={filterItem} filterArray={filterArray} setFilterArray={setFilterArray}/>
         })
       }
-    </div>
+    </ul>
   )
 
 }

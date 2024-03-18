@@ -43,8 +43,31 @@ export const gameThemes = [
   { id: 38, name: "Open world" },
   { id: 39, name: "Warfare" },
   { id: 40, name: "Party" },
-  { id: 41, name: "4X (explore, expand, exploit, and exterminate)" },
+  { id: 41, name: "4X" },
   { id: 42, name: "Erotic" },
   { id: 43, name: "Mystery" },
   { id: 44, name: "Romance" }
+];
+
+export const gamePlatforms = [
+  { id: 6, name: "PC" },
+  { id: 8, name: "PS2" },
+  { id: 9, name: "PS3" },
+  { id: 48, name: "PS4" },
+  { id: 167, name: "PS5" },
+  { id: 38, name: "PSP" },
+  { id: 46, name: "PS Vita" },
+  { id: 12, name: "Xbox 360" },
+  { id: 49, name: "Xbox One" },
+  { id: 169, name: "Xbox X|S" },
+  { id: 19, name: "SNES" },
+  { id: 4, name: "N64" },
+  { id: 21, name: "GameCube" },
+  { id: 5, name: "Wii" },
+  { id: 41, name: "Wii U" },
+  { id: 130, name: "Nintendo Switch" },
+  { id: 24, name: "GBA" },
+  { id: 20, name: "NDS" },
+  { id: 37, name: "3DS" },
+  { id: 163, name: "Steam VR" },
 ];
