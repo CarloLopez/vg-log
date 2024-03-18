@@ -1,16 +1,16 @@
-import { filterArrayItem } from "../../pages/Discover/DiscoverPage";
+import { FilterArrayItem } from "../../pages/Discover/DiscoverPage";
 import { gameThemes, gameGenres, gamePlatforms } from "../../../objects/filterObjects";
 import { NameObj } from "../../../api/apiTypes";
 
 type CurrentFiltersProps = {
-  filterArray: filterArrayItem[];
-  setFilterArray: React.Dispatch<React.SetStateAction<filterArrayItem[]>>;
+  filterArray: FilterArrayItem[];
+  setFilterArray: React.Dispatch<React.SetStateAction<FilterArrayItem[]>>;
 }
 
 type CurrentFilterItemsProps = {
-  filterItem: filterArrayItem;
-  filterArray: filterArrayItem[];
-  setFilterArray: React.Dispatch<React.SetStateAction<filterArrayItem[]>>;
+  filterItem: FilterArrayItem;
+  filterArray: FilterArrayItem[];
+  setFilterArray: React.Dispatch<React.SetStateAction<FilterArrayItem[]>>;
 }
 
 type deleteFromArrayParams = {

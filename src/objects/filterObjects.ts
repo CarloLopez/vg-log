@@ -71,3 +71,10 @@ export const gamePlatforms = [
   { id: 37, name: "3DS" },
   { id: 163, name: "Steam VR" },
 ];
+
+export const orderFilters = [
+  {value: 'none', label: '-- Order By --' },
+  {value: 'follows', label: 'Popularity'},
+  {value: 'total_rating', label: 'Rating' },
+  {value: 'first_release_date', label: 'Release Date'},
+]

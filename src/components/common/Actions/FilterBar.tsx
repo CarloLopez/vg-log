@@ -1,8 +1,9 @@
 import { useContext } from "react";
+import { DiscoverContext } from "../../pages/Discover/DiscoverPage";
 import FilterButtonArray from "../Array/FilterButtonArray";
 import CurrentFilters from "./CurrentFilters";
+import OrderDropdown from "../Array/OrderDropdown";
 import { gameGenres, gameThemes, gamePlatforms } from "../../../objects/filterObjects";
-import { DiscoverContext } from "../../pages/Discover/DiscoverPage";
 
 const FilterBar = () => {
 
@@ -14,13 +15,19 @@ const FilterBar = () => {
 
       filterArray.forEach((filterItem) => {
         const key = filterItem.key;
-    
-        let values = filterItem.values.join(',');
-        if (filterItem.exact) values += ',exact';
+        
+        if (filterItem.values.length > 0) {
+          let values = filterItem.values.join(',');
+          if (filterItem.exact) values += ',exact';
 
-        params.set(key, values);
+          params.set(key, values);
+          // string value means it is a sorting filter.
+        } else if (filterItem.stringValue) {
+          params.set(key, filterItem.stringValue);
+        }
+
       });
-
+    
     setSearchParams(params, {replace: true});
   }
   
@@ -46,6 +53,7 @@ const FilterBar = () => {
       <CurrentFilters filterArray={filterArray} setFilterArray={setFilterArray}/>
     </div>
     <button onClick={generateSearchParams}>Filter</button>
+    <OrderDropdown />
     </>
   )
 }

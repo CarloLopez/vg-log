@@ -18,7 +18,9 @@ const FilterButtonArray = ({ items, itemsType }: FilterButtonArrayProps) => {
   useEffect((() => {
     
     const loadFilterArray: FilterArrayItem[] = [];
+    
     if (filterList) {
+      
       if (filterList.where) {
         const filters = filterList.where;
         for (const key in filters) {
@@ -31,6 +33,15 @@ const FilterButtonArray = ({ items, itemsType }: FilterButtonArrayProps) => {
           loadFilterArray.push(FilterArrayItem);
         }
       }
+
+      if (filterList.sort) {
+        const fieldSortItem = {key: 'fieldSort', values: [], stringValue: filterList.sort.fieldSort};
+        const sortByItem = {key: 'sortBy', values: [], stringValue: filterList.sort.sortBy};
+
+        loadFilterArray.push(fieldSortItem);
+        loadFilterArray.push(sortByItem);
+      }
+
     }
 
     setFilterArray(loadFilterArray);

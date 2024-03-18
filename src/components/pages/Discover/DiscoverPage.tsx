@@ -25,6 +25,7 @@ export const DiscoverContext = createContext<DiscoverContextType>({
 export type FilterArrayItem = {
   key: string;
   values: number[];
+  stringValue?: string;
   exact?: boolean;
 }
 
@@ -33,8 +34,10 @@ const DiscoverPage = () => {
   const [filterList, setFilterList] = useState<FilterList>({});
   const [searchParams, setSearchParams] = useSearchParams();
   const [filterArray, setFilterArray] = useState<FilterArrayItem[]>([]);
-
+  
+  console.log('-- Discover Page --');
   console.log(filterArray);
+  console.log(filterList);
 
   return (
     <DiscoverContext.Provider value={{filterList, setFilterList, searchParams, setSearchParams, filterArray, setFilterArray}}>

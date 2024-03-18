@@ -89,6 +89,10 @@ const filterGames = async (filterList: FilterList) => {
     'Client-ID': '7700pxy9nm01xjre1zxrn8pfk0eaqy',
     'Authorization': 'Bearer 6dhvah2trquct9fss21son34vcpzz1',
   };
+  
+  console.log(`API QUERY SENT. Request: ${query}`);
+  return null;
+  
 
   try {
     const response = await fetch(url, {
@@ -97,8 +101,6 @@ const filterGames = async (filterList: FilterList) => {
       body: body,
       mode: 'cors',
     });
-
-    console.log(`API QUERY SENT. Request: ${query}`);
 
     // throw error with HTTP code if API request failed
     if (!response.ok) {
