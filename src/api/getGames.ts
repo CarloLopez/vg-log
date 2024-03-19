@@ -1,10 +1,14 @@
 import { GamesFilter } from "../types/urlTypes";
 import apiRequest from "./apiRequest";
+import { gamePlatforms } from "../objects/filterObjects";
+
+const allowedPlatforms = gamePlatforms.map(platform => platform.id);
+const allowedCategories = [0, 8, 9, 10, 11, 12];
 
 const getGames = async (gamesFilter: GamesFilter) => {
   let query = '';
 
-  let whereQuery = 'where parent_game=null & version_parent=null & category=(0,8,9,10,11,12) & cover!=null';
+  let whereQuery = `where parent_game=null & version_parent=null & cover!=null & category=(${allowedCategories.join(',')})`;
 
   if (gamesFilter.where) {
     for (const filter in gamesFilter.where) {
@@ -13,6 +17,8 @@ const getGames = async (gamesFilter: GamesFilter) => {
       whereQuery += ` & ${filter}=${values}`;
     }
   }
+
+  if (!whereQuery.includes(' & platforms=')) whereQuery += ` & platforms=(${allowedPlatforms.join(',')})`;
 
   if (gamesFilter.minRating) {
     whereQuery += ` & total_rating >= ${gamesFilter.minRating}`;

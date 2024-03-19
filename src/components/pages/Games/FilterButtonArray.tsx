@@ -3,9 +3,10 @@ import FilterButton from "./FilterButton";
 type FilterButtonArray = {
   filters: {id: string, name: string}[];
   filterName: string;
+  replace: boolean;
 }
 
-const FilterButtonArray = ({filters, filterName}: FilterButtonArray) => {
+const FilterButtonArray = ({filters, filterName, replace}: FilterButtonArray) => {
   
   return (
     <>
@@ -15,7 +16,7 @@ const FilterButtonArray = ({filters, filterName}: FilterButtonArray) => {
           filters.map((filter) => {
             return (
               <li key={filter.id}>
-                <FilterButton filter={filterName} value={filter.id} name={filter.name} />
+                <FilterButton filter={filterName} value={filter.id} name={filter.name} replace={replace}/>
               </li>
             )
           })

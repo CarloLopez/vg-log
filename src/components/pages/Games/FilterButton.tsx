@@ -5,9 +5,10 @@ type FilterButton = {
   filter: string;
   value: string;
   name: string;
+  replace: boolean;
 }
 
-const FilterButton = ({filter, value, name}: FilterButton) => {
+const FilterButton = ({filter, value, name, replace}: FilterButton) => {
 
   const [isActive, setIsActive] = useState(false);
   const {searchParams, setSearchParams} = useContext(GamesPageContext);
@@ -29,7 +30,7 @@ const FilterButton = ({filter, value, name}: FilterButton) => {
     const newSearchParams = new URLSearchParams(searchParams);
 
     const param = newSearchParams.get(filter);
-    
+
     if (!param) {
       newSearchParams.set(filter, value);
     } else {
@@ -46,7 +47,8 @@ const FilterButton = ({filter, value, name}: FilterButton) => {
           newSearchParams.set(filter, paramArray.join(','));
         }
       } else {
-        param === value ? newSearchParams.delete(filter) : newSearchParams.set(filter, param + `,${value}`);
+        // if same filter value clicked, delete filter. else, if button is replace-only, replace the value with new value
+        param === value ? newSearchParams.delete(filter) : newSearchParams.set(filter, (replace ? value : param + `,${value}`));
       }
       }
 
