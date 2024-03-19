@@ -1,4 +1,4 @@
-import { Image } from "../../../api/apiTypes";
+import { Image } from "../../../types/gameTypes";
 
 type StaticImageProps = {
   image: Image;

@@ -5,6 +5,7 @@ type GameRatingsProps = {
 }
 
 const GameRatings = ({ rating=null, rating_count=null}: GameRatingsProps) => {
+
   return (
     <div>
       <div>{rating ? rating.toString() : "N/A"}</div>

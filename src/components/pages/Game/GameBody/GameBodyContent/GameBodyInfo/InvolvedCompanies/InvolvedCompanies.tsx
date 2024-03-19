@@ -1,4 +1,4 @@
-import { Company } from "../../../../../../../api/apiTypes";
+import { Company } from "../../../../../../../types/gameTypes";
 import LinkArray from "../../../../../../common/Array/LinkArray";
 
 type InvolvedCompaniesProps = {

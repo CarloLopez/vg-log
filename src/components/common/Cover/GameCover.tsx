@@ -1,4 +1,4 @@
-import { Game } from "../../../api/apiTypes";
+import { Game } from "../../../types/gameTypes";
 import { Link } from "react-router-dom";
 
 type GameCoverProps = {

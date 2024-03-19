@@ -20,6 +20,6 @@ ul {
   margin: 0;
   display: flex;
   flex-wrap: wrap;
+  gap: 0.1rem;
   list-style: none;
-  gap: 0.05rem;
 }

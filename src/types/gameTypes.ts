@@ -46,42 +46,8 @@ export type Website = {
   url: string;
 }
 
-export type Filter = {
-  values: string | string[];
-  exact?: boolean;
-}
-
-export type Filters = {
-  [key: string]: Filter;
-}
-
-export type Sort = {
-  fieldSort: string;
-  sortBy: 'asc' | 'desc';
-}
-
-export type Specify = {
-  fieldSpecify: string;
-  operator: string;
-  specifyBy: string;
-}
-
-export type Pagination = {
-  limit?: number;
-  page?: number;
-}
-
-export type FilterList = {
-  where?: Filters;
-  search?: string;
-  sort?: Sort;
-  specify?: Specify;
-  pagination?: Pagination;
-}
-
-
 // define type for Games returned from API query
-type gameTypes = {
+type GameAPI = {
   id: number;
   age_ratings?: AgeRating[];
   artworks?: Image[];
@@ -107,4 +73,4 @@ type gameTypes = {
   websites?: Website[];
 }
 
-export default gameTypes;
+export default GameAPI;

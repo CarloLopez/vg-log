@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Video } from "../../../api/apiTypes"
+import { Video } from "../../../types/gameTypes"
 
 type GameVideoProps = {
   video: Video;
