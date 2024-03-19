@@ -1,5 +1,6 @@
-import { gameGenres, gameThemes, gamePlatforms } from "../../../objects/filterObjects";
+import { gameGenres, gameThemes, gamePlatforms, sortFilters, minRatings } from "../../../objects/filterObjects";
 import FilterButtonArray from "./FilterButtonArray";
+import FilterDropdown from "./FilterDropdown";
 
 const FilterContainer = () => {
 
@@ -8,6 +9,8 @@ const FilterContainer = () => {
     <FilterButtonArray filterName="genres" filters={gameGenres}/>
     <FilterButtonArray filterName="themes" filters={gameThemes}/>
     <FilterButtonArray filterName="platforms" filters={gamePlatforms}/>
+    <FilterDropdown options={sortFilters} defaultVal="---Sort By---" filter="sort"/>
+    <FilterDropdown options={minRatings} defaultVal="---Mininum Rating---" filter="minRating"/>
     </>
   )
 }

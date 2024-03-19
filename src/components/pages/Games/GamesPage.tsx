@@ -28,6 +28,9 @@ const parseURL = (searchParams: URLSearchParams) => {
       case 'page':
         gamesFilter.page = value;
         break;
+      case 'minRating':
+        gamesFilter.minRating = value;
+        break;
       default:
         gamesFilter.where = gamesFilter.where || {};
         gamesFilter.where[key] = value;
@@ -53,7 +56,7 @@ const GamesPage = () => {
     
     if (isInitialLoad.current) {
       isInitialLoad.current = false; // mark initial load as completed
-      return; // skip the rest of the effect on initial load, avoids duplicate API calls on mount
+      return; // skip effect on initial load, avoids duplicate API calls on mount
     }
     
     const newGamesFilter = parseURL(searchParams);

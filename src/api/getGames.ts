@@ -14,6 +14,10 @@ const getGames = async (gamesFilter: GamesFilter) => {
     }
   }
 
+  if (gamesFilter.minRating) {
+    whereQuery += ` & total_rating >= ${gamesFilter.minRating}`;
+  }
+
   query += `${whereQuery}; `;
 
   if (gamesFilter.search) {

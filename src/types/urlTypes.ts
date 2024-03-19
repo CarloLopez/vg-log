@@ -6,6 +6,7 @@ export type GamesFilter = {
   where?: Filters;
   search?: string;
   sort?: string;
+  minRating?: string;
   limit?: string;
   page?: string;
 }
