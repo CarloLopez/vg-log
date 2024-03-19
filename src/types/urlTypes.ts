@@ -7,6 +7,4 @@ export type GamesFilter = {
   search?: string;
   sort?: string;
   minRating?: string;
-  limit?: string;
-  page?: string;
 }

@@ -22,12 +22,6 @@ const parseURL = (searchParams: URLSearchParams) => {
       case 'sort':
         gamesFilter.sort = value;
         break;
-      case 'limit':
-        gamesFilter.limit = value;
-        break;
-      case 'page':
-        gamesFilter.page = value;
-        break;
       case 'minRating':
         gamesFilter.minRating = value;
         break;

@@ -28,14 +28,9 @@ const getGames = async (gamesFilter: GamesFilter) => {
     query += `sort ${gamesFilter.sort} desc; `;
   }
 
-  const limit = '25';
-  let page = '1';
+  const limit = '500';
 
-  if (gamesFilter.page) {
-    page = gamesFilter.page;
-  }
-
-  query += `limit ${limit}; offset ${(Number(page) - 1) * Number(limit)};`;
+  query += `limit ${limit};`;
 
   const body = `fields cover.image_id, name, slug; ${query}`;
 
