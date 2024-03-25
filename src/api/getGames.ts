@@ -27,7 +27,7 @@ const getGames = async (gamesFilter: GamesFilter) => {
   query += `${whereQuery}; `;
 
   if (gamesFilter.search) {
-    query += `search"${gamesFilter.search}; "`;
+    query += `search"${gamesFilter.search}"; `;
   }
 
   if (gamesFilter.sort) {

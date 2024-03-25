@@ -1,6 +1,7 @@
 import { useState, useEffect, useRef, createContext } from "react";
 import { SetURLSearchParams, useSearchParams } from "react-router-dom";
 import { GamesFilter } from "../../../types/urlTypes";
+import GameSearch from "./GameSearch";
 import FilterContainer from "./FilterContainer";
 import GameContainer from "./GameContainer";
 
@@ -61,10 +62,12 @@ const GamesPage = () => {
 
   return (
     <GamesPageContext.Provider value={{gamesFilter, searchParams, setSearchParams}}>
+      <h2>Search</h2>
+      <GameSearch />
       <h2>Filters</h2>
       <FilterContainer />
       <br></br>
-      <h2>Game Results</h2>
+      <h2>{'Game Results:' + `${searchParams.get('search') ? (` "${searchParams.get('search')}"`) : ""} `}</h2>
       <GameContainer />
     </GamesPageContext.Provider>
   )

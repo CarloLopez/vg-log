@@ -5,9 +5,10 @@ type FilterDropdown = {
   options: {value: string, label: string}[];
   defaultVal: string;
   filter: string;
+  handleDisabled?: () => boolean;
 }
 
-const FilterDropdown = ({options, defaultVal, filter}: FilterDropdown) => {
+const FilterDropdown = ({options, defaultVal, filter, handleDisabled}: FilterDropdown) => {
   
   const {searchParams, setSearchParams} = useContext(GamesPageContext);
 
@@ -39,7 +40,7 @@ const FilterDropdown = ({options, defaultVal, filter}: FilterDropdown) => {
   const paramValue = getParamValue()
   
   return (
-    <select onChange={handleChange} value={paramValue}>
+    <select onChange={handleChange} value={paramValue} disabled={handleDisabled ? handleDisabled() : false}>
       <option value={""}>{defaultVal}</option>
       {options.map((optionItem) => {
         return <option key={optionItem.value} value={optionItem.value}>{optionItem.label}</option>
