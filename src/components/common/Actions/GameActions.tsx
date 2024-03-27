@@ -6,7 +6,7 @@ const GameActions = () => {
       <div>
         <button>Not Started</button>
         <button>In Progress</button>
-        <button>Complete</button>
+        <button>Completed</button>
         <button>Dropped</button>
       </div>
     </div>

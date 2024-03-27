@@ -34,8 +34,10 @@ const FilterContainer = () => {
     <FilterButtonArray filterName="genres" filters={gameGenres} replace={false}/>
     <FilterButtonArray filterName="themes" filters={gameThemes} replace={false}/>
     <FilterButtonArray filterName="platforms" filters={gamePlatforms} replace={true}/>
+    <label htmlFor="sort">Sort By</label>
     <FilterDropdown options={sortFilters} defaultVal="Relevance" filter="sort" handleDisabled={sortDisabled}/>
-    <FilterDropdown options={minRatings} defaultVal="No Min Rating" filter="minRating"/>
+    <label htmlFor="minRating">Minimum Rating</label>
+    <FilterDropdown options={minRatings} defaultVal="--" filter="minRating"/>
     <button onClick={handleButtonClick}>Clear Filters</button>
     </>
   )

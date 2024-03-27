@@ -29,6 +29,17 @@ export type Game = {
   slug?: string;
 }
 
+export type BacklogItemState = {
+  id: number;
+  status: 'notStarted'|'inProgress'|'completed'|'dropped';
+  category: number|null;
+}
+
+export type BacklogItem = {
+  game: Game;
+  state: BacklogItemState;
+}
+
 export type Platform = {
   id: number;
   abbreviation: string;

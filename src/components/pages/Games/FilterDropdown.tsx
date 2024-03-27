@@ -40,7 +40,7 @@ const FilterDropdown = ({options, defaultVal, filter, handleDisabled}: FilterDro
   const paramValue = getParamValue()
   
   return (
-    <select onChange={handleChange} value={paramValue} disabled={handleDisabled ? handleDisabled() : false}>
+    <select name={filter} onChange={handleChange} value={paramValue} disabled={handleDisabled ? handleDisabled() : false}>
       <option value={""}>{defaultVal}</option>
       {options.map((optionItem) => {
         return <option key={optionItem.value} value={optionItem.value}>{optionItem.label}</option>
