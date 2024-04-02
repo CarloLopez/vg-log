@@ -1,7 +1,8 @@
 
 const COMPONENT_NAME = () => {
   return (
-    <></>
+    <>
+    </>
   )
 }
 

@@ -1,3 +1,4 @@
+import { BacklogItemState } from "../../../types/gameTypes"
 
 const Goals = () => {
   return (
@@ -14,12 +15,16 @@ const Goals = () => {
   )
 }
 
-const BacklogCardBody = () => {
+type BacklogCardBodyProps = {
+  state: BacklogItemState;
+}
+
+const BacklogCardBody = ({state}: BacklogCardBodyProps) => {
   return (
     <>
+      {`Status: ${state.status}`}
       <Goals></Goals>
       <div>
-        <button>Status</button>
         <button>Category</button>
         <button>Notes</button>
         <button>Goals</button>

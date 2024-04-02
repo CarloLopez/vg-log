@@ -2,7 +2,7 @@ import moment from "moment";
 import { useContext } from "react";
 import { GameDataContext } from "../../GamePage";
 import LinkArray from "../../../../common/Array/LinkArray";
-import GameHeaderPlatforms from "./GameHeaderPlatforms/GameHeaderPlatforms";
+import GameHeaderPlatforms from "./GameHeaderPlatforms";
 
 const GameHeaderInfo = () => {
   

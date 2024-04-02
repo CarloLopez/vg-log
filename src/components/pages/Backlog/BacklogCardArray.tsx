@@ -10,7 +10,7 @@ const BacklogCardArray = ({items}: BacklogCardArrayProps) => {
   return (
     <ul>
       {items.map((item) => {
-        return <li key={item.game.id}><GameCard game={item.game}><BacklogCardBody /></GameCard></li>
+        return <li key={item.game.id}><GameCard game={item.game}><BacklogCardBody state={item.state}/></GameCard></li>
       })}
     </ul>
   )

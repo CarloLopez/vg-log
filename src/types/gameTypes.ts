@@ -57,6 +57,11 @@ export type Website = {
   url: string;
 }
 
+export type Category = {
+  id: number;
+  name: string;
+}
+
 // define type for Games returned from API query
 type GameAPI = {
   id: number;

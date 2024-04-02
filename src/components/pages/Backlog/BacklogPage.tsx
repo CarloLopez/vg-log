@@ -3,22 +3,34 @@ import { useState, useEffect, createContext } from "react";
 import getBacklog from "../../../api/getBacklog";
 import BacklogCardArray from "./BacklogCardArray";
 import BacklogOrderDropdown from "./BacklogOrderDropdown";
-import { Game, BacklogItem, BacklogItemState} from "../../../types/gameTypes";
+import BacklogCategoryDropdown from "./BacklogCategoryDropdown";
+import BacklogStatusFilter from "./BacklogStatusFilter";
+import { Game, BacklogItem, BacklogItemState, Category} from "../../../types/gameTypes";
 
 type BacklogPageContext = {
   setOrder: React.Dispatch<React.SetStateAction<string>>;
+  setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
+  categories: Category[];
+  setCategory: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export const BacklogPageContext = createContext<BacklogPageContext>({
   setOrder: () => {},
+  setCategories: () => {},
+  categories: [],
+  setCategory: () => {},
 })
 
 const BacklogPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [gameSelection, setGameSelection] = useState<BacklogItemState[]>(MOCK_BACKLOG);
   const [data, setData] = useState<BacklogItem[]>([]);
+  const [gameSelection] = useState<BacklogItemState[]>(MOCK_BACKLOG);
+  
+  const [categories, setCategories] = useState<Category[]>(MOCK_CATEGORIES);
+  const [category, setCategory] = useState('');
   const [order, setOrder] = useState('');
+  const [filters, setFilters] = useState(['inProgress', 'notStarted', 'completed', 'dropped']);
   
 
   useEffect(() => {
@@ -74,12 +86,18 @@ const BacklogPage = () => {
   }
 
   if (data) {
-    const sortedData = sortData(data);
+    // filter data for caterogy
+    let filteredData = category ? data.filter(game => game.state.category?.toString() === category) : data;
+    // filter data for status
+    filteredData = filteredData.filter(game => filters.includes(game.state.status));
+    // sort based on user selection
+    const sortedData = sortData(filteredData);
     console.log(sortedData);
     return (
-      <BacklogPageContext.Provider value={{setOrder}}>
-        
+      <BacklogPageContext.Provider value={{setOrder, setCategories, categories, setCategory}}>
         <BacklogOrderDropdown />
+        <BacklogCategoryDropdown />
+        <BacklogStatusFilter setFilters={setFilters}/>
         <BacklogCardArray items={sortedData}/>
       </BacklogPageContext.Provider>
     )
