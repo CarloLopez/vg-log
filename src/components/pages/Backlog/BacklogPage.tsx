@@ -12,6 +12,7 @@ type BacklogPageContext = {
   setOrder: React.Dispatch<React.SetStateAction<string>>;
   setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
   categories: Category[];
+  setData: React.Dispatch<React.SetStateAction<BacklogItem[]>>;
   setCategory: React.Dispatch<React.SetStateAction<string>>;
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setDialogContent: React.Dispatch<React.SetStateAction<JSX.Element>>;
@@ -21,6 +22,7 @@ export const BacklogPageContext = createContext<BacklogPageContext>({
   setOrder: () => {},
   setCategories: () => {},
   categories: [],
+  setData: () => {},
   setCategory: () => {},
   setDialogOpen: () => {},
   setDialogContent: () => {},
@@ -29,8 +31,9 @@ export const BacklogPageContext = createContext<BacklogPageContext>({
 const BacklogPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [data, setData] = useState<BacklogItem[]>([]);
   const [gameSelection] = useState<BacklogItemState[]>(MOCK_BACKLOG);
+  const [data, setData] = useState<BacklogItem[]>([]);
+  const [sortedData, setSortedData] = useState<BacklogItem[]>([]);
   
   const [categories, setCategories] = useState<Category[]>(MOCK_CATEGORIES);
   const [category, setCategory] = useState('');
@@ -73,17 +76,29 @@ const BacklogPage = () => {
       getData();
   }, [gameSelection])
 
-  const sortData = (data: BacklogItem[]) => {
-    const defaultOrder = {'inProgress': 1, 'notStarted': 2, 'completed': 3, 'dropped': 4};
+  useEffect(() => {
 
+    // filter data for caterogy
+    let filteredData = category ? data.filter(game => game.state.category?.toString() === category) : data;
+    
+    // filter data for status
+    filteredData = filteredData.filter(game => filters.includes(game.state.status));
+
+    // sort data based on user selection
+    const defaultOrder = {'inProgress': 1, 'notStarted': 2, 'completed': 3, 'dropped': 4};
+    let sortedData: BacklogItem[] = []
     switch (order) {
       case '':
-        return data.sort((a, b) => defaultOrder[a.state.status] - defaultOrder[b.state.status]);
+        sortedData = filteredData.sort((a, b) => defaultOrder[a.state.status] - defaultOrder[b.state.status]);
+        break;
       case 'name':
-        return data.sort((a, b) => a.game.name.localeCompare(b.game.name));
+        sortedData = filteredData.sort((a, b) => a.game.name.localeCompare(b.game.name));
+        break;
     }
-    return data;
-  }
+
+    setSortedData(sortedData);
+
+  }, [data, category, filters, order])
 
   if (loading) {
     return <>Loading...</>;
@@ -94,16 +109,8 @@ const BacklogPage = () => {
   }
 
   if (data) {
-    
-    // filter data for caterogy
-    let filteredData = category ? data.filter(game => game.state.category?.toString() === category) : data;
-    // filter data for status
-    filteredData = filteredData.filter(game => filters.includes(game.state.status));
-    // sort based on user selection
-    const sortedData = sortData(filteredData);
-    console.log(sortedData);
     return (
-      <BacklogPageContext.Provider value={{setOrder, setCategories, categories, setCategory, setDialogOpen, setDialogContent}}>
+      <BacklogPageContext.Provider value={{setOrder, setCategories, categories, setData, setCategory, setDialogOpen, setDialogContent}}>
         <BacklogOrderDropdown />
         <BacklogCategoryDropdown />
         <BacklogStatusFilter setFilters={setFilters}/>

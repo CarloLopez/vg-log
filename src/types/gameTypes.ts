@@ -33,6 +33,7 @@ export type BacklogItemState = {
   id: number;
   status: 'notStarted'|'inProgress'|'completed'|'dropped';
   category: number|null;
+  nextGoal?: string;
 }
 
 export type BacklogItem = {
@@ -61,6 +62,8 @@ export type Category = {
   id: number;
   name: string;
 }
+
+export type Status = "inProgress" | "notStarted" | "completed" | "dropped";
 
 // define type for Games returned from API query
 type GameAPI = {

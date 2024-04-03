@@ -89,3 +89,10 @@ export const minRatings = [
   {value: '80', label: '80'},
   {value: '90', label: '90'},
 ]
+
+export const statuses = [
+  {value: 'inProgress', label: 'In Progress'},
+  {value: 'notStarted', label: 'Not Started'},
+  {value: 'completed', label: 'Completed'},
+  {value: 'dropped', label: 'Dropped'},
+]
