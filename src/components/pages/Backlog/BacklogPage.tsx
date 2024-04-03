@@ -5,6 +5,7 @@ import BacklogCardArray from "./BacklogCardArray";
 import BacklogOrderDropdown from "./BacklogOrderDropdown";
 import BacklogCategoryDropdown from "./BacklogCategoryDropdown";
 import BacklogStatusFilter from "./BacklogStatusFilter";
+import DialogBox from "../../common/DialogBox";
 import { Game, BacklogItem, BacklogItemState, Category} from "../../../types/gameTypes";
 
 type BacklogPageContext = {
@@ -12,6 +13,8 @@ type BacklogPageContext = {
   setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
   categories: Category[];
   setCategory: React.Dispatch<React.SetStateAction<string>>;
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setDialogContent: React.Dispatch<React.SetStateAction<JSX.Element>>;
 }
 
 export const BacklogPageContext = createContext<BacklogPageContext>({
@@ -19,6 +22,8 @@ export const BacklogPageContext = createContext<BacklogPageContext>({
   setCategories: () => {},
   categories: [],
   setCategory: () => {},
+  setDialogOpen: () => {},
+  setDialogContent: () => {},
 })
 
 const BacklogPage = () => {
@@ -31,6 +36,9 @@ const BacklogPage = () => {
   const [category, setCategory] = useState('');
   const [order, setOrder] = useState('');
   const [filters, setFilters] = useState(['inProgress', 'notStarted', 'completed', 'dropped']);
+
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const [dialogContent, setDialogContent] = useState(<></>);
   
 
   useEffect(() => {
@@ -86,6 +94,7 @@ const BacklogPage = () => {
   }
 
   if (data) {
+    
     // filter data for caterogy
     let filteredData = category ? data.filter(game => game.state.category?.toString() === category) : data;
     // filter data for status
@@ -94,11 +103,12 @@ const BacklogPage = () => {
     const sortedData = sortData(filteredData);
     console.log(sortedData);
     return (
-      <BacklogPageContext.Provider value={{setOrder, setCategories, categories, setCategory}}>
+      <BacklogPageContext.Provider value={{setOrder, setCategories, categories, setCategory, setDialogOpen, setDialogContent}}>
         <BacklogOrderDropdown />
         <BacklogCategoryDropdown />
         <BacklogStatusFilter setFilters={setFilters}/>
         <BacklogCardArray items={sortedData}/>
+        {dialogOpen ? <DialogBox dialogOpen={dialogOpen} toggleVisibility={() => setDialogOpen(false)}>{dialogContent}</DialogBox> : ""}
       </BacklogPageContext.Provider>
     )
   }

@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import { GameDataContext } from "../../../GamePage";
-import GameVideo from "../../../../../common/Media/GameVideo";
-import StaticImage from "../../../../../common/Media/StaticImage";
+import { GameDataContext } from "../../GamePage";
+import GameVideo from "../../../../common/Media/GameVideo";
+import StaticImage from "../../../../common/Media/StaticImage";
 
 const GameBodyMedia = () => {
   

@@ -1,4 +1,7 @@
 import { BacklogItemState } from "../../../types/gameTypes"
+import { useContext } from "react"
+import { BacklogPageContext } from "./BacklogPage"
+import CategoriesContainer from "../../common/Categories/CategoriesContainer"
 
 const Goals = () => {
   return (
@@ -20,12 +23,19 @@ type BacklogCardBodyProps = {
 }
 
 const BacklogCardBody = ({state}: BacklogCardBodyProps) => {
+  const {setDialogContent, setDialogOpen} = useContext(BacklogPageContext);
+  
   return (
     <>
       {`Status: ${state.status}`}
       <Goals></Goals>
       <div>
-        <button>Category</button>
+        <button onClick={() => {
+          setDialogContent(<CategoriesContainer />);
+          setDialogOpen(true);
+        }}>
+          Category
+        </button>
         <button>Notes</button>
         <button>Goals</button>
       </div>

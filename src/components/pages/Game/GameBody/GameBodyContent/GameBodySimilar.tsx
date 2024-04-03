@@ -1,6 +1,6 @@
 import { useContext } from "react";
-import { GameDataContext } from "../../../GamePage";
-import GameCoverArray from "../../../../../common/Cover/GameCoverArray";
+import { GameDataContext } from "../../GamePage";
+import GameCoverArray from "../../../../common/Cover/GameCoverArray";
 
 const GameBodySimilar = () => {
   

@@ -1,8 +1,8 @@
 import { useContext } from "react";
 import { GameDataContext } from "../../GamePage";
 import GameCover from "../../../../common/Cover/GameCover";
-import GameRatings from "./GameRatings/GameRatings";
-import GameActions from "../../../../common/Actions/GameActions";
+import GameRatings from "./GameRatings";
+import GameActions from "./GameActions";
 
 const GameHeaderSide = () => {
   

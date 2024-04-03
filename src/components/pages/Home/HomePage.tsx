@@ -1,7 +1,9 @@
 
 const HomePage = () => {
   return (
-    <>Home Page</>
+    <>
+    <button><input type="text" placeholder="Enter Name" onBlur={() => console.log('test')}/></button>
+    </>
   );
 }
 

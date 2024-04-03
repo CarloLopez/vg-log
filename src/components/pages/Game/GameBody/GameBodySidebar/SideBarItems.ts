@@ -1,9 +1,9 @@
 import React from "react";
-import GameBodyGoals from "../GameBodyContent/GameBodyGoals/GameBodyGoals";
+import GameBodyGoals from "../GameBodyContent/GameBodyGoals";
 import GameBodyInfo from "../GameBodyContent/GameBodyInfo/GameBodyInfo";
-import GameBodyMedia from "../GameBodyContent/GameBodyMedia/GameBodyMedia";
-import GameBodyNotes from "../GameBodyContent/GameBodyNotes/GameBodyNotes";
-import GameBodySimilar from "../GameBodyContent/GameBodySimilar/GameBodySimilar";
+import GameBodyMedia from "../GameBodyContent/GameBodyMedia";
+import GameBodyNotes from "../GameBodyContent/GameBodyNotes";
+import GameBodySimilar from "../GameBodyContent/GameBodySimilar";
 
 export type SidebarItem = {
   id: string;
