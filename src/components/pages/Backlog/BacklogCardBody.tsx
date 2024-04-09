@@ -5,15 +5,18 @@ import CategoriesContainer from "../../common/Categories/CategoriesContainer"
 import Dropdown from "../../common/Array/Dropdown"
 import { statuses } from "../../../objects/filterObjects"
 import { Status } from "../../../types/gameTypes"
+import { useNavigate } from "react-router-dom"
 
 type BacklogCardBodyProps = {
+  slug: string;
   state: BacklogItemState;
 }
 
 const statusList = statuses.map(status => status.value);
 
-const BacklogCardBody = ({state}: BacklogCardBodyProps) => {
+const BacklogCardBody = ({slug, state}: BacklogCardBodyProps) => {
   const {setData, setDialogContent, setDialogOpen} = useContext(BacklogPageContext);
+  const navigate = useNavigate();
   
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     // TODO: on status change, update database
@@ -25,6 +28,10 @@ const BacklogCardBody = ({state}: BacklogCardBodyProps) => {
       }
       return newData;
     })
+  }
+
+  const handleClick = (tab: string) => {
+    navigate(`/game/${slug}?tab=${tab}`)
   }
 
   return (
@@ -41,8 +48,8 @@ const BacklogCardBody = ({state}: BacklogCardBodyProps) => {
         }}>
           Category
         </button>
-        <button>Notes</button>
-        <button>Goals</button>
+        <button onClick={() => handleClick('notes')}>Notes</button>
+        <button onClick={() => handleClick('goals')}>Goals</button>
       </div>
     </>
   )

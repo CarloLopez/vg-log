@@ -13,7 +13,7 @@ const HomeCardArray = ({data}: HomeCardArrayProps) => {
   return (
     <ul>
       {inProgressGames.map((item) => {
-        return <li key={item.game.id}><GameCard game={item.game}><HomeCardBody state={item.state}/></GameCard></li>
+        return <li key={item.game.id}><GameCard game={item.game}><HomeCardBody slug={item.game.slug || ""} state={item.state}/></GameCard></li>
       })}
     </ul>
   )

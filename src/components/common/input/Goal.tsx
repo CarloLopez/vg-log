@@ -25,7 +25,7 @@ const Goal = ({id, content, completed, priority, description}: GoalItem) => {
     })
   }
 
-  // TODO: UPDATE BACKEND FOR CHECKBOX AND GOAL TEXT CHANGE
+  // TODO: UPDATE BACKEND FOR CHECKBOX, GOAL AND DESCRIPTION TEXT CHANGE
   return (
     <div>
       <EditableBox initialValue={content} updateFunction={() => {null}}/>
@@ -48,7 +48,7 @@ const Goal = ({id, content, completed, priority, description}: GoalItem) => {
       </div>
 
       <div>
-        <button onClick={() => setShowDescription(state => !state)}>Show Description</button>
+        <button onClick={() => setShowDescription(state => !state)}>{showDescription ? "Hide Description" : "Show Description"}</button>
         {showDescription ? <EditableBox initialValue={description || ""} updateFunction={() => {null}}/> : ""}
       </div>
 

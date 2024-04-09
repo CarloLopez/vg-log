@@ -1,4 +1,5 @@
 import { useEffect, useState, createContext } from "react";
+import { useSearchParams } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import getGame from "../../../api/getGame";
 import GameAPI from "../../../types/gameTypes";
@@ -22,6 +23,7 @@ const GamePage = () => {
   const [gameData, setGameData] = useState<GameAPI | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const { gameSlug } = useParams<UrlParams>();
 
@@ -57,7 +59,7 @@ const GamePage = () => {
       <GameDataContext.Provider value={gameData}>
         <GameHeader />
         <hr />
-        <GameBody />
+        <GameBody searchParams={searchParams} setSearchParams={setSearchParams}/>
       </GameDataContext.Provider>
     );
   } else {
