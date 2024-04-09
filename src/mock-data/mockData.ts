@@ -1,4 +1,4 @@
-import { BacklogItemState } from "../types/gameTypes"
+import { BacklogItemState, NoteItem, GoalItem } from "../types/gameTypes"
 
 export const MOCK_CATEGORIES = [
   {id: 1, name: 'category example 1'},
@@ -18,4 +18,18 @@ export const MOCK_BACKLOG: BacklogItemState[] = [
   {id: 40477, status: 'dropped', category: 2},
   {id: 386, status: 'notStarted', category: null, nextGoal:'placeholder'},
   {id: 132181, status: 'completed', category: 2},
+]
+
+export const MOCK_NOTES: NoteItem[] = [
+  {id: 1, title: "Note 1", content: "Content 1"},
+  {id: 45, title: "Note 2", content: "Content 2"},
+  {id: 35, title: "Note 3", content: "Content 3"},
+  {id: 2, title: "Note 4", content: "Content 4"},
+]
+
+export const MOCK_GOALS: GoalItem[] = [
+  {id: 1, content: "Goal 1", completed: false, priority: 'critical'},
+  {id: 45, content: "Goal 2", completed: false, priority: 'high'},
+  {id: 35, content: "Goal 3", completed: false, priority: 'medium'},
+  {id: 2, content: "Goal 4", completed: false, priority: 'low'},
 ]

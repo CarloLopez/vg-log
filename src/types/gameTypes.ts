@@ -29,9 +29,11 @@ export type Game = {
   slug?: string;
 }
 
+export type Status = "inProgress" | "notStarted" | "completed" | "dropped";
+
 export type BacklogItemState = {
   id: number;
-  status: 'notStarted'|'inProgress'|'completed'|'dropped';
+  status: Status;
   category: number|null;
   nextGoal?: string;
 }
@@ -39,6 +41,21 @@ export type BacklogItemState = {
 export type BacklogItem = {
   game: Game;
   state: BacklogItemState;
+}
+
+export type NoteItem = {
+  id: number;
+  title: string;
+  content: string;
+}
+
+export type Priority =  'critical'|'high'|'medium'|'low'|'none';
+
+export type GoalItem = {
+  id: number;
+  content: string;
+  completed: boolean;
+  priority: Priority;
 }
 
 export type Platform = {
@@ -62,8 +79,6 @@ export type Category = {
   id: number;
   name: string;
 }
-
-export type Status = "inProgress" | "notStarted" | "completed" | "dropped";
 
 // define type for Games returned from API query
 type GameAPI = {

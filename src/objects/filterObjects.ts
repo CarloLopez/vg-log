@@ -96,3 +96,11 @@ export const statuses = [
   {value: 'completed', label: 'Completed'},
   {value: 'dropped', label: 'Dropped'},
 ]
+
+export const priorities = [
+  {value: 'critical', label: 'Critical'},
+  {value: 'high', label: 'High'},
+  {value: 'medium', label: 'Medium'},
+  {value: 'low', label: 'Low'},
+  {value: 'none', label: 'None'},
+]
