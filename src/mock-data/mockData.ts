@@ -28,8 +28,8 @@ export const MOCK_NOTES: NoteItem[] = [
 ]
 
 export const MOCK_GOALS: GoalItem[] = [
-  {id: 1, content: "Goal 1", completed: false, priority: 'critical'},
+  {id: 1, content: "Goal 1", description: "description 1", completed: false, priority: 'critical'},
   {id: 45, content: "Goal 2", completed: false, priority: 'high'},
   {id: 35, content: "Goal 3", completed: false, priority: 'medium'},
-  {id: 2, content: "Goal 4", completed: false, priority: 'low'},
+  {id: 2, content: "Goal 4", description: "description 4", completed: false, priority: 'low'},
 ]

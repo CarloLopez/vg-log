@@ -36,6 +36,7 @@ const GameBodyGoals = () => {
               content={goal.content} 
               completed={goal.completed}
               priority={goal.priority}
+              description={goal.description}
             />
           </li>
           )

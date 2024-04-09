@@ -7,10 +7,11 @@ import { GoalsContext } from "../../pages/Game/GameBody/GameBodyContent/GameBody
 
 const priorityList = priorities.map(priority => priority.value);
 
-const Goal = ({id, content, completed, priority}: GoalItem) => {
+const Goal = ({id, content, completed, priority, description}: GoalItem) => {
 
   const {setGoals} = useContext(GoalsContext);
   const [completedChecked, setCompletedChecked] = useState(completed);
+  const [showDescription, setShowDescription] = useState(false);
 
   // TODO ALSO UPDATE BACKEND IF CHANGE PRIORITY
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -40,10 +41,17 @@ const Goal = ({id, content, completed, priority}: GoalItem) => {
           }}
         />
       </div>
+
       <div>
         <label>Priority</label>
         <Dropdown handleChange={handleChange} options={priorities} defaultSelection={priority}/>
       </div>
+
+      <div>
+        <button onClick={() => setShowDescription(state => !state)}>Show Description</button>
+        {showDescription ? <EditableBox initialValue={description || ""} updateFunction={() => {null}}/> : ""}
+      </div>
+
       <button>DELETE GOAL</button>
     </div>
   )

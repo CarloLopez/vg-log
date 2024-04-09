@@ -54,6 +54,7 @@ export type Priority =  'critical'|'high'|'medium'|'low'|'none';
 export type GoalItem = {
   id: number;
   content: string;
+  description?: string;
   completed: boolean;
   priority: Priority;
 }
