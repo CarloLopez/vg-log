@@ -10,7 +10,6 @@ const getBacklog = async (selectedGames: number[]) => {
   where
     id = (${selectedGames});
   limit 500;`;
-    console.log(body);
 
   return await apiRequest(body);
 }

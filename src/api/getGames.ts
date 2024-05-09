@@ -1,9 +1,8 @@
 import { GamesFilter } from "../types/urlTypes";
 import apiRequest from "./apiRequest";
-import { gamePlatforms } from "../objects/filterObjects";
+import { gamePlatforms, allowedCategories } from "../objects/filterObjects";
 
 const allowedPlatforms = gamePlatforms.map(platform => platform.id);
-const allowedCategories = [0, 8, 9, 10, 11, 12];
 
 const getGames = async (gamesFilter: GamesFilter) => {
   let query = '';

@@ -5,7 +5,7 @@ const apiRequest = async (body: string) => {
   const headers = {
     'Accept': 'application/json',
     'Client-ID': '7700pxy9nm01xjre1zxrn8pfk0eaqy',
-    'Authorization': 'Bearer 6dhvah2trquct9fss21son34vcpzz1',
+    'Authorization': 'Bearer kac5j3vjdstecpsuvebrurepkwq7lt',
   };
 
   try {
@@ -15,6 +15,9 @@ const apiRequest = async (body: string) => {
       body: body,
       mode: 'cors',
     });
+
+    console.log(`Request sent:
+    ${body}`);
 
     // throw error with HTTP code if API request failed
     if (!response.ok) {
