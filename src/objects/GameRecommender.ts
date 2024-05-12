@@ -14,7 +14,7 @@ type GameGenre = {
   genres: number[];
 }
 
-type DbGameResult = {
+export type DbGameResult = {
   id: number;
   name: string;
   slug: string;
@@ -163,14 +163,35 @@ class GameRecommender {
   
   filterResults(results: DbGameResult[], reverse: boolean = false) {
 
-    // sort by similarity score
+    // TODO: LET USER DETERMINE SIMILARITY VS POPULARITY RATIO
+
+    let sortedResults: DbGameResult[] = [];
+
     if (!reverse) {
-      results.sort((a, b) => (b.similarity as number) - (a.similarity as number));
+      sortedResults = results.sort((a, b) => (b.similarity as number) - (a.similarity as number));
     } else {
-      results.sort((a, b) => (a.similarity as number) - (b.similarity as number));
+      /* 
+      if reverse is set (least played genres), sort by similarity >= 0.5 or not
+      reasoning: popularity more important than absolute similarity here, as reverse genres is naturally less similar. We want to recommend popular games since they are more likely to be received well, hence 0.5 is a threshold to recommend popular games that arent too similar 
+      */
+      
+      results.sort((a, b) => (b.total_rating_count) - (a.total_rating_count));
+
+      const similar: DbGameResult[] = [];
+      const notSimilar: DbGameResult[] = [];
+
+      results.forEach(game => {
+        if (game.similarity && game.similarity >= 0.5) {
+          similar.push(game);
+        } else {
+          notSimilar.push(game);
+        }
+      })
+      
+      sortedResults = notSimilar.concat(similar);
     }
     
-    return results;
+    return sortedResults;
 
     // TODO: FURTHER FILTERING BASED ON USER OPTIONS
   }

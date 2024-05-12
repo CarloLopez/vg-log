@@ -1,12 +1,14 @@
 import apiRequest from "../apiRequest";
-import { allowedCategories } from "../../objects/filterObjects";
+import { allowedCategories, gamePlatforms } from "../../objects/filterObjects";
 
 type getGamesByGenresParams = {
   regular: number[];
   reverse: number[];
 }
 
-function subquery(genreIds: number[]) {
+const allowedPlatforms = gamePlatforms.map(platform => platform.id);
+
+const subquery = (genreIds: number[]) => {
   const body = `
   fields
     id,
@@ -21,7 +23,8 @@ function subquery(genreIds: number[]) {
     & version_parent=null
     & cover!=null
     & category=(${allowedCategories.join(',')})
-    & rating != null;
+    & rating != null
+    & platforms=(${allowedPlatforms.join(',')});
   sort
     total_rating_count desc;
   limit

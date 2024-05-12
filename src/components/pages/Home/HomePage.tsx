@@ -2,7 +2,7 @@ import { MOCK_BACKLOG } from "../../../mock-data/mockData";
 import { useState } from "react";
 import { BacklogItemState } from "../../../types/gameTypes";
 import HomeBacklog from "./HomeBacklog";
-import HomeRecommended from "./HomeRecommended";
+import HomeRecommender from "./HomeRecommender/HomeRecommender";
 
 const HomePage = () => {
   
@@ -18,7 +18,7 @@ const HomePage = () => {
         <hr />
         <HomeBacklog gameIds={gameIds} backlogItems={backlog}/>
         <hr />
-        <HomeRecommended backlogItems={backlog}/>
+        <HomeRecommender backlogItems={backlog}/>
       </div>
     );
   }

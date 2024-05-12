@@ -1,21 +1,32 @@
 import { useState, useEffect } from "react";
-import { BacklogItemState } from "../../../types/gameTypes";
-import { Options, getDbVectorsParams } from "../../../objects/GameRecommender";
-import GameRecommender from "../../../objects/GameRecommender";
+import { BacklogItemState } from "../../../../types/gameTypes";
+import { Options, getDbVectorsParams, DbGameResult } from "../../../../objects/GameRecommender";
+import GameRecommender from "../../../../objects/GameRecommender";
+import RecommenderContainer from "./RecommenderContainer";
 
-// TODO: CHANGE USEEFFECT DEPENDENCIES BASED ON SPECIFIC OPTIONS, MAYBE OBJECT WITHIN OBJECT
+// TODO: CHANGE USEEFFECT DEPENDENCIES BASED ON SPECIFIC OPTIONS
 
-type HomeRecommendedProps = {
+type HomeRecommenderProps = {
  backlogItems: BacklogItemState[];
 }
 
-const HomeRecommended = ({backlogItems}: HomeRecommendedProps) => {
+export type RecommenderData = {
+  sortedRegular: DbGameResult[];
+  sortedReverse: DbGameResult[];
+}
+
+const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
   
-  const [loading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const [data, setData] = useState<RecommenderData>({
+    sortedRegular: [],
+    sortedReverse: [],
+  })
+
   const [recommender] = useState(new GameRecommender(backlogItems));
   const [options] = useState<Options>({
-    genreDepth: 3,
+    genreDepth: 5,
     platforms: [0],
   })
   const [userVector, setUserVector] = useState<number[]>([])
@@ -85,7 +96,7 @@ const HomeRecommended = ({backlogItems}: HomeRecommendedProps) => {
       const {regularResults, reverseResults} = recommender.getDbVectors(dbResults);
 
       // perform cosine similarity analysis for each IGDB game compared to the user vector
-      // for both regular and reverse results
+      // only for regular results, as reverse results (least played genre) tends to be low similarity by nature
       const regularSimilarities = recommender.getCosineSimilarities(userVector, regularResults.result);
       const reverseSimilarities = recommender.getCosineSimilarities(userVector, reverseResults.result);
 
@@ -98,9 +109,13 @@ const HomeRecommended = ({backlogItems}: HomeRecommendedProps) => {
       console.log('rev');
       console.log(sortedReverse);
 
+      setData({sortedRegular, sortedReverse});
+
     } catch (error) {
-      setError('Failed to Fetch Games from Database.');
-    } 
+      setError('Error in Similarity Calculation.');
+    } finally {
+      setLoading(false);
+    }
   }, [userVectorLoaded, dbResultsLoaded, recommender, userVector, dbResults, options])
 
   if (error) {
@@ -110,6 +125,12 @@ const HomeRecommended = ({backlogItems}: HomeRecommendedProps) => {
   if (loading) {
     return <>Loading...</>;
   }
+
+  if (data) {
+    return (
+      <RecommenderContainer data={data}/>
+    )
+  }
 }
 
-export default HomeRecommended;
+export default HomeRecommender;
