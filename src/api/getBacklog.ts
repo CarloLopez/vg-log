@@ -11,7 +11,7 @@ const getBacklog = async (selectedGames: number[]) => {
     id = (${selectedGames});
   limit 500;`;
 
-  return await apiRequest(body);
+  return await apiRequest(body, 'games');
 }
 
 export default getBacklog;

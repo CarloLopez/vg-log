@@ -1,7 +1,7 @@
 
-const apiRequest = async (body: string) => {
+const apiRequest = async (body: string, endpoint: string = "games") => {
 
-  const url = 'https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/games';
+  const url = `https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/${endpoint}`;
   const headers = {
     'Accept': 'application/json',
     'Client-ID': '7700pxy9nm01xjre1zxrn8pfk0eaqy',

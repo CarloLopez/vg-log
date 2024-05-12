@@ -1,14 +1,19 @@
 import apiRequest from "../apiRequest";
 import { allowedCategories } from "../../objects/filterObjects";
 
-const getGamesByGenres = async (genreIds: number[]) => {  
+type getGamesByGenresParams = {
+  regular: number[];
+  reverse: number[];
+}
+
+function subquery(genreIds: number[]) {
   const body = `
   fields
     id,
     cover.image_id,
     name,
     slug,
-    hypes,
+    total_rating_count,
     genres;
   where 
     genres = (${genreIds})
@@ -18,11 +23,24 @@ const getGamesByGenres = async (genreIds: number[]) => {
     & category=(${allowedCategories.join(',')})
     & rating != null;
   sort
-    hypes desc;
+    total_rating_count desc;
   limit
    500;`
+
+  return body;
+}
+
+const getGamesByGenres = async ({regular, reverse}: getGamesByGenresParams) => {  
+  const body = `
+  query games "regular" {
+    ${subquery(regular)}
+  };
+
+  query games "reverse" {
+    ${subquery(reverse)}
+  };`
   
-  return await apiRequest(body);
+  return await apiRequest(body, 'multiquery');
 }
 
 export default getGamesByGenres;

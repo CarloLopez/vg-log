@@ -40,7 +40,7 @@ const getGames = async (gamesFilter: GamesFilter) => {
   const body = `fields cover.image_id, name, slug; ${query}`;
 
   console.log(`API REQUEST: ${query}`);
-  return await apiRequest(body);
+  return await apiRequest(body, 'games');
 
 }
 

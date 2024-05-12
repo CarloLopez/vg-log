@@ -50,7 +50,7 @@ const getGame = async (gameSlug: string) => {
     websites.url;
   where slug = "${gameSlug}";`
 
-  return await apiRequest(body);
+  return await apiRequest(body, 'games');
 }
 
 export default getGame;
