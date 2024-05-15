@@ -3,11 +3,7 @@ import { gameGenres } from "./filterObjects";
 import getBacklogGameInfo from "../api/recommender/getBacklogGameInfo";
 import getGamesByGenres from "../api/recommender/getGamesByGenres";
 import { Image } from "../types/gameTypes";
-
-export type Options = {
-  genreDepth: number;
-  platforms: number[];
-}
+import { BacklogSettings, DatabaseSettings, FilterSettings } from "../components/pages/Home/HomeRecommender/HomeRecommender";
 
 type GameGenre = {
   id: number;
@@ -19,10 +15,12 @@ export type DbGameResult = {
   name: string;
   slug: string;
   cover: Image;
+  total_rating: number;
   total_rating_count: number;
   genres: number[];
   vector?: number[];
   similarity?: number;
+  overallScore?: number;
 }
 
 type APIResult = {
@@ -35,35 +33,49 @@ export type getDbVectorsParams = {
   reverseResults: APIResult;
 }
 
+type SelectGenreFiltersParams = {
+  genres: [string, number][];
+  reverse: boolean;
+  genreDepth: number;
+}
+
+type FilterResultsParams = {
+  results: DbGameResult[];
+  reverse: boolean;
+  filterSettings: FilterSettings;
+}
+
+type NormaliseParms = {
+  value: number;
+  min: number;
+  max: number;
+}
+
 class GameRecommender {
-
-  options: Options;
-
   private games: BacklogItemState[];
   private results: APIResult[];
   genreFrequency: { [genreId: number]: number};
 
   constructor(games: BacklogItemState[] = []) {
-    this.options = {
-      genreDepth: 3,
-      platforms: [],
-    }
     this.games = games;
     this.results = [];
     this.genreFrequency = {};
   }
 
-  async getBacklogInfo() {
-    const backlogInfo = await this._fetchGenres();
+  async getBacklogInfo(backlogSettings:BacklogSettings) {
+    
+    // filter for only selected statuses
+    const statuses = Object.entries(backlogSettings)
+      .filter(status => status[1] === true)
+      .map(status => status[0]);
+    
+    const backlogInfo = await this._fetchGenres(statuses);
 
     // tally genre ids for games in the backlog
     this.genreFrequency = this._calculateGenreFrequency(backlogInfo);
   }
 
   calculateUserVector() {
-
-    //TODO: CHANGE VECTOR BASED ON USER OPTIONS
-
     // create vector for similarity analysis based on the frequencies
     const filledVector = gameGenres.map(genre => this.genreFrequency[Number(genre.id)]);
 
@@ -71,19 +83,27 @@ class GameRecommender {
     return this._normaliseVector(filledVector);
   }
 
-  async getDbGames() {
+  async getDbGames(databaseSettings: DatabaseSettings) {
     // sort user backlog frequencies by genre frequency
     const sortedGenres = Object.entries(this.genreFrequency).sort((a, b) => b[1] - a[1]);
 
     // pick the top X genres by frequency (set by options)
-    const genreSelectionRegular = this._selectGenreFilters(sortedGenres);
-    const genreSelectionReverse = this._selectGenreFilters(sortedGenres, true);
+    const genreSelectionRegular = this._selectGenreFilters({
+      genres: sortedGenres, 
+      genreDepth: databaseSettings.genreDepth, 
+      reverse: false});
+
+    const genreSelectionReverse = this._selectGenreFilters({
+      genres: sortedGenres, 
+      genreDepth: databaseSettings.genreDepth, 
+      reverse: true});
     
     // query IGDB API for top 500 games by popularity with these genres
     // get both regular and reverse selections
     this.results = await getGamesByGenres({
       regular: genreSelectionRegular, 
       reverse: genreSelectionReverse,
+      ...databaseSettings,
     })
 
     const regularResults = this.results[0];
@@ -113,11 +133,70 @@ class GameRecommender {
       const cosineSimilarity = this._cosineSimilarity(userVector, item.vector as number[]);
       item.similarity = cosineSimilarity;
     })
+  }
+  
+  filterResults({results, reverse, filterSettings}: FilterResultsParams) {
 
-    return dbResults;
+    // TODO: SIMILARITY VS POPULARITY VS RATING
+    const sliderSum = filterSettings.similarity + filterSettings.rating + filterSettings.popularity;
+    const weight = {
+      similarity: filterSettings.similarity / sliderSum,
+      rating: filterSettings.rating / sliderSum,
+      popularity: filterSettings.popularity / sliderSum,
+    }
+
+    // obtain min and max values for weighting calculations
+    const maxSimilarity = Math.max(...results.map(game => game.similarity ?? 0));
+    const minSimilarity = Math.min(...results.map(game => game.similarity ?? 0));
+    const maxRating = Math.max(...results.map(game => game.total_rating));
+    const minRating = Math.min(...results.map(game => game.total_rating));
+    const maxPopularity = Math.max(...results.map(game => game.total_rating_count));
+    const minPopularity = Math.min(...results.map(game => game.total_rating_count));
+
+    results.forEach(game => {
+      //normalise each metric
+      let normalisedSimilarity = this._normalise({
+        value: game.similarity ?? 0,
+        min: minSimilarity,
+        max: maxSimilarity,
+      });
+      if (reverse) {
+        // invert normalised similarity for reverse mode
+        normalisedSimilarity = 1 - normalisedSimilarity;
+      }
+      const normalisedRating = this._normalise({
+        value: game.total_rating,
+        min: minRating,
+        max: maxRating,
+      });
+      const normalisedPopularity = this._normalise({
+        value: game.total_rating_count,
+        min: minPopularity,
+        max: maxPopularity,
+      });
+
+      const overallScore = (
+        (normalisedSimilarity * weight.similarity) +
+        (normalisedRating * weight.rating) +
+        (normalisedPopularity * weight.popularity)
+      )
+
+      game.overallScore = overallScore;
+    })
+
+    const sortedResults = results.sort((a, b) => (b.overallScore as number) - (a.overallScore as number));
+    return sortedResults;
   }
 
-  private _selectGenreFilters(genres: [string, number][], reverse: boolean = false) {
+  private async _fetchGenres(statuses: string[]) {
+    // filter for game ids that are selected by user
+    const filteredGames = this.games.filter(game => statuses.includes(game.status));
+    const gameIds = filteredGames.map(game => game.id);
+    
+    return getBacklogGameInfo(gameIds);
+  }
+
+  private _selectGenreFilters({genres, reverse, genreDepth}: SelectGenreFiltersParams) {
 
     const topGenres = [];
     const frequencyBins: {[category: number]: number[]} = {};
@@ -144,7 +223,7 @@ class GameRecommender {
     }
 
     // filter for top X genres (based on genreDepth option)
-    let remainingSlots = this.options.genreDepth;
+    let remainingSlots = genreDepth;
 
     while (remainingSlots > 0) {
       const currentBinValues = frequencyBinsArray[0].genres;
@@ -159,41 +238,6 @@ class GameRecommender {
     }
 
     return(topGenres);
-  }
-  
-  filterResults(results: DbGameResult[], reverse: boolean = false) {
-
-    // TODO: LET USER DETERMINE SIMILARITY VS POPULARITY RATIO
-
-    let sortedResults: DbGameResult[] = [];
-
-    if (!reverse) {
-      sortedResults = results.sort((a, b) => (b.similarity as number) - (a.similarity as number));
-    } else {
-      /* 
-      if reverse is set (least played genres), sort by similarity >= 0.5 or not
-      reasoning: popularity more important than absolute similarity here, as reverse genres is naturally less similar. We want to recommend popular games since they are more likely to be received well, hence 0.5 is a threshold to recommend popular games that arent too similar 
-      */
-      
-      results.sort((a, b) => (b.total_rating_count) - (a.total_rating_count));
-
-      const similar: DbGameResult[] = [];
-      const notSimilar: DbGameResult[] = [];
-
-      results.forEach(game => {
-        if (game.similarity && game.similarity >= 0.5) {
-          similar.push(game);
-        } else {
-          notSimilar.push(game);
-        }
-      })
-      
-      sortedResults = notSimilar.concat(similar);
-    }
-    
-    return sortedResults;
-
-    // TODO: FURTHER FILTERING BASED ON USER OPTIONS
   }
 
   private _cosineSimilarity(vectorA: number[], vectorB: number[]) {
@@ -213,13 +257,6 @@ class GameRecommender {
     }
 
     return dotProduct / (Math.sqrt(magnitudeA) * Math.sqrt(magnitudeB));
-  }
-
-  private async _fetchGenres() {
-    // filter for game ids that are not dropped (since dropped games = user dislike)
-    const filteredGames = this.games.filter(game => game.status !== "dropped");
-    const gameIds = filteredGames.map(game => game.id);
-    return getBacklogGameInfo(gameIds);
   }
 
   private _calculateGenreFrequency(userGameGenres: GameGenre[]) {
@@ -260,6 +297,11 @@ class GameRecommender {
     return gameGenres.map(genre => {
       return game.genres.includes(Number(genre.id)) ? 1: 0;
     })
+  }
+
+  private _normalise({value, min, max}: NormaliseParms) {
+    if (max === min) return 1;
+    return (value - min) / (max - min);
   }
 
 }

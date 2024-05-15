@@ -4,7 +4,7 @@ import { RecommenderData } from "./HomeRecommender";
 import GameCoverArray from "../../../common/Cover/GameCoverArray";
 import ToggleSwitch from "../../../common/ToggleSwitch";
 
-type RecommenderContainerProps = {
+type RecommenderGameContainerProps = {
   data: RecommenderData;
 }
 
@@ -19,7 +19,7 @@ const cleanData = (data: DbGameResult[]) => {
   })
 }
 
-const RecommenderContainer = ({data}: RecommenderContainerProps) => {
+const RecommenderGameContainer = ({data}: RecommenderGameContainerProps) => {
 
   const [reverseClicked, setReverseClicked] = useState(false);
 
@@ -38,4 +38,4 @@ const RecommenderContainer = ({data}: RecommenderContainerProps) => {
   )
 }
 
-export default RecommenderContainer;
+export default RecommenderGameContainer;

@@ -1,13 +1,48 @@
 import { useState, useEffect } from "react";
 import { BacklogItemState } from "../../../../types/gameTypes";
-import { Options, getDbVectorsParams, DbGameResult } from "../../../../objects/GameRecommender";
+import { getDbVectorsParams, DbGameResult } from "../../../../objects/GameRecommender";
 import GameRecommender from "../../../../objects/GameRecommender";
-import RecommenderContainer from "./RecommenderContainer";
+import RecommenderGameContainer from "./RecommenderGameContainer";
+
+// TODO: OWN IMPLEMENTATION OF DATABSE RECOMMENDER FOR BACKLOG ONLY
 
 // TODO: CHANGE USEEFFECT DEPENDENCIES BASED ON SPECIFIC OPTIONS
+/* 
+  getBacklogInfo(): 
+  - status of games filter
+*/
+/* 
+  getDbResults(): 
+  - genre depth impacts search space for API
+  - release date of games to query for
+  - platforms
+*/
+/* 
+  # Filtering Final Results
+  - weighting - similarity vs popularity vs rating
+*/
 
 type HomeRecommenderProps = {
  backlogItems: BacklogItemState[];
+}
+
+export type BacklogSettings = {
+  inProgress: boolean;
+  notStarted: boolean;
+  completed: boolean;
+  dropped: boolean;
+}
+
+export type DatabaseSettings = {
+  genreDepth: number;
+  years: number;
+  platforms: number[];
+}
+
+export type FilterSettings = {
+  similarity: number;
+  popularity: number;
+  rating: number;
 }
 
 export type RecommenderData = {
@@ -24,85 +59,94 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
     sortedReverse: [],
   })
 
+  // recommender states
   const [recommender] = useState(new GameRecommender(backlogItems));
-  const [options] = useState<Options>({
-    genreDepth: 5,
-    platforms: [0],
-  })
   const [userVector, setUserVector] = useState<number[]>([])
   const [dbResults, setDbResults] = useState<getDbVectorsParams>({
     regularResults: {name: '', result: []},
     reverseResults: {name: '', result: []},
   })
 
+  const [backlogSettings] = useState<BacklogSettings>({
+    inProgress: true,
+    notStarted: false,
+    completed: true,
+    dropped: false,
+  })
+
+  const [databaseSettings] = useState<DatabaseSettings>({
+    genreDepth: 5,
+    years: 0,
+    platforms: [],
+  })
+
+  const [filterSettings] = useState<FilterSettings>({
+    similarity: 1,
+    popularity: 0,
+    rating: 0,
+  })
+
   // execution states for synchronisation purposes
-  const [userBacklogLoaded, setUserBacklogLoaded] = useState(false);
   const [userVectorLoaded, setUserVectorLoaded] = useState(false);
-  const [dbResultsLoaded, setDbResultsLoaded] = useState(false);
+  const [similarityCalculated, setSimilarityCalculated] = useState(false);
 
-  useEffect(() => {
-    recommender.options = options;
-  }, [recommender, options])
-
-   // get user's backlog information prior to vectorisation
+  // get user's backlog information and create user vector
   useEffect(() => {
     const getBacklogInfo = async() => {
       try {
-        await recommender.getBacklogInfo();
-        setUserBacklogLoaded(true);
+        await recommender.getBacklogInfo(backlogSettings);
+        
+        // get normalised frequency vector for games in user backlog.
+        const userVector = recommender.calculateUserVector();
+        setUserVector(userVector);
+        setUserVectorLoaded(true);
       } catch (error) {
-        setError('Failed to Retrieve User Backlog Data.');
+        setError('Failed to Load User Backlog Data.');
       } 
     }  
     getBacklogInfo();
-  }, [recommender])
-
-  // create user's vector based on backlog items
-  useEffect(() => {
-    if (!userBacklogLoaded) return;
-
-    try {
-      // get normalised frequency vector for games in user backlog.
-      const userVector = recommender.calculateUserVector();
-      setUserVector(userVector);
-      setUserVectorLoaded(true);
-    } catch (error) {
-      setError('Failed to Load User Data.');
-    } 
-  }, [userBacklogLoaded, recommender, options])
+  }, [recommender, backlogSettings])
 
   // retrieve list of games from IGDB API
   useEffect(() => {
-    if (!userBacklogLoaded) return;
+    if (!userVectorLoaded) return;
 
     const getDbResults = async() => {
       try {
-        const dbResults = await recommender.getDbGames();
+        const dbResults = await recommender.getDbGames(databaseSettings);
         setDbResults(dbResults);
-        setDbResultsLoaded(true);
+        
+        // get genre vectors for IGDB database items
+        recommender.getDbVectors(dbResults);
+
+        // perform cosine similarity analysis for each IGDB game compared to the user vector
+        recommender.getCosineSimilarities(userVector, dbResults.regularResults.result);
+        recommender.getCosineSimilarities(userVector, dbResults.reverseResults.result);
+
+        setSimilarityCalculated(true);
       } catch (error) {
         setError('Failed to Fetch Games from Database.');
       } 
     }  
     getDbResults();
-  }, [userBacklogLoaded, recommender, options])
+  }, [userVectorLoaded, recommender, userVector, databaseSettings])
 
-  // retrieve similarity results using user-specified options
+  // filter and sort final results
   useEffect(() => {
-    if (!userVectorLoaded || !dbResultsLoaded) return;
+    if (!similarityCalculated) return;
 
     try {
-      // get genre vectors for IGDB database items
-      const {regularResults, reverseResults} = recommender.getDbVectors(dbResults);
-
-      // perform cosine similarity analysis for each IGDB game compared to the user vector
-      // only for regular results, as reverse results (least played genre) tends to be low similarity by nature
-      const regularSimilarities = recommender.getCosineSimilarities(userVector, regularResults.result);
-      const reverseSimilarities = recommender.getCosineSimilarities(userVector, reverseResults.result);
-
       // order the results based on user selection
-      const sortedRegular = recommender.filterResults(regularSimilarities);
-      const sortedReverse = recommender.filterResults(reverseSimilarities, true);
+      const sortedRegular = recommender.filterResults({
+        results: dbResults.regularResults.result,
+        reverse: false,
+        filterSettings: filterSettings,
+      });
+      const sortedReverse = recommender.filterResults({
+        results: dbResults.reverseResults.result,
+        reverse: true,
+        filterSettings: filterSettings,
+      });
 
       console.log('reg');
       console.log(sortedRegular);
@@ -116,7 +160,7 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
     } finally {
       setLoading(false);
     }
-  }, [userVectorLoaded, dbResultsLoaded, recommender, userVector, dbResults, options])
+  }, [similarityCalculated, recommender, dbResults, filterSettings])
 
   if (error) {
     return <>{error}</>;
@@ -128,7 +172,7 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
 
   if (data) {
     return (
-      <RecommenderContainer data={data}/>
+      <RecommenderGameContainer data={data}/>
     )
   }
 }

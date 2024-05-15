@@ -4,36 +4,50 @@ import { allowedCategories, gamePlatforms } from "../../objects/filterObjects";
 type getGamesByGenresParams = {
   regular: number[];
   reverse: number[];
+  years: number;
+  platforms: number[];
 }
 
-const allowedPlatforms = gamePlatforms.map(platform => platform.id);
+const getTimestamp = (years: number) => {
+  const currentDate = new Date();
+  const pastDate = new Date();
 
-const subquery = (genreIds: number[]) => {
-  const body = `
-  fields
-    id,
-    cover.image_id,
-    name,
-    slug,
-    total_rating_count,
-    genres;
-  where 
-    genres = (${genreIds})
-    & parent_game=null
-    & version_parent=null
-    & cover!=null
-    & category=(${allowedCategories.join(',')})
-    & rating != null
-    & platforms=(${allowedPlatforms.join(',')});
-  sort
-    total_rating_count desc;
-  limit
-   500;`
-
-  return body;
+  pastDate.setFullYear(currentDate.getFullYear() - years);
+  return Math.floor(pastDate.getTime() / 1000);
 }
 
-const getGamesByGenres = async ({regular, reverse}: getGamesByGenresParams) => {  
+const getGamesByGenres = async ({regular, reverse, years, platforms}: getGamesByGenresParams) => {  
+
+  const allowedPlatforms = gamePlatforms.map(platform => platform.id);
+  const yearsTimestamp = years > 0 ? getTimestamp(years) : undefined;
+
+  const subquery = (genreIds: number[]) => {
+    const body = `
+    fields
+      id,
+      cover.image_id,
+      name,
+      slug,
+      total_rating,
+      total_rating_count,
+      genres;
+    where 
+      genres = (${genreIds})
+      & parent_game=null
+      & version_parent=null
+      & cover!=null
+      & category=(${allowedCategories.join(',')})
+      & rating != null
+      ${(yearsTimestamp ? '& first_release_date >= ' + yearsTimestamp : '')}
+      & platforms=(${(platforms.length === 0 ? allowedPlatforms : platforms).join(',')});
+    sort
+      total_rating_count desc;
+    limit
+     500;`
+  
+    return body;
+  }
+  
   const body = `
   query games "regular" {
     ${subquery(regular)}
