@@ -1,5 +1,5 @@
 import apiRequest from "../apiRequest";
-import { allowedCategories, gamePlatforms } from "../../objects/filterObjects";
+import { allowedCategories } from "../../objects/filterObjects";
 
 type getGamesByGenresParams = {
   regular: number[];
@@ -18,7 +18,6 @@ const getTimestamp = (years: number) => {
 
 const getGamesByGenres = async ({regular, reverse, years, platforms}: getGamesByGenresParams) => {  
 
-  const allowedPlatforms = gamePlatforms.map(platform => platform.id);
   const yearsTimestamp = years > 0 ? getTimestamp(years) : undefined;
 
   const subquery = (genreIds: number[]) => {
@@ -39,7 +38,7 @@ const getGamesByGenres = async ({regular, reverse, years, platforms}: getGamesBy
       & category=(${allowedCategories.join(',')})
       & rating != null
       ${(yearsTimestamp ? '& first_release_date >= ' + yearsTimestamp : '')}
-      & platforms=(${(platforms.length === 0 ? allowedPlatforms : platforms).join(',')});
+      & platforms=(${platforms.join(',')});
     sort
       total_rating_count desc;
     limit

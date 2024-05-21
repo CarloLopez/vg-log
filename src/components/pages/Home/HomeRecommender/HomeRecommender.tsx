@@ -1,26 +1,23 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, createContext } from "react";
 import { BacklogItemState } from "../../../../types/gameTypes";
 import { getDbVectorsParams, DbGameResult } from "../../../../objects/GameRecommender";
 import GameRecommender from "../../../../objects/GameRecommender";
 import RecommenderGameContainer from "./RecommenderGameContainer";
 
+// TODO: UI FOR OPTIONS
 // TODO: OWN IMPLEMENTATION OF DATABSE RECOMMENDER FOR BACKLOG ONLY
 
-// TODO: CHANGE USEEFFECT DEPENDENCIES BASED ON SPECIFIC OPTIONS
-/* 
-  getBacklogInfo(): 
-  - status of games filter
-*/
-/* 
-  getDbResults(): 
-  - genre depth impacts search space for API
-  - release date of games to query for
-  - platforms
-*/
-/* 
-  # Filtering Final Results
-  - weighting - similarity vs popularity vs rating
-*/
+type HomeRecommenderContext = {
+  data: RecommenderData;
+  backlogSettings: BacklogSettings;
+  setBacklogSettings: React.Dispatch<React.SetStateAction<BacklogSettings>>;
+  databaseSettings: DatabaseSettings;
+  setDatabaseSettings: React.Dispatch<React.SetStateAction<DatabaseSettings>>;
+  filterSettings: FilterSettings;
+  setFilterSettings: React.Dispatch<React.SetStateAction<FilterSettings>>;
+  setUserVectorLoaded: React.Dispatch<React.SetStateAction<boolean>>;
+  setSimilarityCalculated: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 type HomeRecommenderProps = {
  backlogItems: BacklogItemState[];
@@ -50,6 +47,18 @@ export type RecommenderData = {
   sortedReverse: DbGameResult[];
 }
 
+export const HomeRecommenderContext = createContext<HomeRecommenderContext>({
+  data: {sortedRegular: [], sortedReverse: []},
+  backlogSettings: {inProgress: true, notStarted: true, completed: true, dropped: false},
+  setBacklogSettings: () => {},
+  databaseSettings: {genreDepth: 0, years: 0, platforms: []},
+  setDatabaseSettings: () => {},
+  filterSettings: {similarity: 0, popularity: 0, rating: 0},
+  setFilterSettings:() => {},
+  setUserVectorLoaded: () => false,
+  setSimilarityCalculated: () => false,
+})
+
 const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
   
   const [loading, setLoading] = useState(true);
@@ -67,20 +76,19 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
     reverseResults: {name: '', result: []},
   })
 
-  const [backlogSettings] = useState<BacklogSettings>({
+  // user setting states
+  const [backlogSettings, setBacklogSettings] = useState<BacklogSettings>({
     inProgress: true,
     notStarted: false,
     completed: true,
     dropped: false,
   })
-
-  const [databaseSettings] = useState<DatabaseSettings>({
+  const [databaseSettings, setDatabaseSettings] = useState<DatabaseSettings>({
     genreDepth: 5,
     years: 0,
     platforms: [],
   })
-
-  const [filterSettings] = useState<FilterSettings>({
+  const [filterSettings, setFilterSettings] = useState<FilterSettings>({
     similarity: 1,
     popularity: 0,
     rating: 0,
@@ -94,6 +102,7 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
   useEffect(() => {
     const getBacklogInfo = async() => {
       try {
+        console.log('1...');
         await recommender.getBacklogInfo(backlogSettings);
         
         // get normalised frequency vector for games in user backlog.
@@ -113,6 +122,7 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
 
     const getDbResults = async() => {
       try {
+        console.log('2...');
         const dbResults = await recommender.getDbGames(databaseSettings);
         setDbResults(dbResults);
         
@@ -136,6 +146,7 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
     if (!similarityCalculated) return;
 
     try {
+      console.log('3...');
       // order the results based on user selection
       const sortedRegular = recommender.filterResults({
         results: dbResults.regularResults.result,
@@ -154,7 +165,6 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
       console.log(sortedReverse);
 
       setData({sortedRegular, sortedReverse});
-
     } catch (error) {
       setError('Error in Similarity Calculation.');
     } finally {
@@ -172,7 +182,19 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
 
   if (data) {
     return (
-      <RecommenderGameContainer data={data}/>
+      <HomeRecommenderContext.Provider value={{
+        data, 
+        backlogSettings, 
+        setBacklogSettings,
+        databaseSettings, 
+        setDatabaseSettings,
+        filterSettings,
+        setFilterSettings,
+        setUserVectorLoaded,
+        setSimilarityCalculated,
+      }}>
+        <RecommenderGameContainer/>
+      </HomeRecommenderContext.Provider>
     )
   }
 }

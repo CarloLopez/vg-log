@@ -3,7 +3,8 @@ import apiRequest from "../apiRequest";
 const getBacklogGameInfo = async (gameIds: number[]) => {  
   const body = `
   fields
-    id, 
+    id,
+    platforms, 
     genres;
   where 
     id = (${gameIds});`

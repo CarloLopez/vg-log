@@ -1,27 +1,25 @@
-import { useState } from "react";
-import { DbGameResult } from "../../../../objects/GameRecommender";
-import { RecommenderData } from "./HomeRecommender";
+import { useState, useContext } from "react";
 import GameCoverArray from "../../../common/Cover/GameCoverArray";
 import ToggleSwitch from "../../../common/ToggleSwitch";
+import { HomeRecommenderContext } from "./HomeRecommender";
+import { DbGameResult } from "../../../../objects/GameRecommender";
+import RecommenderSettings from "./RecommenderSettings";
 
-type RecommenderGameContainerProps = {
-  data: RecommenderData;
-}
 
-const cleanData = (data: DbGameResult[]) => {
-  return data.map(game => {
-    return {
-      id: game.id,
-      name: game.name,
-      cover: game.cover,
-      slug: game.slug
-    }
-  })
-}
-
-const RecommenderGameContainer = ({data}: RecommenderGameContainerProps) => {
-
+const RecommenderGameContainer = () => {
+  const {data} = useContext(HomeRecommenderContext);
   const [reverseClicked, setReverseClicked] = useState(false);
+
+  const cleanData = (data: DbGameResult[]) => {
+    return data.map(game => {
+      return {
+        id: game.id,
+        name: game.name,
+        cover: game.cover,
+        slug: game.slug
+      }
+    })
+  }
 
   const regular = cleanData(data.sortedRegular);
   const reverse = cleanData(data.sortedReverse);
@@ -33,6 +31,7 @@ const RecommenderGameContainer = ({data}: RecommenderGameContainerProps) => {
   return (
     <>
       <ToggleSwitch stateA="Regular" stateB="Reverse" handleToggle={handleToggle}/>
+      <RecommenderSettings />
       <GameCoverArray games={reverseClicked ? reverse : regular}/>
     </>
   )

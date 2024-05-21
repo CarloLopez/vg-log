@@ -5,9 +5,10 @@ import getGamesByGenres from "../api/recommender/getGamesByGenres";
 import { Image } from "../types/gameTypes";
 import { BacklogSettings, DatabaseSettings, FilterSettings } from "../components/pages/Home/HomeRecommender/HomeRecommender";
 
-type GameGenre = {
+type GameDetail = {
   id: number;
   genres: number[];
+  platforms: number[];
 }
 
 export type DbGameResult = {
@@ -45,7 +46,7 @@ type FilterResultsParams = {
   filterSettings: FilterSettings;
 }
 
-type NormaliseParms = {
+type NormaliseParams = {
   value: number;
   min: number;
   max: number;
@@ -54,12 +55,14 @@ type NormaliseParms = {
 class GameRecommender {
   private games: BacklogItemState[];
   private results: APIResult[];
-  genreFrequency: { [genreId: number]: number};
+  private genreFrequency: { [genreId: number]: number};
+  private platforms: number[];
 
   constructor(games: BacklogItemState[] = []) {
     this.games = games;
     this.results = [];
     this.genreFrequency = {};
+    this.platforms = [];
   }
 
   async getBacklogInfo(backlogSettings:BacklogSettings) {
@@ -69,10 +72,11 @@ class GameRecommender {
       .filter(status => status[1] === true)
       .map(status => status[0]);
     
-    const backlogInfo = await this._fetchGenres(statuses);
+    const backlogInfo = await this._fetchDetails(statuses);
 
     // tally genre ids for games in the backlog
     this.genreFrequency = this._calculateGenreFrequency(backlogInfo);
+    this.platforms = this._getPlatforms(backlogInfo);
   }
 
   calculateUserVector() {
@@ -103,7 +107,8 @@ class GameRecommender {
     this.results = await getGamesByGenres({
       regular: genreSelectionRegular, 
       reverse: genreSelectionReverse,
-      ...databaseSettings,
+      years: databaseSettings.years,
+      platforms: (databaseSettings.platforms.length > 0 ? databaseSettings.platforms : this.platforms),
     })
 
     const regularResults = this.results[0];
@@ -137,13 +142,20 @@ class GameRecommender {
   
   filterResults({results, reverse, filterSettings}: FilterResultsParams) {
 
-    // TODO: SIMILARITY VS POPULARITY VS RATING
     const sliderSum = filterSettings.similarity + filterSettings.rating + filterSettings.popularity;
-    const weight = {
-      similarity: filterSettings.similarity / sliderSum,
-      rating: filterSettings.rating / sliderSum,
-      popularity: filterSettings.popularity / sliderSum,
-    }
+    const weight = (
+      sliderSum === 0 ? 
+      {
+        similarity: 1/3,
+        rating: 1/3,
+        popularity: 1/3,
+      } : 
+      {
+        similarity: filterSettings.similarity / sliderSum,
+        rating: filterSettings.rating / sliderSum,
+        popularity: filterSettings.popularity / sliderSum,
+      }
+    );
 
     // obtain min and max values for weighting calculations
     const maxSimilarity = Math.max(...results.map(game => game.similarity ?? 0));
@@ -188,7 +200,7 @@ class GameRecommender {
     return sortedResults;
   }
 
-  private async _fetchGenres(statuses: string[]) {
+  private async _fetchDetails(statuses: string[]) {
     // filter for game ids that are selected by user
     const filteredGames = this.games.filter(game => statuses.includes(game.status));
     const gameIds = filteredGames.map(game => game.id);
@@ -230,6 +242,7 @@ class GameRecommender {
       if (currentBinValues.length === 0) {
         frequencyBinsArray.shift();
       } else {
+        if (!reverse && frequencyBinsArray[0].frequency === 0) break; //avoid querying for non-existing genres in backlog for non-reverse
         const index = Math.floor(Math.random() * currentBinValues.length); // pick random index from the bin
         topGenres.push(currentBinValues[index]); // add to genre selected
         currentBinValues.splice(index, 1); // remove value from array
@@ -237,6 +250,7 @@ class GameRecommender {
       }
     }
 
+    console.log(topGenres);
     return(topGenres);
   }
 
@@ -259,11 +273,11 @@ class GameRecommender {
     return dotProduct / (Math.sqrt(magnitudeA) * Math.sqrt(magnitudeB));
   }
 
-  private _calculateGenreFrequency(userGameGenres: GameGenre[]) {
+  private _calculateGenreFrequency(userBacklogInfo: GameDetail[]) {
 
     const genreFrequency: { [genreId: number]: number} = {};
 
-    userGameGenres.forEach(game => {
+    userBacklogInfo.forEach(game => {
       game.genres.forEach(genreID => {
         if (genreFrequency[genreID]) {
           genreFrequency[genreID]++;
@@ -283,6 +297,22 @@ class GameRecommender {
     return genreFrequency;
   }
 
+  private _getPlatforms = (userBacklogInfo: GameDetail[]) => {
+    const platforms: number[] = [];
+
+    userBacklogInfo.forEach(game => {
+      game.platforms.forEach(platform => {
+        if (platforms.includes(platform)) {
+          return;
+        } else {
+          platforms.push(platform);
+        }
+      })
+    })
+
+    return platforms;
+  }
+
   private _normaliseVector(frequencyVector: number[]) {
 
     const total = frequencyVector.reduce((accumulator, currentValue) => {
@@ -299,7 +329,7 @@ class GameRecommender {
     })
   }
 
-  private _normalise({value, min, max}: NormaliseParms) {
+  private _normalise({value, min, max}: NormaliseParams) {
     if (max === min) return 1;
     return (value - min) / (max - min);
   }
