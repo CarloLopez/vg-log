@@ -3,9 +3,9 @@ import { BacklogItemState } from "../../../../types/gameTypes";
 import { getDbVectorsParams, DbGameResult } from "../../../../objects/GameRecommender";
 import GameRecommender from "../../../../objects/GameRecommender";
 import RecommenderGameContainer from "./RecommenderGameContainer";
+import { Status } from "../../../../types/gameTypes";
 
-// TODO: UI FOR OPTIONS
-// TODO: OWN IMPLEMENTATION OF DATABSE RECOMMENDER FOR BACKLOG ONLY
+// TODO: OWN IMPLEMENTATION OF DATABSE RECOMMENDER FOR BACKLOG ONLY?
 
 type HomeRecommenderContext = {
   data: RecommenderData;
@@ -24,16 +24,13 @@ type HomeRecommenderProps = {
 }
 
 export type BacklogSettings = {
-  inProgress: boolean;
-  notStarted: boolean;
-  completed: boolean;
-  dropped: boolean;
+  statuses: Status[];
 }
 
 export type DatabaseSettings = {
   genreDepth: number;
   years: number;
-  platforms: number[];
+  platforms: string[];
 }
 
 export type FilterSettings = {
@@ -49,7 +46,7 @@ export type RecommenderData = {
 
 export const HomeRecommenderContext = createContext<HomeRecommenderContext>({
   data: {sortedRegular: [], sortedReverse: []},
-  backlogSettings: {inProgress: true, notStarted: true, completed: true, dropped: false},
+  backlogSettings: {statuses: []},
   setBacklogSettings: () => {},
   databaseSettings: {genreDepth: 0, years: 0, platforms: []},
   setDatabaseSettings: () => {},
@@ -78,10 +75,7 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
 
   // user setting states
   const [backlogSettings, setBacklogSettings] = useState<BacklogSettings>({
-    inProgress: true,
-    notStarted: false,
-    completed: true,
-    dropped: false,
+    statuses: ['inProgress', 'completed'],
   })
   const [databaseSettings, setDatabaseSettings] = useState<DatabaseSettings>({
     genreDepth: 5,

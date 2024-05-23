@@ -1,9 +1,16 @@
 import _ from 'lodash';
 import { useState, useContext } from "react";
-import { HomeRecommenderContext } from "./HomeRecommender";
-import Slider from "../../../common/input/Slider";
+import { HomeRecommenderContext } from "../HomeRecommender";
+import Slider from "../../../../common/input/Slider";
+import RecommenderFilterButtonArray from './RecommenderFilterButtonArray';
+import { gamePlatforms, statuses } from '../../../../../objects/filterObjects';
+import { Status } from '../../../../../types/gameTypes';
 
-const RecommenderSettings = () => {
+type RecommenderSettingsProps = {
+  visible: boolean;
+}
+
+const RecommenderSettings = ({visible}: RecommenderSettingsProps) => {
 
   const {
     backlogSettings, 
@@ -25,12 +32,43 @@ const RecommenderSettings = () => {
   const [databaseSettingsAltered, setDatabaseSettingsAltered] = useState(false);
   const [filterSettingsAltered, setFilterSettingsAltered] = useState(false);
 
+  const statusIDs = statuses.map(status => {
+    return {
+      id: status.value,
+      name: status.label
+    }
+  })
+
+  const backlogSettingsHandle = () => {
+    setbacklogSettingsAltered(true);
+  }
+  
   const databaseSettingsHandle = () => {
     setDatabaseSettingsAltered(true);
   }
 
   const filterSettingsHandle = () => {
     setFilterSettingsAltered(true);
+  }
+
+  const statusesCheckIsActive = (id: Status) => {
+    return backlogSettingsCopy.statuses.includes(id);
+  }
+
+  const statusesHandleOnClick = (id: Status) => {
+    backlogSettingsHandle();
+    setBacklogSettingsCopy(current => {
+    let newStatuses: Status[] = [];
+    if (current.statuses.includes(id)) {
+      newStatuses = current.statuses.filter(item => item !== id);
+    } else {
+      newStatuses = [...current.statuses, id];
+    }
+    return {
+      ...current,
+      statuses: newStatuses,
+    }
+    })
   }
 
   const handleGenreDepthChange = (value: number) => {
@@ -50,6 +88,26 @@ const RecommenderSettings = () => {
         ...current,
         years: value,
       }
+    })
+  }
+
+  const platformsCheckIsActive = (id: string) => {
+    return databaseSettingsCopy.platforms.includes(id);
+  }
+
+  const platformsHandleOnClick = (id: string) => {
+    databaseSettingsHandle();
+    setDatabaseSettingsCopy(current => {
+    let newPlatforms: string[] = [];
+    if (current.platforms.includes(id)) {
+      newPlatforms = current.platforms.filter(item => item !== id);
+    } else {
+      newPlatforms = [...current.platforms, id];
+    }
+    return {
+      ...current,
+      platforms: newPlatforms,
+    }
     })
   }
 
@@ -101,11 +159,14 @@ const RecommenderSettings = () => {
       setSimilarityCalculated(false);
       setbacklogSettingsAltered(false);
     }
-
   }
   
   return ( 
-    <div>
+    <div style={{ display: visible ? 'block' : 'none'}}>
+
+      <div>
+      <RecommenderFilterButtonArray list={statusIDs} checkIsActive={statusesCheckIsActive as ((id: string) => boolean)} handleOnClick={statusesHandleOnClick as ((id: string) => void)}/>
+      </div>
 
       <hr></hr>
       <div>
@@ -115,6 +176,9 @@ const RecommenderSettings = () => {
       <div>
         <label htmlFor="">Recency</label>
         <Slider initial={databaseSettings.years} min={0} max={25} step={1} metric="Years" handleChange={handleYearsChange}/>
+      </div>
+      <div>
+        <RecommenderFilterButtonArray list={gamePlatforms} checkIsActive={platformsCheckIsActive} handleOnClick={platformsHandleOnClick}/>
       </div>
 
       <hr></hr>

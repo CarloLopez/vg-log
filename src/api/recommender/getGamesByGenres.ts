@@ -5,7 +5,7 @@ type getGamesByGenresParams = {
   regular: number[];
   reverse: number[];
   years: number;
-  platforms: number[];
+  platforms: string[];
 }
 
 const getTimestamp = (years: number) => {

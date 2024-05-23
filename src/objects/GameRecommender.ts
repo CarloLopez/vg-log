@@ -8,7 +8,7 @@ import { BacklogSettings, DatabaseSettings, FilterSettings } from "../components
 type GameDetail = {
   id: number;
   genres: number[];
-  platforms: number[];
+  platforms: string[];
 }
 
 export type DbGameResult = {
@@ -56,7 +56,7 @@ class GameRecommender {
   private games: BacklogItemState[];
   private results: APIResult[];
   private genreFrequency: { [genreId: number]: number};
-  private platforms: number[];
+  private platforms: string[];
 
   constructor(games: BacklogItemState[] = []) {
     this.games = games;
@@ -68,10 +68,7 @@ class GameRecommender {
   async getBacklogInfo(backlogSettings:BacklogSettings) {
     
     // filter for only selected statuses
-    const statuses = Object.entries(backlogSettings)
-      .filter(status => status[1] === true)
-      .map(status => status[0]);
-    
+    const statuses = backlogSettings.statuses;
     const backlogInfo = await this._fetchDetails(statuses);
 
     // tally genre ids for games in the backlog
@@ -298,7 +295,7 @@ class GameRecommender {
   }
 
   private _getPlatforms = (userBacklogInfo: GameDetail[]) => {
-    const platforms: number[] = [];
+    const platforms: string[] = [];
 
     userBacklogInfo.forEach(game => {
       game.platforms.forEach(platform => {
