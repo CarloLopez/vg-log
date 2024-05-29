@@ -1,4 +1,4 @@
-import { gameGenres, gameThemes, gamePlatforms, sortFilters, minRatings } from "../../../objects/filterObjects";
+import { gameGenres, gameThemes, gamePlatforms, sortFilters, minRatings } from "../../../../../backend/temp-data/filterObjects";
 import { useContext } from "react";
 import { GamesPageContext } from "./GamesPage";
 import FilterButtonArray from "./FilterButtonArray";

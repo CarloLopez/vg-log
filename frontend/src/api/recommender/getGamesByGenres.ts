@@ -1,5 +1,5 @@
 import apiRequest from "../apiRequest";
-import { allowedCategories } from "../../objects/filterObjects";
+import { allowedCategories } from "../../../../backend/temp-data/filterObjects";
 
 type getGamesByGenresParams = {
   regular: number[];
