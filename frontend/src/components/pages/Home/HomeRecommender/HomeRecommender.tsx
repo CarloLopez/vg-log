@@ -1,7 +1,7 @@
 import { useState, useEffect, createContext } from "react";
 import { BacklogItemState } from "../../../../types/gameTypes";
-import { getDbVectorsParams, DbGameResult } from "../../../../objects/GameRecommender";
-import GameRecommender from "../../../../objects/GameRecommender";
+import { getDbVectorsParams, DbGameResult } from "../../../../objects/ContentGameRecommender";
+import ContentGameRecommender from "../../../../objects/ContentGameRecommender";
 import RecommenderGameContainer from "./RecommenderGameContainer";
 import { Status } from "../../../../types/gameTypes";
 
@@ -66,7 +66,7 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
   })
 
   // recommender states
-  const [recommender] = useState(new GameRecommender(backlogItems));
+  const [recommender] = useState(new ContentGameRecommender(backlogItems));
   const [userVector, setUserVector] = useState<number[]>([])
   const [dbResults, setDbResults] = useState<getDbVectorsParams>({
     regularResults: {name: '', result: []},

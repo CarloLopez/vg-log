@@ -3,7 +3,7 @@ import { BacklogPageContext } from "./BacklogPage"
 import { BacklogItemState } from "../../../types/gameTypes"
 import CategoriesContainer from "../../common/Categories/CategoriesContainer"
 import Dropdown from "../../common/Array/Dropdown"
-import { statuses } from "../../../../../backend/temp-data/filterObjects"
+import { statuses } from "../../../../../backend/temp/filterObjects"
 import { Status } from "../../../types/gameTypes"
 import { useNavigate } from "react-router-dom"
 

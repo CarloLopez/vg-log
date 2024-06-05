@@ -2,7 +2,7 @@ import { useState, useContext } from "react";
 import GameCoverArray from "../../../common/Cover/GameCoverArray";
 import ToggleSwitch from "../../../common/ToggleSwitch";
 import { HomeRecommenderContext } from "./HomeRecommender";
-import { DbGameResult } from "../../../../objects/GameRecommender";
+import { DbGameResult } from "../../../../objects/ContentGameRecommender";
 import RecommenderSettings from "./RecommenderSettings/RecommenderSettings";
 
 

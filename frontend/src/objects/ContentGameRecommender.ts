@@ -1,9 +1,10 @@
 import { BacklogItemState } from "../types/gameTypes";
-import { gameGenres } from "../../../backend/temp-data/filterObjects";
+import { gameGenres } from "../../../backend/temp/filterObjects";
 import getBacklogGameInfo from "../api/recommender/getBacklogGameInfo";
 import getGamesByGenres from "../api/recommender/getGamesByGenres";
 import { Image } from "../types/gameTypes";
 import { BacklogSettings, DatabaseSettings, FilterSettings } from "../components/pages/Home/HomeRecommender/HomeRecommender";
+import { cosineSimilarity } from "./cosineSimilarity";
 
 type GameDetail = {
   id: number;
@@ -52,7 +53,7 @@ type NormaliseParams = {
   max: number;
 }
 
-class GameRecommender {
+class ContentGameRecommender {
   private games: BacklogItemState[];
   private results: APIResult[];
   private genreFrequency: { [genreId: number]: number};
@@ -132,8 +133,8 @@ class GameRecommender {
 
     // assign calculated cosine similarity to each IGDB game
     dbResults.forEach(item => {
-      const cosineSimilarity = this._cosineSimilarity(userVector, item.vector as number[]);
-      item.similarity = cosineSimilarity;
+      const calculatedCosineSimilarity = cosineSimilarity(userVector, item.vector as number[]);
+      item.similarity = calculatedCosineSimilarity;
     })
   }
   
@@ -251,25 +252,6 @@ class GameRecommender {
     return(topGenres);
   }
 
-  private _cosineSimilarity(vectorA: number[], vectorB: number[]) {
-    
-    if (vectorA.length !== vectorB.length) {
-      throw new Error('Error: Vector Lengths Must be the Same.');
-    }
-
-    let dotProduct = 0;
-    let magnitudeA = 0;
-    let magnitudeB = 0;
-
-    for (let i = 0; i < vectorA.length; i++) {
-      dotProduct += vectorA[i] * vectorB[i];
-      magnitudeA += vectorA[i] ** 2;
-      magnitudeB += vectorB[i] ** 2;
-    }
-
-    return dotProduct / (Math.sqrt(magnitudeA) * Math.sqrt(magnitudeB));
-  }
-
   private _calculateGenreFrequency(userBacklogInfo: GameDetail[]) {
 
     const genreFrequency: { [genreId: number]: number} = {};
@@ -333,4 +315,4 @@ class GameRecommender {
 
 }
 
-export default GameRecommender;
+export default ContentGameRecommender;
