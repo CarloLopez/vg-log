@@ -3,6 +3,7 @@ import { BacklogItemState, BacklogItem, Game } from "../../../types/gameTypes";
 import getBacklog from "../../../api/getBacklog";
 import HomeGameStats from "./HomeGameStats";
 import HomeCardArray from "./HomeCardArray";
+import BacklogRecommender from "./BacklogRecommender/BacklogRecommender";
 
 type HomeBacklogProps = {
   gameIds: number[];
@@ -67,6 +68,11 @@ const HomeBacklog = ({gameIds, backlogItems}: HomeBacklogProps) => {
         <div>
           <h4>Finish where you left off:</h4>
           <HomeCardArray data={data}/>
+        </div>
+
+        <div>
+          <h4>Recommended From Your Backlog:</h4>
+          <BacklogRecommender userBacklog={backlogItems}/>
         </div>
 
       </div>
