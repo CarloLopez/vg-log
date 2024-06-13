@@ -1,8 +1,8 @@
 import express, { Request, Response } from 'express';
-import axios from 'axios';
 import cors from 'cors';
 import path from 'path';
 import dotenv from 'dotenv';
+import igdbRoutes from './routes/igdbRoutes';
 
 dotenv.config();
 
@@ -23,24 +23,7 @@ interface ApiRequestBody {
 }
 
 // routes
-app.post('/api/games', async (req: Request, res: Response) => {
-  const { endpoint, body }: ApiRequestBody = req.body;
-
-  const url = `https://api.igdb.com/v4/${endpoint}`;
-  const headers = {
-    'Accept': 'application/json',
-    'Client-ID': process.env.IGDB_CLIENT_ID!,
-    'Authorization': `Bearer ${process.env.IGDB_API_KEY!}`,
-  };
-
-  try {
-    const response = await axios.post(url, body, { headers });
-    res.json(response.data);
-  } catch (error) {
-    console.error('Error fetching data from IGDB:', (error as Error).message);
-    res.status(500).json({ error: 'An error occurred while fetching data from IGDB' });
-  }
-});
+app.use('/api', igdbRoutes);
 
 // fallback handler: for any request that doesn't match one above, send back React's index.html file.
 app.get('*', (req: Request, res: Response) => {
