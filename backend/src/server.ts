@@ -1,19 +1,10 @@
 import express, { Request, Response } from 'express';
 import axios from 'axios';
 import cors from 'cors';
-import path from 'path';
 import dotenv from 'dotenv';
 
-// types
-type ApiRequestBody = {
-  endpoint: string;
-  body: string;
-}
-
-// load env variables
 dotenv.config();
 
-// create server
 const app = express();
 const PORT = process.env.PORT || 5000;
 
@@ -21,8 +12,11 @@ const PORT = process.env.PORT || 5000;
 app.use(cors());
 app.use(express.json());
 
-// serve static files from the React app
-app.use(express.static(path.join(__dirname, 'build')));
+// interface for the request body
+interface ApiRequestBody {
+  endpoint: string;
+  body: string;
+}
 
 // routes
 app.post('/api/games', async (req: Request, res: Response) => {
@@ -42,11 +36,6 @@ app.post('/api/games', async (req: Request, res: Response) => {
     console.error('Error fetching data from IGDB:', (error as Error).message);
     res.status(500).json({ error: 'An error occurred while fetching data from IGDB' });
   }
-});
-
-// fallback handler: for any request that doesn't match one above, send back React's index.html file.
-app.get('*', (req: Request, res: Response) => {
-  res.sendFile(path.join(__dirname + '/build/index.html'));
 });
 
 // start the server
