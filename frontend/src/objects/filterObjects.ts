@@ -75,7 +75,7 @@ export const gamePlatforms = [
 export const allowedCategories = [0, 8, 9, 10, 11, 12];
 
 export const sortFilters = [
-  {value: 'hypes', label: 'Popularity'},
+  {value: 'total_rating_count', label: 'Popularity'},
   {value: 'total_rating', label: 'Rating' },
   {value: 'first_release_date', label: 'Release Date'},
 ]

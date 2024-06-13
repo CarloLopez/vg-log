@@ -1,41 +1,26 @@
-
 const apiRequest = async (body: string, endpoint: string = "games") => {
-
-  const url = `https://cors-anywhere.herokuapp.com/https://api.igdb.com/v4/${endpoint}`;
+  const url = `http://localhost:5000/api/games`; // Backend server URL
   const headers = {
-    'Accept': 'application/json',
-    'Client-ID': '7700pxy9nm01xjre1zxrn8pfk0eaqy',
-    'Authorization': 'Bearer kac5j3vjdstecpsuvebrurepkwq7lt',
+    'Content-Type': 'application/json',
   };
 
   try {
     const response = await fetch(url, {
       method: 'POST',
       headers: headers,
-      body: body,
-      mode: 'cors',
+      body: JSON.stringify({ endpoint, body }),
     });
 
-    console.log(`Request sent:
-    ${body}`);
-
-    // throw error with HTTP code if API request failed
     if (!response.ok) {
-      throw new Error(`HTTP error: Status ${response.status}`);
+      throw new Error(`HTTP error! Status: ${response.status}`);
     }
 
     const data = await response.json();
     return data;
-    
-  } catch(error) {
-    // verify error type before throwing new error
-    if (error instanceof Error) {
-      throw new Error(error.message);
-    } else {
-      throw new Error ('Unknown Error Has Occurred');
-    }
+  } catch (error) {
+    console.error('API request error:', error);
+    throw new Error('API request failed');
   }
-
-}
+};
 
 export default apiRequest;
