@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "../backend/temp/filterObjects.ts"],
+  "include": ["src", "src/objects/filterObjects.ts"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

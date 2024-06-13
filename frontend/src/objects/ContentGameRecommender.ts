@@ -1,5 +1,5 @@
 import { BacklogItemState } from "../types/gameTypes";
-import { gameGenres } from "../../../backend/temp/filterObjects";
+import { gameGenres } from "./filterObjects";
 import getBacklogGameInfo from "../api/recommender/getBacklogGameInfo";
 import getGamesByGenres from "../api/recommender/getGamesByGenres";
 import { Image } from "../types/gameTypes";

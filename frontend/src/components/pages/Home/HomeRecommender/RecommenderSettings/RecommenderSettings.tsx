@@ -3,7 +3,7 @@ import { useState, useContext } from "react";
 import { HomeRecommenderContext } from "../HomeRecommender";
 import Slider from "../../../../common/input/Slider";
 import RecommenderFilterButtonArray from './RecommenderFilterButtonArray';
-import { gamePlatforms, statuses } from '../../../../../../../backend/temp/filterObjects';
+import { gamePlatforms, statuses } from '../../../../../objects/filterObjects';
 import { Status } from '../../../../../types/gameTypes';
 
 type RecommenderSettingsProps = {

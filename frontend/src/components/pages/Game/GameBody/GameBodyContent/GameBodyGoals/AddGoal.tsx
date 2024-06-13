@@ -1,7 +1,7 @@
 import { GoalsContext } from "./GameBodyGoals";
 import React, { useState, useContext } from "react";
 import { Priority, GoalItem } from "../../../../../../types/gameTypes";
-import { priorities } from "../../../../../../../../backend/temp/filterObjects";
+import { priorities } from "../../../../../../objects/filterObjects";
 import Dropdown from "../../../../../common/Array/Dropdown";
 
 type AddGoalProps = {

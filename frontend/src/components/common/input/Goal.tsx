@@ -1,6 +1,6 @@
 import EditableBox from "./EditableBox";
 import Dropdown from "../Array/Dropdown";
-import { priorities } from "../../../../../backend/temp/filterObjects";
+import { priorities } from "../../../objects/filterObjects";
 import { GoalItem, Priority } from "../../../types/gameTypes";
 import { useState, useContext } from "react";
 import { GoalsContext } from "../../pages/Game/GameBody/GameBodyContent/GameBodyGoals/GameBodyGoals";
