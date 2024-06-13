@@ -1,4 +1,4 @@
-import { BacklogItemState } from "../../../types/gameTypes"
+import { BacklogItemState } from "../../../../../shared/types/gameTypes"
 import { useNavigate } from "react-router-dom"
 
 type HomeCardBodyProps = {

@@ -20,6 +20,6 @@
     "noUnusedParameters": true,
     "noFallthroughCasesInSwitch": true
   },
-  "include": ["src", "src/objects/filterObjects.ts"],
+  "include": ["src", "../shared/objects/filterObjects.ts", "../shared/mock-data"],
   "references": [{ "path": "./tsconfig.node.json" }]
 }

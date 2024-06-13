@@ -1,6 +1,6 @@
 import { useState } from "react";
 import Note from "../../../../common/input/Note";
-import { MOCK_NOTES } from "../../../../../mock-data/mockData";
+import { MOCK_NOTES } from "../../../../../../../shared/mock-data/mockData";
 
 const GameBodyNotes = () => {
   

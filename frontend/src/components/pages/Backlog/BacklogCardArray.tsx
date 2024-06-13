@@ -1,5 +1,5 @@
 import GameCard from "../../common/Cover/GameCard";
-import { BacklogItem } from "../../../types/gameTypes";
+import { BacklogItem } from "../../../../../shared/types/gameTypes";
 import BacklogCardBody from "./BacklogCardBody";
 
 type BacklogCardArrayProps = {

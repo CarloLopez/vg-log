@@ -1,10 +1,10 @@
 import React, { useContext } from "react"
 import { BacklogPageContext } from "./BacklogPage"
-import { BacklogItemState } from "../../../types/gameTypes"
+import { BacklogItemState } from "../../../../../shared/types/gameTypes"
 import CategoriesContainer from "../../common/Categories/CategoriesContainer"
 import Dropdown from "../../common/Array/Dropdown"
-import { statuses } from "../../../objects/filterObjects"
-import { Status } from "../../../types/gameTypes"
+import { statuses } from "../../../../../shared/objects/filterObjects"
+import { Status } from "../../../../../shared/types/gameTypes"
 import { useNavigate } from "react-router-dom"
 
 type BacklogCardBodyProps = {

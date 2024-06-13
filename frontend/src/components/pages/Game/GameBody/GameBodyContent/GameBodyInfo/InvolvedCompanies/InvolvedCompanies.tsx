@@ -1,4 +1,4 @@
-import { Company } from "../../../../../../../types/gameTypes";
+import { Company } from "../../../../../../../../../shared/types/gameTypes";
 import LinkArray from "../../../../../../common/Array/LinkArray";
 
 type InvolvedCompaniesProps = {

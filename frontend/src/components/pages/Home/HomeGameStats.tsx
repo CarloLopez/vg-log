@@ -1,4 +1,4 @@
-import { BacklogItem } from "../../../types/gameTypes";
+import { BacklogItem } from "../../../../../shared/types/gameTypes";
 
 type HomeGameStatsProps = {
   data: BacklogItem[];

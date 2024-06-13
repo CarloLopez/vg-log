@@ -1,8 +1,8 @@
 import GameCoverArray from "../../../common/Cover/GameCoverArray";
 import { CollaborativeGameRecommender } from "../../../../objects/CollaborativeGameRecommender";
 import { useState, useEffect } from "react";
-import { Game } from "../../../../types/gameTypes";
-import { BacklogItemState } from "../../../../types/gameTypes";
+import { Game } from "../../../../../../shared/types/gameTypes";
+import { BacklogItemState } from "../../../../../../shared/types/gameTypes";
 
 type BacklogRecommenderProps = {
   userBacklog: BacklogItemState[];

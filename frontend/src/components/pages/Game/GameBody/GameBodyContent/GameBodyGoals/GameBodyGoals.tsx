@@ -1,6 +1,6 @@
-import { MOCK_GOALS } from "../../../../../../mock-data/mockData";
+import { MOCK_GOALS } from "../../../../../../../../shared/mock-data/mockData";
 import { useState, createContext } from "react";
-import { GoalItem } from "../../../../../../types/gameTypes";
+import { GoalItem } from "../../../../../../../../shared/types/gameTypes";
 import Goal from "../../../../../common/input/Goal";
 import DialogBox from "../../../../../common/DialogBox";
 import AddGoal from "./AddGoal";

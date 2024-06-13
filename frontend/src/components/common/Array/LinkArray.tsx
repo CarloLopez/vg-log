@@ -1,4 +1,4 @@
-import { NameObj } from "../../../types/gameTypes";
+import { NameObj } from "../../../../../shared/types/gameTypes";
 import { Link } from "react-router-dom";
 
 type LinkArrayProps = {

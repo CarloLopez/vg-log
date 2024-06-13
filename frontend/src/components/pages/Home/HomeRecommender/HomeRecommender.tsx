@@ -1,9 +1,9 @@
 import { useState, useEffect, createContext } from "react";
-import { BacklogItemState } from "../../../../types/gameTypes";
+import { BacklogItemState } from "../../../../../../shared/types/gameTypes";
 import { getDbVectorsParams, DbGameResult } from "../../../../objects/ContentGameRecommender";
 import ContentGameRecommender from "../../../../objects/ContentGameRecommender";
 import RecommenderGameContainer from "./RecommenderGameContainer";
-import { Status } from "../../../../types/gameTypes";
+import { Status } from "../../../../../../shared/types/gameTypes";
 
 // TODO: OWN IMPLEMENTATION OF DATABSE RECOMMENDER FOR BACKLOG ONLY?
 

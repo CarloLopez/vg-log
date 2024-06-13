@@ -1,4 +1,4 @@
-import { Game } from "../../../types/gameTypes";
+import { Game } from "../../../../../shared/types/gameTypes";
 import GameCover from "./GameCover";
 
 type GameCoverArrayProps = {

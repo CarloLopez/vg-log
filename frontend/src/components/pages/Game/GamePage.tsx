@@ -2,7 +2,7 @@ import { useEffect, useState, createContext } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import getGame from "../../../api/getGame";
-import GameAPI from "../../../types/gameTypes";
+import GameAPI from "../../../../../shared/types/gameTypes";
 import GameHeader from "./GameHeader/GameHeader";
 import GameBody from "./GameBody/GameBody";
 

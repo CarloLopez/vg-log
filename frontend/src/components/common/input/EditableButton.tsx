@@ -43,6 +43,7 @@ const EditableButton = ({ id, initialValue, addDisabled, setAddDisabled }: Edita
               setAddDisabled(false);
               // TODO: logic to save to/update database 
               // and update parent 'categories' state
+              console.log(id);
             }}
             disabled={inputValue?.trim() === ''}
           >

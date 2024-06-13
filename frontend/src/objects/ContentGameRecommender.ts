@@ -1,8 +1,8 @@
-import { BacklogItemState } from "../types/gameTypes";
-import { gameGenres } from "./filterObjects";
+import { BacklogItemState } from "../../../shared/types/gameTypes";
+import { gameGenres } from "../../../shared/objects/filterObjects";
 import getBacklogGameInfo from "../api/recommender/getBacklogGameInfo";
 import getGamesByGenres from "../api/recommender/getGamesByGenres";
-import { Image } from "../types/gameTypes";
+import { Image } from "../../../shared/types/gameTypes";
 import { BacklogSettings, DatabaseSettings, FilterSettings } from "../components/pages/Home/HomeRecommender/HomeRecommender";
 import { cosineSimilarity } from "./cosineSimilarity";
 

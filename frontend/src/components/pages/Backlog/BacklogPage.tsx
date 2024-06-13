@@ -1,4 +1,4 @@
-import { MOCK_BACKLOG, MOCK_CATEGORIES } from "../../../mock-data/mockData";
+import { MOCK_BACKLOG, MOCK_CATEGORIES } from "../../../../../shared/mock-data/mockData";
 import { useState, useEffect, createContext } from "react";
 import getBacklog from "../../../api/getBacklog";
 import BacklogCardArray from "./BacklogCardArray";
@@ -6,7 +6,7 @@ import BacklogOrderDropdown from "./BacklogOrderDropdown";
 import BacklogCategoryDropdown from "./BacklogCategoryDropdown";
 import BacklogStatusFilter from "./BacklogStatusFilter";
 import DialogBox from "../../common/DialogBox";
-import { Game, BacklogItem, BacklogItemState, Category} from "../../../types/gameTypes";
+import { Game, BacklogItem, BacklogItemState, Category} from "../../../../../shared/types/gameTypes";
 
 type BacklogPageContext = {
   setOrder: React.Dispatch<React.SetStateAction<string>>;

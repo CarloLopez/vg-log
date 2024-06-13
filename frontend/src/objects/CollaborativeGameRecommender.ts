@@ -1,6 +1,6 @@
-import { BacklogItemState } from "../types/gameTypes";
-import { Status } from "../types/gameTypes";
-import syntheticData from "../mock-data/syntheticData.json"
+import { BacklogItemState } from "../../../shared/types/gameTypes";
+import { Status } from "../../../shared/types/gameTypes";
+import syntheticData from "../../../shared/mock-data/syntheticData.json"
 import { cosineSimilarity } from "./cosineSimilarity";
 import getBacklog from "../api/getBacklog";
 

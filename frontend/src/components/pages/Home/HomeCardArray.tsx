@@ -1,6 +1,6 @@
 import GameCard from "../../common/Cover/GameCard";
 import HomeCardBody from "./HomeCardBody";
-import { BacklogItem } from "../../../types/gameTypes";
+import { BacklogItem } from "../../../../../shared/types/gameTypes";
 
 type HomeCardArrayProps = {
   data: BacklogItem[];

@@ -1,6 +1,6 @@
 import { GamesFilter } from "../types/urlTypes";
 import apiRequest from "./apiRequest";
-import { gamePlatforms, allowedCategories } from "../objects/filterObjects";
+import { gamePlatforms, allowedCategories } from "../../../shared/objects/filterObjects";
 
 const allowedPlatforms = gamePlatforms.map(platform => platform.id);
 

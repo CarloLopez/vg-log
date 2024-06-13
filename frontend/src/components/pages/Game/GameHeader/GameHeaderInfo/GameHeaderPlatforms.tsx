@@ -1,4 +1,4 @@
-import { Platform } from "../../../../../types/gameTypes";
+import { Platform } from "../../../../../../../shared/types/gameTypes";
 import LinkArray from "../../../../common/Array/LinkArray";
 
 type GameHeaderPlatformsProps = {

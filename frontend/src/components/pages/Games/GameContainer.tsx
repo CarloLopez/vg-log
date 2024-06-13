@@ -2,7 +2,7 @@ import { useContext, useState, useEffect } from "react";
 import { GamesPageContext } from "./GamesPage";
 import GameCoverArray from "../../common/Cover/GameCoverArray";
 import getGames from "../../../api/getGames";
-import { Game } from "../../../types/gameTypes";
+import { Game } from "../../../../../shared/types/gameTypes";
 
 const GameContainer = () => {
   const [loading, setLoading] = useState(true);

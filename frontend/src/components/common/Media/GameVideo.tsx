@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Video } from "../../../types/gameTypes"
+import { Video } from "../../../../../shared/types/gameTypes"
 
 type GameVideoProps = {
   video: Video;

@@ -1,4 +1,4 @@
-import { Image } from "../../../types/gameTypes";
+import { Image } from "../../../../../shared/types/gameTypes";
 
 type StaticImageProps = {
   image: Image;

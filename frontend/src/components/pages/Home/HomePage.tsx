@@ -1,6 +1,6 @@
-import { MOCK_BACKLOG } from "../../../mock-data/mockData";
+import { MOCK_BACKLOG } from "../../../../../shared/mock-data/mockData";
 import { useState } from "react";
-import { BacklogItemState } from "../../../types/gameTypes";
+import { BacklogItemState } from "../../../../../shared/types/gameTypes";
 import HomeBacklog from "./HomeBacklog";
 import HomeRecommender from "./HomeRecommender/HomeRecommender";
 

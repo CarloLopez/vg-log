@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BacklogItemState, BacklogItem, Game } from "../../../types/gameTypes";
+import { BacklogItemState, BacklogItem, Game } from "../../../../../shared/types/gameTypes";
 import getBacklog from "../../../api/getBacklog";
 import HomeGameStats from "./HomeGameStats";
 import HomeCardArray from "./HomeCardArray";

@@ -1,4 +1,4 @@
-import { AgeRating } from "../../../../../../../types/gameTypes";
+import { AgeRating } from "../../../../../../../../../shared/types/gameTypes";
 import LinkArray from "../../../../../../common/Array/LinkArray";
 
 type AgeRatingProps = {
