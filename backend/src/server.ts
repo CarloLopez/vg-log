@@ -2,35 +2,35 @@ import express, { Request, Response } from 'express';
 import cors from 'cors';
 import path from 'path';
 import dotenv from 'dotenv';
+import connectDB from './db';
 import igdbRoutes from './routes/igdbRoutes';
+import userRoutes from './routes/userRoutes';
 
 dotenv.config();
+
+// Connect to MongoDB
+connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// middleware
+// Middleware
 app.use(cors());
 app.use(express.json());
 
-// serve static files from the React app
+// Serve static files from the React app
 app.use(express.static(path.join(__dirname, '../../frontend/dist')));
 
-// interface for the request body
-interface ApiRequestBody {
-  endpoint: string;
-  body: string;
-}
-
-// routes
+// Use the routes
 app.use('/api', igdbRoutes);
+app.use('/users', userRoutes);
 
-// fallback handler: for any request that doesn't match one above, send back React's index.html file.
+// For any request that doesn't match one above, send back React's index.html file.
 app.get('*', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
 });
 
-// start the server
+// Start the server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
