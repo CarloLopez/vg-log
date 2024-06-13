@@ -1,5 +1,5 @@
 import GameCoverArray from "../../../common/Cover/GameCoverArray";
-import { CollaborativeGameRecommender } from "../../../../objects/CollaborativeGameRecommender";
+import { CollaborativeGameRecommender } from "../../../../models/CollaborativeGameRecommender";
 import { useState, useEffect } from "react";
 import { Game } from "../../../../../../shared/types/gameTypes";
 import { BacklogItemState } from "../../../../../../shared/types/gameTypes";
