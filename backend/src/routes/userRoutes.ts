@@ -24,7 +24,7 @@ router.post('/login', async (req: Request, res: Response) => {
   try {
     const user = await User.findOne({ username, password });
     if (user) {
-      res.cookie('username', username, { httpOnly: true });
+      res.cookie('username', username, { httpOnly: true, path: '/' });
       res.json({ message: 'Login successful', user });
     } else {
       res.status(401).json({ error: 'Invalid credentials' });
@@ -35,9 +35,33 @@ router.post('/login', async (req: Request, res: Response) => {
   }
 });
 
+// Check if user is logged in
+router.get('/check-auth', async (req: Request, res: Response) => {
+  const username = req.cookies.username;
+
+  if (!username) {
+    return res.status(401).json({ error: 'Not authenticated' }); // unauthorised if no username cookie
+  }
+
+  try {
+    const user = await User.findOne({ username });
+    if (!user) {
+      return res.status(401).json({ error: 'User not found' });
+    }
+    return res.status(200).json({ username });
+  } catch (error) {
+    console.error('Error checking authentication:', error);
+    return res.status(500).json({ error: 'Error checking authentication' });
+  }
+});
+
 // Get user data
-router.get('/:username', async (req: Request, res: Response) => {
-  const { username } = req.params;
+router.get('/me', async (req: Request, res: Response) => {
+  const username = req.cookies.username;
+
+  if (!username) {
+    return res.status(401).json({ error: 'Not authenticated' });
+  }
 
   try {
     const user = await User.findOne({ username });
@@ -79,7 +103,7 @@ router.delete('/:username/backlog/:gameId', async (req: Request, res: Response) 
   try {
     const user = await User.findOne({ username });
     if (user) {
-      user.backlog = user.backlog.filter(game => game.id !== parseInt(gameId, 10));
+      user.backlog = user.backlog.filter(game => game.id !== Number(gameId));
       await user.save();
       res.json(user);
     } else {
