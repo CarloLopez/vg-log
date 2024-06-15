@@ -1,9 +1,9 @@
 import GameCard from "../../common/Cover/GameCard";
-import { BacklogItem } from "../../../../../shared/types/gameTypes";
+import { BacklogCardItem } from "../../../../../shared/types/gameTypes";
 import BacklogCardBody from "./BacklogCardBody";
 
 type BacklogCardArrayProps = {
-  items: BacklogItem[];
+  items: BacklogCardItem[];
 }
 
 const BacklogCardArray = ({items}: BacklogCardArrayProps) => {

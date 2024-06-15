@@ -1,4 +1,4 @@
-import { BacklogItemState } from "../../../shared/types/gameTypes";
+import { BacklogItem } from "../../../shared/types/gameTypes";
 import { Status } from "../../../shared/types/gameTypes";
 import syntheticData from "../../../shared/mock-data/syntheticData.json"
 import { cosineSimilarity } from "./cosineSimilarity";
@@ -11,12 +11,12 @@ type syntheticBacklogItem = {
 }
 
 export class CollaborativeGameRecommender {
-  private userGames: BacklogItemState[];
+  private userGames: BacklogItem[];
   private userGameIds: number[];
   private userVector: number[];
   private syntheticUsers: {id: number, vector: number[], similarity:number, backlog: syntheticBacklogItem[]}[];
 
-  constructor(userGames: BacklogItemState[] = []) {
+  constructor(userGames: BacklogItem[] = []) {
     this.userGames = userGames;
     this.userGameIds = userGames.map(game => game.id);
     this.userVector = this._createUserVector();

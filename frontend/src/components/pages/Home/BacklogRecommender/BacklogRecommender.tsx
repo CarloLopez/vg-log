@@ -2,10 +2,10 @@ import GameCoverArray from "../../../common/Cover/GameCoverArray";
 import { CollaborativeGameRecommender } from "../../../../models/CollaborativeGameRecommender";
 import { useState, useEffect } from "react";
 import { Game } from "../../../../../../shared/types/gameTypes";
-import { BacklogItemState } from "../../../../../../shared/types/gameTypes";
+import { BacklogItem } from "../../../../../../shared/types/gameTypes";
 
 type BacklogRecommenderProps = {
-  userBacklog: BacklogItemState[];
+  userBacklog: BacklogItem[];
 }
 
 const BacklogRecommender = ({userBacklog}: BacklogRecommenderProps) => {

@@ -31,16 +31,17 @@ export type Game = {
 
 export type Status = "inProgress" | "notStarted" | "completed" | "dropped";
 
-export type BacklogItemState = {
+export type BacklogItem = {
   id: number;
   status: Status;
   category: number|null;
-  nextGoal?: string;
+  notes: NoteItem[];
+  goals: GoalItem[];
 }
 
-export type BacklogItem = {
+export type BacklogCardItem = {
   game: Game;
-  state: BacklogItemState;
+  state: BacklogItem;
 }
 
 export type NoteItem = {

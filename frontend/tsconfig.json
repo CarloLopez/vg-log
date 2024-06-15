@@ -18,7 +18,9 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    "noFallthroughCasesInSwitch": true
+    "noFallthroughCasesInSwitch": true,
+
+    "types": ["node"]
   },
   "include": ["src", "../shared/objects/filterObjects.ts", "../shared/mock-data"],
   "references": [{ "path": "./tsconfig.node.json" }]

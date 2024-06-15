@@ -1,11 +1,11 @@
 const apiRequest = async (body: string, endpoint: string = "games") => {
-  const url = `http://localhost:5000/api/games`; // Backend server URL
+  const URL = import.meta.env.VITE_SERVER_BASE_URL;
   const headers = {
     'Content-Type': 'application/json',
   };
 
   try {
-    const response = await fetch(url, {
+    const response = await fetch(`${URL}/api/games`, {
       method: 'POST',
       headers: headers,
       body: JSON.stringify({ endpoint, body }),

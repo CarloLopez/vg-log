@@ -1,6 +1,6 @@
 import React, { useContext } from "react"
 import { BacklogPageContext } from "./BacklogPage"
-import { BacklogItemState } from "../../../../../shared/types/gameTypes"
+import { BacklogItem } from "../../../../../shared/types/gameTypes"
 import CategoriesContainer from "../../common/Categories/CategoriesContainer"
 import Dropdown from "../../common/Array/Dropdown"
 import { statuses } from "../../../../../shared/objects/filterObjects"
@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom"
 
 type BacklogCardBodyProps = {
   slug: string;
-  state: BacklogItemState;
+  state: BacklogItem;
 }
 
 const statusList = statuses.map(status => status.value);
@@ -40,7 +40,7 @@ const BacklogCardBody = ({slug, state}: BacklogCardBodyProps) => {
         <div>Status: </div>
         <Dropdown handleChange={handleChange} options={statuses} defaultSelection={state.status}/>
       </div>
-      {state.status === 'inProgress' && state.nextGoal ? <div>{`Next Goal: ${state.nextGoal}`}</div> : ""}
+      {state.status === 'inProgress' && state.goals.length > 0 ? <div>{`Next Goal: ${state.goals[0].content}`}</div> : ""}
       <div>
         <button onClick={() => {
           setDialogContent(<CategoriesContainer />);

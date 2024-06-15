@@ -6,13 +6,13 @@ import BacklogOrderDropdown from "./BacklogOrderDropdown";
 import BacklogCategoryDropdown from "./BacklogCategoryDropdown";
 import BacklogStatusFilter from "./BacklogStatusFilter";
 import DialogBox from "../../common/DialogBox";
-import { Game, BacklogItem, BacklogItemState, Category} from "../../../../../shared/types/gameTypes";
+import { Game, BacklogCardItem, BacklogItem, Category} from "../../../../../shared/types/gameTypes";
 
 type BacklogPageContext = {
   setOrder: React.Dispatch<React.SetStateAction<string>>;
   setCategories: React.Dispatch<React.SetStateAction<Category[]>>;
   categories: Category[];
-  setData: React.Dispatch<React.SetStateAction<BacklogItem[]>>;
+  setData: React.Dispatch<React.SetStateAction<BacklogCardItem[]>>;
   setCategory: React.Dispatch<React.SetStateAction<string>>;
   setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
   setDialogContent: React.Dispatch<React.SetStateAction<JSX.Element>>;
@@ -31,9 +31,9 @@ export const BacklogPageContext = createContext<BacklogPageContext>({
 const BacklogPage = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [gameSelection] = useState<BacklogItemState[]>(MOCK_BACKLOG);
-  const [data, setData] = useState<BacklogItem[]>([]);
-  const [sortedData, setSortedData] = useState<BacklogItem[]>([]);
+  const [gameSelection] = useState<BacklogItem[]>(MOCK_BACKLOG);
+  const [data, setData] = useState<BacklogCardItem[]>([]);
+  const [sortedData, setSortedData] = useState<BacklogCardItem[]>([]);
   
   const [categories, setCategories] = useState<Category[]>(MOCK_CATEGORIES);
   const [category, setCategory] = useState('');
@@ -50,12 +50,12 @@ const BacklogPage = () => {
       const getData = async() => {
         try {
           const data: Game[] = await getBacklog(idList);
-          const merged: BacklogItem[] = [];
+          const merged: BacklogCardItem[] = [];
 
           data.forEach(item => {
-            const backlogItem: BacklogItem = {
+            const backlogItem: BacklogCardItem = {
               game: item,
-              state: {id: 0, status: 'notStarted', category: null},
+              state: {id: 0, status: 'notStarted', category: null, notes: [], goals: []},
             };
             const selectionObj = gameSelection.find(obj => obj.id === item.id);
 
@@ -86,7 +86,7 @@ const BacklogPage = () => {
 
     // sort data based on user selection
     const defaultOrder = {'inProgress': 1, 'notStarted': 2, 'completed': 3, 'dropped': 4};
-    let sortedData: BacklogItem[] = []
+    let sortedData: BacklogCardItem[] = []
     switch (order) {
       case '':
         sortedData = filteredData.sort((a, b) => defaultOrder[a.state.status] - defaultOrder[b.state.status]);

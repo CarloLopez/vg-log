@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { BacklogItemState, BacklogItem, Game } from "../../../../../shared/types/gameTypes";
+import { BacklogItem, BacklogCardItem, Game } from "../../../../../shared/types/gameTypes";
 import getBacklog from "../../../api/getBacklog";
 import HomeGameStats from "./HomeGameStats";
 import HomeCardArray from "./HomeCardArray";
@@ -7,27 +7,27 @@ import BacklogRecommender from "./BacklogRecommender/BacklogRecommender";
 
 type HomeBacklogProps = {
   gameIds: number[];
-  backlogItems: BacklogItemState[];
+  backlogItems: BacklogItem[];
 }
 
 const HomeBacklog = ({gameIds, backlogItems}: HomeBacklogProps) => {
   
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [backlog] = useState<BacklogItemState[]>(backlogItems);
-  const [data, setData] = useState<BacklogItem[]>([]);
+  const [backlog] = useState<BacklogItem[]>(backlogItems);
+  const [data, setData] = useState<BacklogCardItem[]>([]);
 
   useEffect(() => {
 
       const getData = async() => {
         try {
           const data: Game[] = await getBacklog(gameIds);
-          const merged: BacklogItem[] = [];
+          const merged: BacklogCardItem[] = [];
 
           data.forEach(item => {
-            const backlogItem: BacklogItem = {
+            const backlogItem: BacklogCardItem = {
               game: item,
-              state: {id: 0, status: 'notStarted', category: null},
+              state: {id: 0, status: 'notStarted', category: null, notes: [], goals: []},
             };
             const selectionObj = backlog.find(obj => obj.id === item.id);
 

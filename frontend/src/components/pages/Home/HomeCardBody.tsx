@@ -1,9 +1,9 @@
-import { BacklogItemState } from "../../../../../shared/types/gameTypes"
+import { BacklogItem } from "../../../../../shared/types/gameTypes"
 import { useNavigate } from "react-router-dom"
 
 type HomeCardBodyProps = {
   slug: string;
-  state: BacklogItemState;
+  state: BacklogItem;
 }
 
 const HomeCardBody = ({slug, state}: HomeCardBodyProps) => {
@@ -16,7 +16,7 @@ const HomeCardBody = ({slug, state}: HomeCardBodyProps) => {
 
   return (
     <>
-      {state.nextGoal ? <div>{`Next Goal: ${state.nextGoal}`}</div> : ""}
+      {state.goals.length > 0 ? <div>{`Next Goal: ${state.goals[0].content}`}</div> : ""}
       <div>
         <button onClick={() => handleClick('notes')}>Notes</button>
         <button onClick={() => handleClick('goals')}>Goals</button>

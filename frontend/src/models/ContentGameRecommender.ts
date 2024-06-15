@@ -1,4 +1,4 @@
-import { BacklogItemState } from "../../../shared/types/gameTypes";
+import { BacklogItem } from "../../../shared/types/gameTypes";
 import { gameGenres } from "../../../shared/objects/filterObjects";
 import getBacklogGameInfo from "../api/recommender/getBacklogGameInfo";
 import getGamesByGenres from "../api/recommender/getGamesByGenres";
@@ -54,12 +54,12 @@ type NormaliseParams = {
 }
 
 class ContentGameRecommender {
-  private games: BacklogItemState[];
+  private games: BacklogItem[];
   private results: APIResult[];
   private genreFrequency: { [genreId: number]: number};
   private platforms: string[];
 
-  constructor(games: BacklogItemState[] = []) {
+  constructor(games: BacklogItem[] = []) {
     this.games = games;
     this.results = [];
     this.genreFrequency = {};

@@ -1,5 +1,4 @@
 import { Router, Request, Response } from 'express';
-import axios from 'axios';
 
 const router = Router();
 
@@ -19,8 +18,18 @@ router.post('/games', async (req: Request, res: Response) => {
   };
 
   try {
-    const response = await axios.post(url, body, { headers });
-    res.json(response.data);
+    const response = await fetch(url, {
+      method: 'POST',
+      headers: headers,
+      body: body
+    });
+
+    if (!response.ok) {
+      throw new Error(`Error fetching data from IGDB: ${response.statusText}`);
+    }
+
+    const data = await response.json();
+    res.json(data);
   } catch (error) {
     console.error('Error fetching data from IGDB:', (error as Error).message);
     res.status(500).json({ error: 'An error occurred while fetching data from IGDB' });

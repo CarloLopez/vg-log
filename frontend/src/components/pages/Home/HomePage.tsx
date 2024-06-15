@@ -1,12 +1,12 @@
 import { MOCK_BACKLOG } from "../../../../../shared/mock-data/mockData";
 import { useState } from "react";
-import { BacklogItemState } from "../../../../../shared/types/gameTypes";
+import { BacklogItem } from "../../../../../shared/types/gameTypes";
 import HomeBacklog from "./HomeBacklog";
 import HomeRecommender from "./HomeRecommender/HomeRecommender";
 
 const HomePage = () => {
   
-  const [backlog] = useState<BacklogItemState[]>(MOCK_BACKLOG);
+  const [backlog] = useState<BacklogItem[]>(MOCK_BACKLOG);
   const [gameIds] = useState(backlog.map(game => game.id));
 
     return (

@@ -1,23 +1,8 @@
-import { BacklogItemState, NoteItem, GoalItem } from "../types/gameTypes"
+import { BacklogItem, NoteItem, GoalItem } from "../types/gameTypes"
 
 export const MOCK_CATEGORIES = [
   {id: 1, name: 'category example 1'},
   {id: 2, name: 'category example 2'},
-]
-
-export const MOCK_BACKLOG: BacklogItemState[] = [
-  {id: 186725, status: 'notStarted', category: 1},
-  {id: 191692, status: 'notStarted', category: null},
-  {id: 36926, status: 'inProgress', category: 1, nextGoal:'placeholder'},
-  {id: 1164, status: 'notStarted', category: null},
-  {id: 17000, status: 'dropped', category: 2},
-  {id: 11208, status: 'inProgress', category: null, nextGoal:'placeholder'},
-  {id: 174558, status: 'notStarted', category: 1},
-  {id: 1942, status: 'inProgress', category: null, nextGoal:'placeholder'},
-  {id: 119171, status: 'notStarted', category: null},
-  {id: 40477, status: 'dropped', category: 2},
-  {id: 386, status: 'notStarted', category: null, nextGoal:'placeholder'},
-  {id: 132181, status: 'completed', category: 2},
 ]
 
 export const MOCK_NOTES: NoteItem[] = [
@@ -32,4 +17,19 @@ export const MOCK_GOALS: GoalItem[] = [
   {id: 45, content: "Goal 2", completed: false, priority: 'high'},
   {id: 35, content: "Goal 3", completed: false, priority: 'medium'},
   {id: 2, content: "Goal 4", description: "description 4", completed: false, priority: 'low'},
+]
+
+export const MOCK_BACKLOG: BacklogItem[] = [
+  {id: 186725, status: 'notStarted', category: 1, notes: [], goals: []},
+  {id: 191692, status: 'notStarted', category: null, notes: [], goals: []},
+  {id: 36926, status: 'inProgress', category: 1, notes: [], goals: [MOCK_GOALS[0]]},
+  {id: 1164, status: 'notStarted', category: null, notes: [], goals: []},
+  {id: 17000, status: 'dropped', category: 2, notes: [], goals: []},
+  {id: 11208, status: 'inProgress', category: null, notes: [], goals: []},
+  {id: 174558, status: 'notStarted', category: 1, notes: [], goals: []},
+  {id: 1942, status: 'inProgress', category: null, notes: [], goals: []},
+  {id: 119171, status: 'notStarted', category: null, notes: [], goals: []},
+  {id: 40477, status: 'dropped', category: 2, notes: [], goals: []},
+  {id: 386, status: 'notStarted', category: null, notes: [], goals: []},
+  {id: 132181, status: 'completed', category: 2, notes: [], goals: []},
 ]

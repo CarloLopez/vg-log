@@ -1,5 +1,5 @@
 import { useState, useEffect, createContext } from "react";
-import { BacklogItemState } from "../../../../../../shared/types/gameTypes";
+import { BacklogItem } from "../../../../../../shared/types/gameTypes";
 import { getDbVectorsParams, DbGameResult } from "../../../../models/ContentGameRecommender";
 import ContentGameRecommender from "../../../../models/ContentGameRecommender";
 import RecommenderGameContainer from "./RecommenderGameContainer";
@@ -20,7 +20,7 @@ type HomeRecommenderContext = {
 }
 
 type HomeRecommenderProps = {
- backlogItems: BacklogItemState[];
+ backlogItems: BacklogItem[];
 }
 
 export type BacklogSettings = {

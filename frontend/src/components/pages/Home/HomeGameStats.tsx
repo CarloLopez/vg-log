@@ -1,7 +1,7 @@
-import { BacklogItem } from "../../../../../shared/types/gameTypes";
+import { BacklogCardItem } from "../../../../../shared/types/gameTypes";
 
 type HomeGameStatsProps = {
-  data: BacklogItem[];
+  data: BacklogCardItem[];
 }
 
 const HomeGameStats = ({data}: HomeGameStatsProps) => {
