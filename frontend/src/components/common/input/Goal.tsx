@@ -3,25 +3,30 @@ import Dropdown from "../Array/Dropdown";
 import { priorities } from "../../../../../shared/objects/filterObjects";
 import { GoalItem, Priority } from "../../../../../shared/types/gameTypes";
 import { useState, useContext } from "react";
-import { GoalsContext } from "../../pages/Game/GameBody/GameBodyContent/GameBodyGoals/GameBodyGoals";
+import { UserDataContext } from "../../pages/Game/GamePage";
 
 const priorityList = priorities.map(priority => priority.value);
 
 const Goal = ({id, content, completed, priority, description}: GoalItem) => {
 
-  const {setGoals} = useContext(GoalsContext);
+  const {setBacklogData} = useContext(UserDataContext);
   const [completedChecked, setCompletedChecked] = useState(completed);
   const [showDescription, setShowDescription] = useState(false);
 
   // TODO ALSO UPDATE BACKEND IF CHANGE PRIORITY
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setGoals(prevGoals => {
-      const newGoals = [...prevGoals];
+
+    setBacklogData(prevBacklogData => {
+      const newBacklogData = {...prevBacklogData};
+      const newGoals = [...newBacklogData.goals];
+
       const goal = newGoals.find(obj => obj.id === id);
       if (goal && priorityList.includes(e.target.value as Priority)) {
         goal.priority = e.target.value as Priority;
       }
-      return newGoals;
+
+      newBacklogData.goals = newGoals;
+      return newBacklogData
     })
   }
 

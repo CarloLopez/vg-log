@@ -1,19 +1,21 @@
-import { useState, useEffect, useContext } from "react";
-import { GameDataContext } from "../../GamePage";
-import { User } from "../../../../../types/userTypes";
-import { BacklogItem } from "../../../../../../../shared/types/gameTypes";
-import checkAuth from "../../../../../api/database/checkAuth";
-import getUserData from "../../../../../api/database/getUserData";
+import { useState, useContext } from "react";
+import { GameDataContext, UserDataContext } from "../../GamePage";
+import { Status } from "../../../../../../../shared/types/gameTypes";
+import { statuses } from "../../../../../../../shared/objects/filterObjects";
+import Dropdown from "../../../../common/Array/Dropdown";
+
 import addGameToBacklog from "../../../../../api/database/addGameToBacklog";
 import removeGameFromBacklog from "../../../../../api/database/removeGameFromBacklog";
+import changeGameStatus from "../../../../../api/database/changeGameStatus";
 
 const GameActions = () => {
   const gameData = useContext(GameDataContext);
+  const {username, inBacklog, setInBacklog, backlogData, setBacklogData} = useContext(UserDataContext);
 
-  const [username, setUsername] = useState('');
-  const [userGameData, setUserGameData] = useState<BacklogItem|null>(null);
   const [error, setError] = useState('');
-  const [buttonsDisabled, setButtonsDisabled] = useState(false);
+  const [inputsDisabled, setInputsDisabled] = useState(false);
+
+  const userGameData = backlogData || null;
 
   const addGame = async () => {
     try {
@@ -24,7 +26,7 @@ const GameActions = () => {
         const data = await response.json();
         console.log(data);
 
-        setUserGameData({
+        setBacklogData({
           id: gameData.id,
           status: 'notStarted',
           category: null,
@@ -32,12 +34,14 @@ const GameActions = () => {
           goals: [],
         });
 
-        setButtonsDisabled(false);
+        setInBacklog(true);
       } else {
         setError('Error Adding Game to Backlog. Please Try Again Later.');
       }
     } catch (error) {
       setError('Error Adding Game to Backlog. Please Try Again Later.')
+    } finally {
+      setInputsDisabled(false);
     }
   }
 
@@ -50,56 +54,38 @@ const GameActions = () => {
         const data = await response.json();
         console.log(data);
 
-        setUserGameData(null);
+        setInBacklog(false);
 
-        setButtonsDisabled(false);
       } else {
         setError('Error Removing Game From Backlog. Please Try Again Later.');
       }
     } catch (error) {
       setError('Error Removing Game From Backlog. Please Try Again Later.')
+    } finally {
+      setInputsDisabled(false);
     }
   }
 
-  // check that user is logged in
-  useEffect(() => {
-    const checkLoggedIn = async () => {
-      try {
-        const authName: string = await checkAuth();
-        if (authName) {
-          setUsername(authName);
-          console.log(authName, 'username verified')
-        }
-      } catch (error) {
-        return;
-      }
-    }
-
-    checkLoggedIn();
-  }, [])
-
-
-  // get user's game information (if applicable), if they are logged in
-  useEffect(() => {
+  const handleStatusChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const status = e.target.value as Status;
     
-    const getUserGameData = async () => {
-      try {
-        const data: User = await getUserData();
-        const game = data.backlog.filter(game => game.id === gameData.id);
-        
-        if (game.length === 1) {
-          setUserGameData(game[0]);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    setInputsDisabled(true);
+    try {
+      const response = await changeGameStatus({username, id: gameData.id, status});
 
-    if (username) {
-      getUserGameData();
+      if (response.ok) {
+        console.log('Game Status Changed.');
+        const data = await response.json();
+        console.log(data);
+      } else {
+        setError('HTTP Error: Cannot Change Game Status.')
+      }
+    } catch (error) {
+      setError('Error: Cannot Change Game Status.')
+    } finally {
+      setInputsDisabled(false);
     }
-    
-  }, [username])
+  }
   
   if (error) {
     return <>{error}</>
@@ -110,24 +96,21 @@ const GameActions = () => {
       <div>
         <button 
           onClick={() => {
-            setButtonsDisabled(true);
-            if (userGameData) {
+            setInputsDisabled(true);
+            if (inBacklog) {
               removeGame();
             } else {
               addGame();
             }
           }}
-          disabled={buttonsDisabled}
+          disabled={inputsDisabled}
         >
-          {userGameData ? "Remove From Backlog" : "Add To Backlog"}
+          {inBacklog ? "Remove From Backlog" : "Add To Backlog"}
         </button>
         
         {userGameData && (
         <div>
-          <button>Not Started</button>
-          <button>In Progress</button>
-          <button>Completed</button>
-          <button>Dropped</button>
+          <Dropdown options={statuses} handleChange={handleStatusChange} defaultSelection={userGameData ? userGameData.status : 'notStarted'}/>
         </div>
       )}
       </div>

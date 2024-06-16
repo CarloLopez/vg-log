@@ -1,8 +1,11 @@
-import { GoalsContext } from "./GameBodyGoals";
+import { UserDataContext } from "../../../GamePage";
+import { GameDataContext } from "../../../GamePage";
 import React, { useState, useContext } from "react";
-import { Priority, GoalItem } from "../../../../../../../../shared/types/gameTypes";
+import { Priority } from "../../../../../../../../shared/types/gameTypes";
 import { priorities } from "../../../../../../../../shared/objects/filterObjects";
 import Dropdown from "../../../../../common/Array/Dropdown";
+import addGoalToBacklog from "../../../../../../api/database/addGoalToBacklog";
+import { BacklogItem } from "../../../../../../../../shared/types/gameTypes";
 
 type AddGoalProps = {
   toggleVisibility: () => void;
@@ -10,10 +13,11 @@ type AddGoalProps = {
 
 const AddGoal = ({toggleVisibility}: AddGoalProps) => {
   
-  const {setGoals} = useContext(GoalsContext);
+  const gameData = useContext(GameDataContext);
+  const {username, inBacklog, setBacklogData} = useContext(UserDataContext);
   const [content, setContent] = useState('');
   const [description, setDescription] = useState('');
-  const [priority, setPriority] = useState<Priority>('none');
+  const [priority, setPriority] = useState<Priority>('high');
 
   const priorityList = priorities.map(priority => priority.value);
 
@@ -31,22 +35,30 @@ const AddGoal = ({toggleVisibility}: AddGoalProps) => {
     }
   }
 
-  const onClick = () => {
-    // TODO: UPDATE BACKLOG WHEN CONFIRM IS PRESSED
-    setGoals(prevGoals => {
-      const newGoals = [...prevGoals];
+  const onClick = async () => {
+    
+    if (content && priority && inBacklog) {
+      try {
+        const response = await addGoalToBacklog({username, gameId: gameData.id, goal: {content, priority, completed: false, description}});
+        const newGoal = await response.json();
 
-      if (content && priority) {
-        const newGoal: GoalItem = {id: 0, content, completed: false, priority};
-        if (description) {
-          newGoal.description = description;
-        }
-        newGoals.push(newGoal);
+        setBacklogData(prevBacklogData => {
+          const newBacklogData: BacklogItem = {...prevBacklogData};
+          const newGoals = [...prevBacklogData.goals];
+          newGoals.push(newGoal);
+          
+          newBacklogData.goals = newGoals;
+
+          return newBacklogData;
+        })
+
+
+        toggleVisibility();
+
+      } catch (error) {
+        console.log('ERRRRRRRRRRRRRRRRRRRR')
       }
-      
-      return newGoals;
-    })
-    toggleVisibility();
+    }
   }
 
   return (
@@ -64,7 +76,7 @@ const AddGoal = ({toggleVisibility}: AddGoalProps) => {
 
       <div>
         <label>Priority</label>
-        <Dropdown handleChange={handleChangeDropdown} options={priorities}/>
+        <Dropdown handleChange={handleChangeDropdown} options={priorities} defaultSelection={priority}/>
       </div>
 
       <div>
