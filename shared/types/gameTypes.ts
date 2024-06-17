@@ -48,6 +48,7 @@ export type NoteItem = {
   id: number;
   title: string;
   content: string;
+  lastEdited: Date;
 }
 
 export type Priority =  'critical'|'high'|'medium'|'low'|'none';

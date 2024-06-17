@@ -6,10 +6,10 @@ export const MOCK_CATEGORIES = [
 ]
 
 export const MOCK_NOTES: NoteItem[] = [
-  {id: 1, title: "Note 1", content: "Content 1"},
-  {id: 45, title: "Note 2", content: "Content 2"},
-  {id: 35, title: "Note 3", content: "Content 3"},
-  {id: 2, title: "Note 4", content: "Content 4"},
+  {id: 1, title: "Note 1", content: "Content 1", lastEdited: new Date()},
+  {id: 45, title: "Note 2", content: "Content 2", lastEdited: new Date()},
+  {id: 35, title: "Note 3", content: "Content 3", lastEdited: new Date()},
+  {id: 2, title: "Note 4", content: "Content 4", lastEdited: new Date()},
 ]
 
 export const MOCK_GOALS: GoalItem[] = [

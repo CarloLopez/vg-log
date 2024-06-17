@@ -3,17 +3,46 @@ import Dropdown from "../Array/Dropdown";
 import { priorities } from "../../../../../shared/objects/filterObjects";
 import { GoalItem, Priority } from "../../../../../shared/types/gameTypes";
 import { useState, useContext } from "react";
+import { GameDataContext } from "../../pages/Game/GamePage";
 import { UserDataContext } from "../../pages/Game/GamePage";
+import deleteGoalFromBacklog from "../../../api/database/deleteGoalFromBacklog";
 
 const priorityList = priorities.map(priority => priority.value);
 
 const Goal = ({id, content, completed, priority, description}: GoalItem) => {
 
-  const {setBacklogData} = useContext(UserDataContext);
+  const gameData = useContext(GameDataContext);
+  const {username, setBacklogData} = useContext(UserDataContext);
   const [completedChecked, setCompletedChecked] = useState(completed);
   const [showDescription, setShowDescription] = useState(false);
 
-  // TODO ALSO UPDATE BACKEND IF CHANGE PRIORITY
+  const [error, setError] = useState('');
+  const errorMessage = 'Error: Failed to Delete Goal From Backlog.';
+
+  const deleteGoal = async () => {
+    try {
+      const response = await deleteGoalFromBacklog({username, gameId: gameData.id, goalId: id});
+      if (response.ok) {
+        setBacklogData(prevBacklogData => {
+          const newBacklogData = {...prevBacklogData};
+          const newGoals = newBacklogData.goals.filter(goal => goal.id !== id);
+          newGoals.forEach(goal => {
+            if (goal.id > id) {
+              goal.id--;
+            }
+          })
+          newBacklogData.goals = newGoals;
+          return newBacklogData;
+        })
+      } else {
+        setError(errorMessage);
+      }
+    } catch (error) {
+      setError(errorMessage);
+    }
+  }
+
+  // TODO: ALSO UPDATE BACKEND IF CHANGE PRIORITY
   const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
 
     setBacklogData(prevBacklogData => {
@@ -28,6 +57,10 @@ const Goal = ({id, content, completed, priority, description}: GoalItem) => {
       newBacklogData.goals = newGoals;
       return newBacklogData
     })
+  }
+
+  if (error) {
+    return <>{error}</>
   }
 
   // TODO: UPDATE BACKEND FOR CHECKBOX, GOAL AND DESCRIPTION TEXT CHANGE
@@ -57,7 +90,7 @@ const Goal = ({id, content, completed, priority, description}: GoalItem) => {
         {showDescription ? <EditableBox initialValue={description || ""} updateFunction={() => {null}}/> : ""}
       </div>
 
-      <button>DELETE GOAL</button>
+      <button onClick={deleteGoal}>DELETE GOAL</button>
     </div>
   )
 }
