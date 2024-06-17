@@ -156,9 +156,16 @@ router.post('/:username/backlog/:gameId/notes', async (req: Request, res: Respon
     if (user) {
       const game = user.backlog.find(game => game.id === Number(gameId));
       if (game) {
-        game.notes.push(note);
+
+        const newNote = {
+          ...note,
+          id: game.notes.length,
+          lastEdited: new Date(),
+        }
+
+        game.notes.push(newNote);
         await user.save();
-        res.json(user);
+        res.json(newNote);
       } else {
         res.status(404).json({ error: 'Game not found in backlog' });
       }
@@ -181,6 +188,14 @@ router.delete('/:username/backlog/:gameId/notes/:noteId', async (req: Request, r
       const game = user.backlog.find(game => game.id === Number(gameId));
       if (game) {
         game.notes = game.notes.filter(note => note.id !== Number(noteId));
+        
+        const threshold = Number(noteId);
+        game.notes.forEach(note => {
+          if (note.id > threshold) {
+            note.id--;
+          }
+        })
+        
         await user.save();
         res.json(user);
       } else {
@@ -272,7 +287,7 @@ router.delete('/:username/backlog/:gameId/goals/:goalId', async (req: Request, r
         const threshold = Number(goalId);
         game.goals.forEach(goal => {
           if (goal.id > threshold) {
-            goal.id -= 1;
+            goal.id--;
           }
         })
 
