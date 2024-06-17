@@ -7,6 +7,10 @@ import GamesPage from './components/pages/Games/GamesPage.tsx';
 import ProfilePage from './components/pages/Profile/ProfilePage.tsx';
 import GamePage from './components/pages/Game/GamePage.tsx';
 
+import { createContext, useState, useEffect } from 'react';
+import checkAuth from './api/database/checkAuth.ts';
+
+
 const router = createBrowserRouter([
   {
     path: '/',
@@ -24,9 +28,41 @@ const router = createBrowserRouter([
   },
 ])
 
+type LoginContext = {
+  username: string;
+  setUsername: React.Dispatch<React.SetStateAction<string>>;
+}
+
+export const LoginContext = createContext<LoginContext>({
+  username: '',
+  setUsername: () => []
+});
+
 const App = () => {
+
+  const [username, setUsername] = useState('');
+
+  // check that user is logged in
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      try {
+        const authName: string = await checkAuth();
+        if (authName) {
+          setUsername(authName);
+          console.log(authName, 'username verified')
+        }
+      } catch (error) {
+        return;
+      }
+    }
+
+    checkLoggedIn();
+  }, [])
+
   return (
-    <RouterProvider router={router} />
+    <LoginContext.Provider value={{username, setUsername}}>
+      <RouterProvider router={router} />
+    </LoginContext.Provider>
   );
 }
 

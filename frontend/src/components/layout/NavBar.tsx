@@ -1,6 +1,11 @@
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { LoginContext } from "../../App";
 
 const NavBar = () => {
+
+  const {username} = useContext(LoginContext);
+
   return (
     <nav>
       <ul>
@@ -14,6 +19,9 @@ const NavBar = () => {
         <Link to='games'>Games</Link>
         </li>
       </ul>
+      <div>
+        <Link to='profile'>{username ? username : "Log In/Sign Up"}</Link>
+      </div>
       <hr />
     </nav>
   );

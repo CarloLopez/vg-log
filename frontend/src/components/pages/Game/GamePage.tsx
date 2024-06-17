@@ -1,4 +1,4 @@
-import { useEffect, useState, createContext } from "react";
+import { useEffect, useState, createContext, useContext } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useParams } from "react-router-dom";
 import getGame from "../../../api/getGame";
@@ -9,6 +9,7 @@ import { BacklogItem } from "../../../../../shared/types/gameTypes";
 import checkAuth from "../../../api/database/checkAuth";
 import { User } from "../../../types/userTypes";
 import getUserData from "../../../api/database/getUserData";
+import { LoginContext } from "../../../App";
 
 // create gameData object context for passing down to UI elements, avoid prop drilling
 export const GameDataContext = createContext<GameAPI>({
@@ -45,13 +46,14 @@ const GamePage = () => {
   type UrlParams = {
     gameSlug: string;
   }
+  
+  const {username, setUsername} = useContext(LoginContext);
 
   const [gameData, setGameData] = useState<GameAPI | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   const [searchParams, setSearchParams] = useSearchParams();
 
-  const [username, setUsername] = useState('');
   const [inBacklog, setInBacklog] = useState(false);
   const [backlogData, setBacklogData] = useState<BacklogItem>({
     id: 0,
@@ -92,7 +94,7 @@ const GamePage = () => {
           console.log(authName, 'username verified')
         }
       } catch (error) {
-        return;
+        setUsername('');
       }
     }
 
