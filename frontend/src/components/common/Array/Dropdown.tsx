@@ -15,8 +15,8 @@ const Dropdown = ({handleChange, options, defaultLabel, defaultSelection, disabl
     <select onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
       handleChange(e);
       setCurrentSelection(e.target.value);
-    }} value={currentSelection} disabled={disabled}>
-      {defaultLabel ? <option value={''}>{defaultSelection}</option> : ""}
+    }} value={currentSelection ? currentSelection : ''} disabled={disabled}>
+      {defaultLabel ? <option value={''}>{defaultLabel}</option> : ""}
       {options.map(option => {
         return <option key={option.value} value={option.value}>{option.label}</option>
       })}
