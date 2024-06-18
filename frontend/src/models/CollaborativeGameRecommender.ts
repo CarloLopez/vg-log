@@ -24,7 +24,8 @@ export class CollaborativeGameRecommender {
   }
 
   async getCollaborativeRecommendation() {
-    if (!this.userVector.includes(0.5) || !this.userVector.includes(0.75)) {
+    if (!this.userVector.includes(0.5) && !this.userVector.includes(0.75)) {
+      console.log(this.userVector);
       throw new Error('Backlog Picker Error: No In-Progress or Not Started Games to Recommend')
     }
     let sortedUsers = this.syntheticUsers.sort((a, b) => b.similarity - a.similarity);

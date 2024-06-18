@@ -4,6 +4,7 @@ import { getDbVectorsParams, DbGameResult } from "../../../../models/ContentGame
 import ContentGameRecommender from "../../../../models/ContentGameRecommender";
 import RecommenderGameContainer from "./RecommenderGameContainer";
 import { Status } from "../../../../../../shared/types/gameTypes";
+import RecommenderSettings from "./RecommenderSettings/RecommenderSettings";
 
 // TODO: OWN IMPLEMENTATION OF DATABSE RECOMMENDER FOR BACKLOG ONLY?
 
@@ -17,6 +18,7 @@ type HomeRecommenderContext = {
   setFilterSettings: React.Dispatch<React.SetStateAction<FilterSettings>>;
   setUserVectorLoaded: React.Dispatch<React.SetStateAction<boolean>>;
   setSimilarityCalculated: React.Dispatch<React.SetStateAction<boolean>>;
+  userStatuses: Status[];
 }
 
 type HomeRecommenderProps = {
@@ -54,6 +56,7 @@ export const HomeRecommenderContext = createContext<HomeRecommenderContext>({
   setFilterSettings:() => {},
   setUserVectorLoaded: () => false,
   setSimilarityCalculated: () => false,
+  userStatuses: [],
 })
 
 const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
@@ -73,9 +76,18 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
     reverseResults: {name: '', result: []},
   })
 
+  // set advanced status selection based on current backlog
+  const initialStatusSelection = (): Status[] => {
+    let userStatuses = Array.from(new Set(backlogItems.map(game => game.status)));
+    if (userStatuses.length > 1 && userStatuses.includes('dropped')) {
+      userStatuses = userStatuses.filter(status => status !== 'dropped');
+    }
+    return userStatuses;
+  }
+
   // user setting states
   const [backlogSettings, setBacklogSettings] = useState<BacklogSettings>({
-    statuses: ['inProgress', 'completed'],
+    statuses: initialStatusSelection()
   })
   const [databaseSettings, setDatabaseSettings] = useState<DatabaseSettings>({
     genreDepth: 5,
@@ -87,10 +99,14 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
     popularity: 0,
     rating: 0,
   })
+  const [userStatuses] = useState<Status[]>(initialStatusSelection());
 
   // execution states for synchronisation purposes
   const [userVectorLoaded, setUserVectorLoaded] = useState(false);
   const [similarityCalculated, setSimilarityCalculated] = useState(false);
+
+  // advanced settings visibility
+  const [advancedVisible, setAdvancedVisible] = useState(false);
 
   // get user's backlog information and create user vector
   useEffect(() => {
@@ -105,6 +121,7 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
         setUserVectorLoaded(true);
       } catch (error) {
         setError('Failed to Load User Backlog Data.');
+        setLoading(false);
       } 
     }  
     getBacklogInfo();
@@ -166,31 +183,28 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
     }
   }, [similarityCalculated, recommender, dbResults, filterSettings])
 
-  if (error) {
-    return <>{error}</>;
-  }
-
   if (loading) {
     return <>Loading...</>;
   }
 
-  if (data) {
-    return (
-      <HomeRecommenderContext.Provider value={{
-        data, 
-        backlogSettings, 
-        setBacklogSettings,
-        databaseSettings, 
-        setDatabaseSettings,
-        filterSettings,
-        setFilterSettings,
-        setUserVectorLoaded,
-        setSimilarityCalculated,
-      }}>
-        <RecommenderGameContainer/>
-      </HomeRecommenderContext.Provider>
-    )
-  }
+  return (
+    <HomeRecommenderContext.Provider value={{
+      data, 
+      backlogSettings, 
+      setBacklogSettings,
+      databaseSettings, 
+      setDatabaseSettings,
+      filterSettings,
+      setFilterSettings,
+      setUserVectorLoaded,
+      setSimilarityCalculated,
+      userStatuses,
+    }}>
+      <button onClick={() => setAdvancedVisible(current => !current)}>{advancedVisible ? 'Hide Advanced' : 'Show Advanced'}</button>
+      <RecommenderSettings visible={advancedVisible} />
+      {error ? <div>{error}</div> : <RecommenderGameContainer/>}
+    </HomeRecommenderContext.Provider>
+  )
 }
 
 export default HomeRecommender;

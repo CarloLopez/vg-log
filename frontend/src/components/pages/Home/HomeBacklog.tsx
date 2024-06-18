@@ -3,7 +3,6 @@ import { BacklogItem, BacklogCardItem, Game } from "../../../../../shared/types/
 import getBacklog from "../../../api/getBacklog";
 import HomeGameStats from "./HomeGameStats";
 import HomeCardArray from "./HomeCardArray";
-import BacklogRecommender from "./BacklogRecommender/BacklogRecommender";
 
 type HomeBacklogProps = {
   gameIds: number[];
@@ -57,6 +56,9 @@ const HomeBacklog = ({gameIds, backlogItems}: HomeBacklogProps) => {
   }
 
   if (data) {
+    
+    const inProgress = backlog.filter(game => game.status === 'inProgress');
+    
     return (
       <div>
 
@@ -65,15 +67,12 @@ const HomeBacklog = ({gameIds, backlogItems}: HomeBacklogProps) => {
           <HomeGameStats data={data}/>
         </div>
         
-        <div>
-          <h4>Finish where you left off:</h4>
-          <HomeCardArray data={data}/>
-        </div>
-
-        <div>
-          <h4>Recommended From Your Backlog:</h4>
-          <BacklogRecommender userBacklog={backlogItems}/>
-        </div>
+        {inProgress.length > 0 && (
+          <div>
+            <h4>Finish Where You Left Off:</h4>
+            <HomeCardArray data={data}/>
+          </div>
+        )}
 
       </div>
     );
