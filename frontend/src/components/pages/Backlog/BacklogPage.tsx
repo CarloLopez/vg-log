@@ -1,5 +1,4 @@
-import { MOCK_BACKLOG, MOCK_CATEGORIES } from "../../../../../shared/mock-data/mockData";
-import { useState, useEffect, createContext } from "react";
+import { useState, useEffect, createContext, useContext } from "react";
 import getBacklog from "../../../api/getBacklog";
 import BacklogCardArray from "./BacklogCardArray";
 import BacklogOrderDropdown from "./BacklogOrderDropdown";
@@ -7,6 +6,10 @@ import BacklogCategoryDropdown from "./BacklogCategoryDropdown";
 import BacklogStatusFilter from "./BacklogStatusFilter";
 import DialogBox from "../../common/DialogBox";
 import { Game, BacklogCardItem, BacklogItem, Category} from "../../../../../shared/types/gameTypes";
+import { LoginContext } from "../../../App";
+import checkAuth from "../../../api/database/checkAuth";
+import { User } from "../../../types/userTypes";
+import getUserData from "../../../api/database/getUserData";
 
 type BacklogPageContext = {
   setOrder: React.Dispatch<React.SetStateAction<string>>;
@@ -29,13 +32,16 @@ export const BacklogPageContext = createContext<BacklogPageContext>({
 })
 
 const BacklogPage = () => {
+
+  const {username, setUsername} = useContext(LoginContext);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
-  const [gameSelection] = useState<BacklogItem[]>(MOCK_BACKLOG);
+  const [backlog, setBacklog] = useState<BacklogItem[]>([]);
   const [data, setData] = useState<BacklogCardItem[]>([]);
   const [sortedData, setSortedData] = useState<BacklogCardItem[]>([]);
   
-  const [categories, setCategories] = useState<Category[]>(MOCK_CATEGORIES);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [category, setCategory] = useState('');
   const [order, setOrder] = useState('');
   const [filters, setFilters] = useState(['inProgress', 'notStarted', 'completed', 'dropped']);
@@ -43,9 +49,44 @@ const BacklogPage = () => {
   const [dialogOpen, setDialogOpen] = useState(false);
   const [dialogContent, setDialogContent] = useState(<></>);
   
+  // check that user is logged in
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      try {
+        const authName: string = await checkAuth();
+        if (authName) {
+          setUsername(authName);
+          console.log(authName, 'username verified')
+        }
+      } catch (error) {
+        setUsername('');
+      }
+    }
+
+    checkLoggedIn();
+  }, [])
+
+  // get user's backlog
+  useEffect(() => {
+    
+    const getUserGameData = async () => {
+      try {
+        const data: User = await getUserData();
+        setBacklog(data.backlog);
+        setCategories(data.categories);
+      } catch (error) {
+        console.log('ERRRRRRR');
+      }
+    }
+
+    if (username) {
+      getUserGameData();
+    }
+    
+  }, [username])
 
   useEffect(() => {
-    const idList = gameSelection.map(game => game.id);
+    const idList = backlog.map(game => game.id);
 
       const getData = async() => {
         try {
@@ -57,7 +98,7 @@ const BacklogPage = () => {
               game: item,
               state: {id: 0, status: 'notStarted', category: null, notes: [], goals: []},
             };
-            const selectionObj = gameSelection.find(obj => obj.id === item.id);
+            const selectionObj = backlog.find(obj => obj.id === item.id);
 
             if (selectionObj) {
               backlogItem.state = {...selectionObj};
@@ -73,8 +114,10 @@ const BacklogPage = () => {
         }
       }  
 
-      getData();
-  }, [gameSelection])
+      if (backlog.length > 0) {
+        getData();
+      }
+  }, [backlog])
 
   useEffect(() => {
 

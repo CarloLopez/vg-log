@@ -68,7 +68,7 @@ const HomePage = () => {
         
         {(inProgress.length > 0 || notStarted.length > 0) && (
           <div>
-            <h4>{inProgress.length === 0 && notStarted.length > 0 ? "Start a New Game from Your Backlog:" : "Suggested Backlog Game To Complete:"}</h4>
+            <h4>{inProgress.length === 0 && notStarted.length > 0 ? "Start a New Game from Your Backlog:" : "Other Players Have Completed:"}</h4>
             <BacklogRecommender userBacklog={backlog}/>
           </div>
         )}

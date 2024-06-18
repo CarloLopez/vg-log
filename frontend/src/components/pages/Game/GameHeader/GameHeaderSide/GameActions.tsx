@@ -108,11 +108,11 @@ const GameActions = () => {
           {inBacklog ? "Remove From Backlog" : "Add To Backlog"}
         </button>
         
-        {userGameData && (
+        {inBacklog && (
         <div>
-          <Dropdown options={statuses} handleChange={handleStatusChange} defaultSelection={userGameData ? userGameData.status : 'notStarted'}/>
+          <Dropdown options={statuses} handleChange={handleStatusChange} defaultSelection={userGameData ? userGameData.status : 'notStarted'} disabled={inputsDisabled}/>
         </div>
-      )}
+        )}
       </div>
     )
   }

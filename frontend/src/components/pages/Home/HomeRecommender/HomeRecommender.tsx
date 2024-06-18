@@ -6,8 +6,6 @@ import RecommenderGameContainer from "./RecommenderGameContainer";
 import { Status } from "../../../../../../shared/types/gameTypes";
 import RecommenderSettings from "./RecommenderSettings/RecommenderSettings";
 
-// TODO: OWN IMPLEMENTATION OF DATABSE RECOMMENDER FOR BACKLOG ONLY?
-
 type HomeRecommenderContext = {
   data: RecommenderData;
   backlogSettings: BacklogSettings;
@@ -159,21 +157,21 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
     try {
       console.log('3...');
       // order the results based on user selection
-      const sortedRegular = recommender.filterResults({
+      let sortedRegular = recommender.filterResults({
         results: dbResults.regularResults.result,
         reverse: false,
         filterSettings: filterSettings,
       });
-      const sortedReverse = recommender.filterResults({
+      let sortedReverse = recommender.filterResults({
         results: dbResults.reverseResults.result,
         reverse: true,
         filterSettings: filterSettings,
       });
 
-      console.log('reg');
-      console.log(sortedRegular);
-      console.log('rev');
-      console.log(sortedReverse);
+      // don't suggest games already in a user's backlog
+      const backlogIds = backlogItems.map(game => game.id);
+      sortedRegular = sortedRegular.filter(game => !backlogIds.includes(game.id)).slice(0, 25);
+      sortedReverse = sortedReverse.filter(game => !backlogIds.includes(game.id)).slice(0, 25);
 
       setData({sortedRegular, sortedReverse});
     } catch (error) {
