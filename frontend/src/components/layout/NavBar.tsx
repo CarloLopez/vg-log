@@ -20,7 +20,7 @@ const NavBar = () => {
         </li>
       </ul>
       <div>
-        <Link to='profile'>{username ? username : "Log In/Sign Up"}</Link>
+        <Link to='profile'>{username ? "Logout" : "Log In/Sign Up"}</Link>
       </div>
       <hr />
     </nav>

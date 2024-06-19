@@ -55,6 +55,12 @@ router.get('/check-auth', async (req: Request, res: Response) => {
   }
 });
 
+// Logout and clear the cookie
+router.post('/logout', (req: Request, res: Response) => {
+  res.cookie('username', '', { maxAge: 0, path: '/' });
+  res.status(200).json({ message: 'Logged out successfully' });
+});
+
 // Get user data
 router.get('/me', async (req: Request, res: Response) => {
   const username = req.cookies.username;
