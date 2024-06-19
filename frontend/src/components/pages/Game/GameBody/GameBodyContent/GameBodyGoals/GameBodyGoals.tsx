@@ -1,6 +1,7 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { UserDataContext } from "../../../GamePage";
 import Goal from "../../../../../common/input/Goal";
+import { GoalItem } from "../../../../../../../../shared/types/gameTypes";
 import DialogBox from "../../../../../common/DialogBox";
 import AddGoal from "./AddGoal";
 
@@ -9,12 +10,14 @@ const GameBodyGoals = () => {
   const {inBacklog, backlogData} = useContext(UserDataContext);
 
   const [dialogOpen, setDialogOpen] = useState(false);
+  const [goals, setGoals] = useState<GoalItem[]>([]);
 
-  const goals = backlogData.goals;
+  useEffect(() => {
+    setGoals(backlogData.goals);
+  }, [backlogData])
+
   const order = {'critical': 1, 'high': 2, 'medium': 3, 'low': 4, 'none': 5};
   const sortedGoals = goals.sort((a, b) => order[a.priority] - order[b.priority]);
-
-  console.log(goals);
 
   if (!inBacklog) {
     return <>Add Game to Backlog to Add Goals</>

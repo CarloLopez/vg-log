@@ -1,13 +1,13 @@
-import EditableBox from "./EditableBox";
-import Dropdown from "../Array/Dropdown";
-import { priorities } from "../../../../../shared/objects/filterObjects";
-import { GoalItem, Priority } from "../../../../../shared/types/gameTypes";
+import { GoalItem } from "../../../../../shared/types/gameTypes";
 import { useState, useContext } from "react";
 import { GameDataContext } from "../../pages/Game/GamePage";
 import { UserDataContext } from "../../pages/Game/GamePage";
+import editGoalInBacklog from "../../../api/database/editGoalInBacklog";
 import deleteGoalFromBacklog from "../../../api/database/deleteGoalFromBacklog";
-
-const priorityList = priorities.map(priority => priority.value);
+import DialogBox from "../DialogBox";
+import EditGoal from "../../pages/Game/GameBody/GameBodyContent/GameBodyGoals/EditGoal";
+import { priorities } from "../../../../../shared/objects/filterObjects";
+import { Priority } from "../../../../../shared/types/gameTypes";
 
 const Goal = ({id, content, completed, priority, description}: GoalItem) => {
 
@@ -16,8 +16,9 @@ const Goal = ({id, content, completed, priority, description}: GoalItem) => {
   const [completedChecked, setCompletedChecked] = useState(completed);
   const [showDescription, setShowDescription] = useState(false);
 
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   const [error, setError] = useState('');
-  const errorMessage = 'Error: Failed to Delete Goal From Backlog.';
 
   const deleteGoal = async () => {
     try {
@@ -35,63 +36,81 @@ const Goal = ({id, content, completed, priority, description}: GoalItem) => {
           return newBacklogData;
         })
       } else {
-        setError(errorMessage);
+        setError('Failed to delete goal.');
       }
     } catch (error) {
-      setError(errorMessage);
+      setError('Failed to delete goal.');
     }
-  }
-
-  // TODO: ALSO UPDATE BACKEND IF CHANGE PRIORITY
-  const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-
-    setBacklogData(prevBacklogData => {
-      const newBacklogData = {...prevBacklogData};
-      const newGoals = [...newBacklogData.goals];
-
-      const goal = newGoals.find(obj => obj.id === id);
-      if (goal && priorityList.includes(e.target.value as Priority)) {
-        goal.priority = e.target.value as Priority;
-      }
-
-      newBacklogData.goals = newGoals;
-      return newBacklogData
-    })
   }
 
   if (error) {
     return <>{error}</>
   }
 
-  // TODO: UPDATE BACKEND FOR CHECKBOX, GOAL AND DESCRIPTION TEXT CHANGE
   return (
-    <div>
-      <EditableBox initialValue={content} updateFunction={() => {null}}/>
+    <>
       <div>
-        <label htmlFor="completed">Completed</label>
-        <input 
-          type="checkbox" 
-          name="completed" 
-          checked={completedChecked} 
-          onChange={(e) => {
-            const isChecked = e.target.checked;
-            setCompletedChecked(isChecked);
-          }}
-        />
-      </div>
 
       <div>
-        <label>Priority</label>
-        <Dropdown handleChange={handleChange} options={priorities} defaultSelection={priority}/>
-      </div>
+          <label htmlFor="completed">Completed</label>
+          <input 
+            type="checkbox" 
+            name="completed" 
+            checked={completedChecked} 
+            onChange={async (e) => {
+              const isChecked = e.target.checked;
 
-      <div>
-        <button onClick={() => setShowDescription(state => !state)}>{showDescription ? "Hide Description" : "Show Description"}</button>
-        {showDescription ? <EditableBox initialValue={description || ""} updateFunction={() => {null}}/> : ""}
-      </div>
+              const newGoal: GoalItem = {
+                id: id,
+                content: content,
+                completed: isChecked,
+                priority: priority,
+              } 
 
-      <button onClick={deleteGoal}>DELETE GOAL</button>
-    </div>
+              if (description) {
+                newGoal.description = description;
+              }
+              
+              try {
+                const response = await editGoalInBacklog({username, gameId: gameData.id, goal: newGoal});
+                if (response.ok) {
+                  setBacklogData(prevBacklogData => {
+                    const newBacklogData = {...prevBacklogData};
+                    const curGoal = newBacklogData.goals.find(item => item.id === id) as GoalItem;
+                    curGoal.completed = newGoal.completed;
+                    return newBacklogData;
+                  })
+                  setCompletedChecked(isChecked);
+                }
+              } catch (error) {
+                setError('Failed to edit goal.')
+              }
+
+            }}
+          />
+        </div>
+        
+        <div>{content}</div>
+        
+        <div>
+          <label>Priority</label>
+          <div>{priorities.find(item => item.value as Priority === priority)?.label}</div>
+        </div>
+
+        <button onClick={() => setDialogOpen(true)}>EDIT</button>
+        <button onClick={deleteGoal}>DELETE</button>
+        {description && (
+          <div>
+          <button onClick={() => setShowDescription(state => !state)}>{showDescription ? "Hide Description" : "Show Description"}</button>
+          {showDescription ? <div>{description}</div> : ""}
+          </div>
+        )}
+        
+      </div>
+      <DialogBox dialogOpen={dialogOpen} toggleVisibility={() => setDialogOpen(false)}>
+        <EditGoal goalId={id} currentContent={content} currentDescription={description} currentPriority={priority} completed={completed} toggleVisibility={() => setDialogOpen(false)}/>
+      </DialogBox>
+    </>
   )
 }
 

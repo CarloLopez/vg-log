@@ -4,20 +4,27 @@ import React, { useState, useContext } from "react";
 import { Priority } from "../../../../../../../../shared/types/gameTypes";
 import { priorities } from "../../../../../../../../shared/objects/filterObjects";
 import Dropdown from "../../../../../common/Array/Dropdown";
-import addGoalToBacklog from "../../../../../../api/database/addGoalToBacklog";
-import { BacklogItem } from "../../../../../../../../shared/types/gameTypes";
+import { BacklogItem, GoalItem } from "../../../../../../../../shared/types/gameTypes";
+import editGoalInBacklog from "../../../../../../api/database/editGoalInBacklog";
 
-type AddGoalProps = {
+type EditGoalProps = {
+  goalId: number;
   toggleVisibility: () => void;
+  currentContent: string;
+  currentDescription: string|undefined;
+  currentPriority: Priority;
+  completed: boolean;
+  
 }
 
-const AddGoal = ({toggleVisibility}: AddGoalProps) => {
+const EditGoal = ({goalId, toggleVisibility, currentContent, currentDescription, currentPriority, completed}: EditGoalProps) => {
   
   const gameData = useContext(GameDataContext);
   const {username, inBacklog, setBacklogData} = useContext(UserDataContext);
-  const [content, setContent] = useState('');
-  const [description, setDescription] = useState('');
-  const [priority, setPriority] = useState<Priority>('high');
+  const [content, setContent] = useState(currentContent);
+  const [description, setDescription] = useState(currentDescription);
+  const [priority, setPriority] = useState<Priority>(currentPriority);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
 
   const priorityList = priorities.map(priority => priority.value);
 
@@ -35,23 +42,38 @@ const AddGoal = ({toggleVisibility}: AddGoalProps) => {
     }
   }
 
-  const onClick = async () => {
+  const onClickEdit = async () => {
     
     if (content && priority && inBacklog) {
+      setButtonDisabled(true);
       try {
-        const response = await addGoalToBacklog({username, gameId: gameData.id, goal: {content, priority, completed: false, description}});
-        const newGoal = await response.json();
+        const goal: GoalItem = {id: goalId, content, completed, priority};
+        if (description) {
+          goal.description = description;
+        }
+        const response = await editGoalInBacklog({username, gameId: gameData.id, goal});
+        
+        if (response.ok) {
+          setBacklogData(prevBacklogData => {
+            const newBacklogData: BacklogItem = {...prevBacklogData};
+            let oldGoal = newBacklogData.goals.find(goal => goal.id === goalId);
 
-        setBacklogData(prevBacklogData => {
-          const newBacklogData: BacklogItem = {...prevBacklogData};
-          const newGoals = [...prevBacklogData.goals];
-          newGoals.push(newGoal);
-          
-          newBacklogData.goals = newGoals;
-
-          return newBacklogData;
-        })
-
+            if (oldGoal) {
+              oldGoal.completed = completed;
+              oldGoal.content = content;
+              oldGoal.priority = priority;
+              if (description) {
+                oldGoal.description = description;
+              } else {
+                delete oldGoal.description;
+              }
+            }
+            
+            console.log(newBacklogData);
+            return newBacklogData;
+          })
+          setButtonDisabled(false);
+        }
 
         toggleVisibility();
 
@@ -90,9 +112,9 @@ const AddGoal = ({toggleVisibility}: AddGoalProps) => {
         <Dropdown handleChange={handleChangeDropdown} options={priorities} defaultSelection={priority}/>
       </div>
 
-      <button onClick={onClick}>CONFIRM</button>
+      <button onClick={onClickEdit} disabled={buttonDisabled}>CONFIRM</button>
     </div>
   )
 }
 
-export default AddGoal;
+export default EditGoal;
