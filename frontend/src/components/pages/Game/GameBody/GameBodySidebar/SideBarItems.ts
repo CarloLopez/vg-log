@@ -2,7 +2,7 @@ import React from "react";
 import GameBodyGoals from "../GameBodyContent/GameBodyGoals/GameBodyGoals";
 import GameBodyInfo from "../GameBodyContent/GameBodyInfo/GameBodyInfo";
 import GameBodyMedia from "../GameBodyContent/GameBodyMedia";
-import GameBodyNotes from "../GameBodyContent/GameBodyNotes";
+import GameBodyNotes from "../GameBodyContent/GameBodyNotes/GameBodyNotes";
 import GameBodySimilar from "../GameBodyContent/GameBodySimilar";
 
 export type SidebarItem = {

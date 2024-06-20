@@ -1,16 +1,17 @@
 import { useState, useContext } from "react";
-import { UserDataContext } from "../../pages/Game/GamePage";
 import { GameDataContext } from "../../pages/Game/GamePage";
-import EditableBox from "./EditableBox";
-import { NoteItem } from "../../../../../shared/types/gameTypes";
+import { UserDataContext } from "../../pages/Game/GamePage";
 import deleteNoteFromBacklog from "../../../api/database/deleteNoteFromBacklog";
+import DialogBox from "../DialogBox";
+import EditNote from "../../pages/Game/GameBody/GameBodyContent/GameBodyNotes/EditNote";
+import { NoteItem } from "../../../../../shared/types/gameTypes";
 
-const Note = ({id, title, content}: NoteItem) => {
-
-  // TODO: PASS IN BACKEND UPDATE FUNCTIONS TO TITLE AND CONTENT
+const Goal = ({id, content, title}: NoteItem) => {
 
   const gameData = useContext(GameDataContext);
   const {username, setBacklogData} = useContext(UserDataContext);
+
+  const [dialogOpen, setDialogOpen] = useState(false);
 
   const [error, setError] = useState('');
 
@@ -39,18 +40,32 @@ const Note = ({id, title, content}: NoteItem) => {
   }
 
   if (error) {
-    return <div>{error}</div>
+    return <>{error}</>
   }
 
   return (
-    <div>
-      <label>Title</label>
-      <EditableBox initialValue={title} updateFunction={() => {null}}/>
-      <label>Note</label>
-      <EditableBox initialValue={content} updateFunction={() => {null}}/>
-      <button onClick={deleteNote}>DELETE NOTE</button>
-    </div>
+    <>
+      <div>
+        
+        <div>
+          <label>Title</label>
+          <div>{title}</div>
+        </div>
+
+        <div>
+          <label>Note</label>
+          <div>{content}</div>
+        </div>
+
+        <button onClick={() => setDialogOpen(true)}>EDIT</button>
+        <button onClick={deleteNote}>DELETE</button>
+        
+      </div>
+      <DialogBox dialogOpen={dialogOpen} toggleVisibility={() => setDialogOpen(false)}>
+        <EditNote id={id} currentContent={content} currentTitle={title} toggleVisibility={() => setDialogOpen(false)}/>
+      </DialogBox>
+    </>
   )
 }
 
-export default Note;
+export default Goal;

@@ -230,8 +230,9 @@ router.put('/:username/backlog/:gameId/notes/:noteId', async (req: Request, res:
         if (note) {
           note.title = title;
           note.content = content;
+          note.lastEdited = new Date();
           await user.save();
-          res.json(user);
+          res.json(note);
         } else {
           res.status(404).json({ error: 'Note not found' });
         }
@@ -344,5 +345,74 @@ router.put('/:username/backlog/:gameId/goals/:goalId', async (req: Request, res:
   }
 });
 
+// Add a new category
+router.post('/:username/categories', async (req: Request, res: Response) => {
+  const { username } = req.params;
+  const { category } = req.body;
+
+  try {
+    const user = await User.findOne({ username });
+    if (user) {
+      user.categories.push(category);
+      await user.save();
+      res.json(user);
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    console.error('Error adding category:', error);
+    res.status(500).json({ error: 'Error adding category' });
+  }
+});
+
+// Edit a category
+router.put('/:username/categories/:categoryId', async (req: Request, res: Response) => {
+  const { username, categoryId } = req.params;
+  const { name } = req.body;
+
+  try {
+    const user = await User.findOne({ username });
+    if (user) {
+      const category = user.categories.find(cat => cat.id === parseInt(categoryId, 10));
+      if (category) {
+        category.name = name;
+        await user.save();
+        res.json(user);
+      } else {
+        res.status(404).json({ error: 'Category not found' });
+      }
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    console.error('Error editing category:', error);
+    res.status(500).json({ error: 'Error editing category' });
+  }
+});
+
+// Delete a category and update backlog items
+router.delete('/:username/categories/:categoryId', async (req: Request, res: Response) => {
+  const { username, categoryId } = req.params;
+
+  try {
+    const user = await User.findOne({ username });
+    if (user) {
+      user.categories = user.categories.filter(cat => cat.id !== parseInt(categoryId, 10));
+      user.backlog = user.backlog.map(item => {
+        if (item.category === parseInt(categoryId, 10)) {
+          item.category = null;
+        }
+        return item;
+      });
+      await user.save();
+      res.json(user);
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    console.error('Error deleting category:', error);
+    res.status(500).json({ error: 'Error deleting category' });
+  }
+});
 
 export default router;

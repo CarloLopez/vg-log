@@ -26,7 +26,7 @@ const GameBodyGoals = () => {
   return (
     <>
       <button onClick={() => setDialogOpen(true)}>ADD GOAL</button>
-      <ol>
+      <ul>
         {sortedGoals.map(goal => {
           return (
           <li key={goal.id}>
@@ -40,7 +40,7 @@ const GameBodyGoals = () => {
           </li>
           )
         })}
-      </ol>
+      </ul>
       {dialogOpen ? (
       <DialogBox dialogOpen={dialogOpen} toggleVisibility={() => setDialogOpen(false)}>
         <AddGoal toggleVisibility={() => setDialogOpen(false)}/>
