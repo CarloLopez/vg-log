@@ -57,7 +57,7 @@ const BacklogCardBody = ({gameId, slug, state}: BacklogCardBodyProps) => {
   }
 
   const handleClick = (tab: string) => {
-    navigate(`/game/${slug}?tab=${tab}`)
+    navigate(`/game/${slug}?tab=${tab}`);
   }
 
   if (error) {

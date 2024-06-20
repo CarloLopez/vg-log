@@ -6,7 +6,7 @@ import { LoginContext } from "../../../App";
 const ProfilePage = () => {
   
   const {username, setUsername} = useContext(LoginContext);
-  const [selection, setSelection] = useState('signUp');
+  const [selection, setSelection] = useState('logIn');
   const [error, setError] = useState('');
 
   const handleButtonClick = () => {

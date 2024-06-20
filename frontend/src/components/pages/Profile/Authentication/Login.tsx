@@ -1,6 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
+  const navigate = useNavigate();
+  
   const URL = import.meta.env.VITE_SERVER_BASE_URL;
 
   const [username, setUsername] = useState('');
@@ -20,7 +23,7 @@ const Login = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('User logged in:', data);
-        // TODO: redirect to the user's dashboard or home page
+        navigate('/home');
       } else {
         const error = await response.text();
         console.error('Error logging in:', error);
