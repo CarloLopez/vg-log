@@ -348,14 +348,20 @@ router.put('/:username/backlog/:gameId/goals/:goalId', async (req: Request, res:
 // Add a new category
 router.post('/:username/categories', async (req: Request, res: Response) => {
   const { username } = req.params;
-  const { category } = req.body;
+  const { categoryName } = req.body;
 
   try {
     const user = await User.findOne({ username });
     if (user) {
+
+      const category = {
+        id: user.categories.length,
+        name: categoryName,
+      }
+
       user.categories.push(category);
       await user.save();
-      res.json(user);
+      res.json(category);
     } else {
       res.status(404).json({ error: 'User not found' });
     }
@@ -399,7 +405,7 @@ router.delete('/:username/categories/:categoryId', async (req: Request, res: Res
     if (user) {
       user.categories = user.categories.filter(cat => cat.id !== parseInt(categoryId, 10));
       user.backlog = user.backlog.map(item => {
-        if (item.category === parseInt(categoryId, 10)) {
+        if (item.category === Number(categoryId)) {
           item.category = null;
         }
         return item;
@@ -412,6 +418,37 @@ router.delete('/:username/categories/:categoryId', async (req: Request, res: Res
   } catch (error) {
     console.error('Error deleting category:', error);
     res.status(500).json({ error: 'Error deleting category' });
+  }
+});
+
+// Update the category of a backlog game
+router.put('/:username/backlog/:gameId/category', async (req: Request, res: Response) => {
+  const { username, gameId } = req.params;
+  const { categoryId } = req.body;
+
+  try {
+    const user = await User.findOne({ username });
+    if (user) {
+      const game = user.backlog.find(item => item.id === parseInt(gameId, 10));
+      if (game) {
+
+        if (game.category === categoryId) {
+          game.category = null;
+        } else {
+          game.category = categoryId;
+        }
+
+        await user.save();
+        res.json(user);
+      } else {
+        res.status(404).json({ error: 'Game not found in backlog' });
+      }
+    } else {
+      res.status(404).json({ error: 'User not found' });
+    }
+  } catch (error) {
+    console.error('Error updating game category:', error);
+    res.status(500).json({ error: 'Error updating game category' });
   }
 });
 

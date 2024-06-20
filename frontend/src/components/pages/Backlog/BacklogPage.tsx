@@ -75,7 +75,7 @@ const BacklogPage = () => {
         setBacklog(data.backlog);
         setCategories(data.categories);
       } catch (error) {
-        console.log('ERRRRRRR');
+        console.log('Error Getting User Data.');
       }
     }
 

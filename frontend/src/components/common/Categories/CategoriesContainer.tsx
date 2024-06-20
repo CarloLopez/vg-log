@@ -2,12 +2,17 @@ import { BacklogPageContext } from "../../pages/Backlog/BacklogPage";
 import { useState, useContext, useEffect } from "react";
 import EditableButton from "../input/EditableButton";
 
-const CategoriesContainer = () => {
-  
-  type LocalCategories = {
-    id?: number;
-    name?: string;
-  }
+type LocalCategories = {
+  id: number;
+  name?: string;
+}
+
+type CategoriesContainerProps = {
+  gameId: number;
+  setDialogOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+const CategoriesContainer = ({gameId, setDialogOpen}: CategoriesContainerProps) => {
   
   const {categories} = useContext(BacklogPageContext);
   const [localCategories, setlocalCategories] = useState<LocalCategories[]>([]);
@@ -24,7 +29,7 @@ const CategoriesContainer = () => {
           disabled={addDisabled}
           onClick={() => {
             setAddDisabled(true);
-            setlocalCategories([{}, ...localCategories]);
+            setlocalCategories([...localCategories, {id: localCategories.length}]);
           }}
         >
           ADD NEW
@@ -32,8 +37,7 @@ const CategoriesContainer = () => {
       <ul>
         {
           localCategories.map(category => {
-            return <li key={category.id || 0}><EditableButton id={category.id} initialValue={category.name} addDisabled={addDisabled} setAddDisabled={setAddDisabled}/></li>
-            // TODO: ADD ONCLICK TO CHANGE CATEGORY
+            return <li key={category.id || 'temp'}><EditableButton gameId={gameId} categoryId={category.id} initialValue={category.name} addDisabled={addDisabled} setAddDisabled={setAddDisabled} setDialogOpen={setDialogOpen}/></li>
           })
         }
       </ul>

@@ -10,13 +10,14 @@ import { useNavigate } from "react-router-dom"
 import changeGameStatus from "../../../api/database/changeGameStatus"
 
 type BacklogCardBodyProps = {
+  gameId: number;
   slug: string;
   state: BacklogItem;
 }
 
 const statusList = statuses.map(status => status.value);
 
-const BacklogCardBody = ({slug, state}: BacklogCardBodyProps) => {
+const BacklogCardBody = ({gameId, slug, state}: BacklogCardBodyProps) => {
  
   const {username} = useContext(LoginContext);
   const {setData, setDialogContent, setDialogOpen} = useContext(BacklogPageContext);
@@ -72,7 +73,7 @@ const BacklogCardBody = ({slug, state}: BacklogCardBodyProps) => {
       {state.status === 'inProgress' && state.goals.length > 0 ? <div>{`Next Goal: ${state.goals[0].content}`}</div> : ""}
       <div>
         <button onClick={() => {
-          setDialogContent(<CategoriesContainer />);
+          setDialogContent(<CategoriesContainer gameId={gameId} setDialogOpen={setDialogOpen}/>);
           setDialogOpen(true);
         }}>
           Category
