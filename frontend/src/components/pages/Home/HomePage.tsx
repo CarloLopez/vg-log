@@ -53,6 +53,10 @@ const HomePage = () => {
     return <>Log-In to Get Started</>
   }
 
+  if (backlog.length === 0) {
+    return <>Add Games to Backlog to Get Started</>
+  }
+
   if (backlog.length > 0) {
     
     const inProgress = backlog.filter(game => game.status === 'inProgress');

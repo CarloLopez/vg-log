@@ -1,7 +1,9 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const URL = import.meta.env.VITE_SERVER_BASE_URL;
+  const navigate = useNavigate();
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -30,7 +32,7 @@ const Signup = () => {
       if (response.ok) {
         const data = await response.json();
         console.log('User registered:', data);
-        // TODO: redirect to login page or log the user in automatically
+        navigate('/home');
       } else {
         const error = await response.text();
         console.error('Error registering user:', error);

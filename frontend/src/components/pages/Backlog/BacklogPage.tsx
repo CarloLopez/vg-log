@@ -143,6 +143,14 @@ const BacklogPage = () => {
 
   }, [data, category, filters, order])
 
+  if (!username) {
+    return <>Log-In to Get Started</>
+  }
+
+  if (backlog.length === 0) {
+    return <>Add Games to Backlog to Get Started</>
+  }
+
   if (loading) {
     return <>Loading...</>;
   }
