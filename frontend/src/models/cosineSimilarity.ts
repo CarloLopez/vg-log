@@ -1,5 +1,5 @@
 export const cosineSimilarity = (vectorA: number[], vectorB: number[]) => {
-    
+
   if (vectorA.length !== vectorB.length) {
     throw new Error('Error: Vector Lengths Must be the Same.');
   }

@@ -170,6 +170,9 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
 
       // don't suggest games already in a user's backlog
       const backlogIds = backlogItems.map(game => game.id);
+
+      console.log(sortedRegular);
+
       sortedRegular = sortedRegular.filter(game => !backlogIds.includes(game.id)).slice(0, 25);
       sortedReverse = sortedReverse.filter(game => !backlogIds.includes(game.id)).slice(0, 25);
 

@@ -1,5 +1,5 @@
 import { BacklogItem } from "../../../shared/types/gameTypes";
-import { gameGenres } from "../../../shared/objects/filterObjects";
+import { gameGenres, gameThemes } from "../../../shared/objects/filterObjects";
 import getBacklogGameInfo from "../api/recommender/getBacklogGameInfo";
 import getGamesByGenres from "../api/recommender/getGamesByGenres";
 import { Image } from "../../../shared/types/gameTypes";
@@ -9,6 +9,7 @@ import { cosineSimilarity } from "./cosineSimilarity";
 type GameDetail = {
   id: number;
   genres: number[];
+  themes: number[];
   platforms: string[];
 }
 
@@ -19,6 +20,7 @@ export type DbGameResult = {
   cover: Image;
   total_rating: number;
   total_rating_count: number;
+  themes: number[];
   genres: number[];
   vector?: number[];
   similarity?: number;
@@ -57,11 +59,13 @@ class ContentGameRecommender {
   private games: BacklogItem[];
   private results: APIResult[];
   private genreFrequency: { [genreId: number]: number};
+  private themeFrequency: { [themId: number]: number};
   private platforms: string[];
 
   constructor(games: BacklogItem[] = []) {
     this.games = games;
     this.results = [];
+    this.themeFrequency = {};
     this.genreFrequency = {};
     this.platforms = [];
   }
@@ -74,12 +78,15 @@ class ContentGameRecommender {
 
     // tally genre ids for games in the backlog
     this.genreFrequency = this._calculateGenreFrequency(backlogInfo);
+    this.themeFrequency = this._calculateThemeFrequency(backlogInfo);
     this.platforms = this._getPlatforms(backlogInfo);
   }
 
   calculateUserVector() {
     // create vector for similarity analysis based on the frequencies
-    const filledVector = gameGenres.map(genre => this.genreFrequency[Number(genre.id)]);
+    const genreVector = gameGenres.map(genre => this.genreFrequency[Number(genre.id)]);
+    const themeVector = gameThemes.map(theme => this.themeFrequency[Number(theme.id)]);
+    const filledVector = [...genreVector, ...themeVector];
 
     // normalise vector to avoid overweighting high frequency games
     return this._normaliseVector(filledVector);
@@ -248,7 +255,6 @@ class ContentGameRecommender {
       }
     }
 
-    console.log(topGenres);
     return(topGenres);
   }
 
@@ -274,6 +280,32 @@ class ContentGameRecommender {
     })
 
     return genreFrequency;
+  }
+
+  private _calculateThemeFrequency(userBacklogInfo: GameDetail[]) {
+
+    const themeFrequency: { [themeId: number]: number} = {};
+
+    userBacklogInfo.forEach(game => {
+      if (game.themes) {
+        game.themes.forEach(themeID => {
+          if (themeFrequency[themeID]) {
+            themeFrequency[themeID]++;
+          } else {
+            themeFrequency[themeID] = 1;
+          }
+        })
+      }
+    })
+
+    // fill in other themes as zero
+    gameThemes.forEach(theme => {
+      if (!themeFrequency[Number(theme.id)]) {
+        themeFrequency[Number(theme.id)] = 0;
+      }
+    })
+
+    return themeFrequency;
   }
 
   private _getPlatforms = (userBacklogInfo: GameDetail[]) => {
@@ -303,9 +335,23 @@ class ContentGameRecommender {
   }
 
   private _createDbGameVector(game: DbGameResult) {
-    return gameGenres.map(genre => {
+    
+    if (!game.genres) {
+      game.genres = [];
+    }
+
+    if (!game.themes) {
+      game.themes = [];
+    }
+
+    const genreVector =  gameGenres.map(genre => {
       return game.genres.includes(Number(genre.id)) ? 1: 0;
     })
+    const themeVector =  gameThemes.map(theme => {
+      return game.themes.includes(Number(theme.id)) ? 1: 0;
+    })
+
+    return [...genreVector, ...themeVector];
   }
 
   private _normalise({value, min, max}: NormaliseParams) {

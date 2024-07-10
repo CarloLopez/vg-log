@@ -4,7 +4,8 @@ const getBacklogGameInfo = async (gameIds: number[]) => {
   const body = `
   fields
     id,
-    platforms, 
+    platforms,
+    themes, 
     genres;
   where 
     id = (${gameIds});`

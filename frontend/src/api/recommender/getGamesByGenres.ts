@@ -29,6 +29,7 @@ const getGamesByGenres = async ({regular, reverse, years, platforms}: getGamesBy
       slug,
       total_rating,
       total_rating_count,
+      themes,
       genres;
     where 
       genres = (${genreIds})
@@ -36,14 +37,13 @@ const getGamesByGenres = async ({regular, reverse, years, platforms}: getGamesBy
       & version_parent=null
       & cover!=null
       & category=(${allowedCategories.join(',')})
-      & rating != null
+      & rating >= 75
+      & total_rating_count >= 50
       ${(yearsTimestamp ? '& first_release_date >= ' + yearsTimestamp : '')}
       & platforms=(${platforms.join(',')});
-    sort
-      total_rating_count desc;
     limit
      500;`
-  
+    
     return body;
   }
   
@@ -56,6 +56,7 @@ const getGamesByGenres = async ({regular, reverse, years, platforms}: getGamesBy
     ${subquery(reverse)}
   };`
   
+  console.log(body);
   return await apiRequest(body, 'multiquery');
 }
 
