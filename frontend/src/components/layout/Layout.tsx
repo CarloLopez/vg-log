@@ -5,7 +5,10 @@ const Layout = () => {
   return (
     <>
       <NavBar />
-      <Outlet />
+      <hr />
+      <div className="p-1">
+        <Outlet />
+      </div>
     </>
   );
 }

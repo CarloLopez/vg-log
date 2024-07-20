@@ -65,8 +65,8 @@ const HomePage = () => {
     return (
       <div>
         <div>
-          <h1>Welcome Back,</h1>
-          <h2>{username}</h2>
+          <h1>Welcome Back</h1>
+          <h2>{username.toUpperCase()}!</h2>
         </div>
         <HomeBacklog gameIds={backlog.map(game => game.id)} backlogItems={backlog}/>
         

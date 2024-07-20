@@ -7,22 +7,21 @@ const NavBar = () => {
   const {username} = useContext(LoginContext);
 
   return (
-    <nav>
-      <ul>
-        <li>
+    <nav className="flex flex-row justify-between p-1">
+      <ul className="list-none flex flex-row space-x-2">
+        <li className="transform hover:text-amber-500 hover:scale-105">
           <Link to='backlog'>Backlog</Link>
         </li>
-        <li>
+        <li className="transform hover:text-amber-500 hover:scale-105">
         <Link to='home'>Home</Link>
         </li>
-        <li>
+        <li className="transform hover:text-amber-500 hover:scale-105">
         <Link to='games'>Games</Link>
         </li>
       </ul>
-      <div>
-        <Link to='profile'>{username ? "Logout" : "Log In/Sign Up"}</Link>
+      <div className="transform hover:text-amber-500 hover:scale-105">
+        <Link to='profile'>{username ? "Logout" : "Log-In"}</Link>
       </div>
-      <hr />
     </nav>
   );
 }

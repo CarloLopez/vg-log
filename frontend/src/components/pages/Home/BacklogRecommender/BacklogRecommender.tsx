@@ -49,15 +49,15 @@ const BacklogRecommender = ({userBacklog}: BacklogRecommenderProps) => {
 
   if (random.length > 0) {
     return (
-      <div>
+      <>
         No Similar Users Found to Make a Recommendation. Random Selection From Your Backlog:
-        <GameCoverArray games={random} />
-      </div>
+        <div><GameCoverArray games={random} /></div>
+      </>
     )
   }
 
   if (data.length > 0) {
-    return <GameCoverArray games={data}/>
+    return <div><GameCoverArray games={data}/></div>
   }
 }
 
