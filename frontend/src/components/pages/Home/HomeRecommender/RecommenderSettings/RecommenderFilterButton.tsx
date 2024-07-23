@@ -21,6 +21,7 @@ const RecommenderFilterButton = ({label, id, checkIsActive, handleOnClick}: Reco
         setIsActive(current => !current);
       }}
       style={buttonStyle}
+      className="rounded px-1 border-white border"
     >
       {label}
     </button>

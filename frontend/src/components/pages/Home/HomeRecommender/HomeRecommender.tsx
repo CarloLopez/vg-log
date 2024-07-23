@@ -201,7 +201,14 @@ const HomeRecommender = ({backlogItems}: HomeRecommenderProps) => {
       setSimilarityCalculated,
       userStatuses,
     }}>
-      <button onClick={() => setAdvancedVisible(current => !current)}>{advancedVisible ? 'Hide Advanced' : 'Show Advanced'}</button>
+      <div className="flex justify-center">
+        <button 
+          onClick={() => setAdvancedVisible(current => !current)}
+          className="bg-gray-600 px-3 py-1 font-bold rounded w-40"
+        >
+          {advancedVisible ? 'Hide Advanced' : 'Show Advanced'}
+        </button>
+      </div>
       <RecommenderSettings visible={advancedVisible} />
       {error ? <div>{error}</div> : <RecommenderGameContainer/>}
     </HomeRecommenderContext.Provider>

@@ -12,10 +12,13 @@ const ToggleSwitch = ({stateA, stateB, handleToggle}: ToggleSwitchProps) => {
 
   return (
     <div>
-      <button onClick={() => {
+      <button 
+        onClick={() => {
         handleToggle();
         setIsActive(current => !current);
-      }}>
+        }}
+        className="bg-slate-800 px-3 py-1 font-bold rounded w-40"
+      >
         {isActive? stateB : stateA}
       </button>
     </div>

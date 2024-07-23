@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { Game } from "../../../../../../shared/types/gameTypes";
 import { BacklogItem } from "../../../../../../shared/types/gameTypes";
 import getBacklog from "../../../../api/getBacklog";
+import HomeCard from "../HomeCard";
 
 type BacklogRecommenderProps = {
   userBacklog: BacklogItem[];
@@ -50,14 +51,14 @@ const BacklogRecommender = ({userBacklog}: BacklogRecommenderProps) => {
   if (random.length > 0) {
     return (
       <>
-        No Similar Users Found to Make a Recommendation. Random Selection From Your Backlog:
+        <div>Random Backlog Selection, No Similar Users Found</div>
         <div><GameCoverArray games={random} /></div>
       </>
     )
   }
 
   if (data.length > 0) {
-    return <div><GameCoverArray games={data}/></div>
+    return <HomeCard game={data[0]}><div className="italic">Based on Similar Users</div></HomeCard>
   }
 }
 

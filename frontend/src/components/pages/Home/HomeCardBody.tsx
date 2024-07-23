@@ -6,7 +6,7 @@ type HomeCardBodyProps = {
   state: BacklogItem;
 }
 
-const HomeCardBody = ({slug, state}: HomeCardBodyProps) => {
+const HomeCardBody = ({slug}: HomeCardBodyProps) => {
   
   const navigate = useNavigate();
 
@@ -15,13 +15,10 @@ const HomeCardBody = ({slug, state}: HomeCardBodyProps) => {
   }
 
   return (
-    <>
-      {state.goals.length > 0 ? <div>{`Next Goal: ${state.goals[0].content}`}</div> : ""}
-      <div>
-        <button onClick={() => handleClick('notes')}>Notes</button>
-        <button onClick={() => handleClick('goals')}>Goals</button>
-      </div>
-    </>
+    <div className="flex gap-4">
+      <button onClick={() => handleClick('notes')} className="bg-slate-800 px-3 py-1 hover:scale-105">Notes</button>
+      <button onClick={() => handleClick('goals')} className="bg-slate-800 px-3 py-1 hover:scale-105">Goals</button>
+    </div>
   )
 }
 

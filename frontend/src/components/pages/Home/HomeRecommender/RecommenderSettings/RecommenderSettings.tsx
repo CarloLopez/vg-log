@@ -162,40 +162,43 @@ const RecommenderSettings = ({visible}: RecommenderSettingsProps) => {
   }
   
   return ( 
-    <div style={{ display: visible ? 'block' : 'none'}}>
+    <div style={{ display: visible ? 'block' : 'none'}} className='flex flex-col gap-2 justify-center'>
 
-      <div>
-      <RecommenderFilterButtonArray list={statusIDs} checkIsActive={statusesCheckIsActive as ((id: string) => boolean)} handleOnClick={statusesHandleOnClick as ((id: string) => void)}/>
+      <div className='py-2 flex flex-col gap-1'>
+        <div className="flex justify-center">Backlog Status Filter</div>
+        <RecommenderFilterButtonArray list={statusIDs} checkIsActive={statusesCheckIsActive as ((id: string) => boolean)} handleOnClick={statusesHandleOnClick as ((id: string) => void)}/>
       </div>
 
       <hr></hr>
-      <div>
-        <label htmlFor="">Genre Depth</label>
+      <div className='py-2'>
+        <label htmlFor="" className="flex justify-center">Genre Depth</label>
         <Slider initial={databaseSettings.genreDepth} min={1} max={5} step={1} handleChange={handleGenreDepthChange}/>
       </div>
-      <div>
-        <label htmlFor="">Recency</label>
+      <div className='py-2'>
+        <label htmlFor="" className="flex justify-center">Recency</label>
         <Slider initial={databaseSettings.years} min={0} max={25} step={1} metric="Years" handleChange={handleYearsChange}/>
       </div>
-      <div>
+      <div className='py-2'>
         <RecommenderFilterButtonArray list={gamePlatforms} checkIsActive={platformsCheckIsActive} handleOnClick={platformsHandleOnClick}/>
       </div>
 
       <hr></hr>
-      <div>
-        <label htmlFor="">Genre Similarity</label>
+      <div className='py-2'>
+        <label htmlFor="" className="flex justify-center">Genre Similarity</label>
         <Slider initial={filterSettings.similarity} min={0} max={1} step={0.1} handleChange={handleSimilarityChange}/>
       </div>
       <div>
-        <label htmlFor="">Game Popularity</label>
+        <label htmlFor="" className="flex justify-center">Game Popularity</label>
         <Slider initial={filterSettings.popularity} min={0} max={1} step={0.1} handleChange={handlePopularityChange}/>
       </div>
       <div>
-        <label htmlFor="">Game Rating</label>
+        <label htmlFor="" className="flex justify-center">Game Rating</label>
         <Slider initial={filterSettings.rating} min={0} max={1} step={0.1} handleChange={handleRatingChange}/>
       </div>
 
-      <button onClick={handleApplyClick}>Apply</button>
+      <div className="flex justify-center">
+        <button onClick={handleApplyClick} className=' bg-emerald-600 font-bold text-black px-3 text-lg'>Apply</button>
+      </div>
 
     </div>
   )

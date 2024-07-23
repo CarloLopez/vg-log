@@ -7,7 +7,7 @@ type GameCoverArrayProps = {
 
 const GameCoverArray = ({ games }: GameCoverArrayProps) => {
   return (
-    <ul>
+    <ul className="flex gap-3 flex-wrap justify-center">
       {games.map((game) => {
         return <GameCover key={game.id} game={game} size="small_2x" link={game.slug}/>
       })}

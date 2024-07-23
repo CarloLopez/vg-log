@@ -13,11 +13,11 @@ const GameCover = ({ game, size, link }: GameCoverProps) => {
   const url = `https://images.igdb.com/igdb/image/upload/t_cover_${size}/${imageID}.jpg`;
   
   if (link) {
-    return <Link to={'/game/' + link}><img src={url} alt={'Cover Image of ' + game.name} /></Link>
+    return <Link to={'/game/' + link}><img src={url} alt={'Cover Image of ' + game.name} className="h-full object-contain"/></Link>
   }
 
   return (
-    <img src={url} alt={'Cover Image of ' + game.name} />
+    <img src={url} alt={'Cover Image of ' + game.name} className="h-full object-contain"/>
   );
 }
 

@@ -62,14 +62,14 @@ const HomeBacklog = ({gameIds, backlogItems}: HomeBacklogProps) => {
     return (
       <div>
 
-        <div>
-          <h4>Games in your backlog:</h4>
-          <HomeGameStats data={data}/>
+        <div className="my-3">
+          <h4 className="font-bold flex justify-center">Games in your backlog:</h4>
+          <div className="flex justify-center"><HomeGameStats data={data}/></div>
         </div>
         
         {inProgress.length > 0 && (
-          <div>
-            <h4>Finish Where You Left Off:</h4>
+          <div className="my-3 flex flex-col gap-1">
+            <h4 className="font-bold flex justify-center">Finish Where You Left Off:</h4>
             <HomeCardArray data={data}/>
           </div>
         )}

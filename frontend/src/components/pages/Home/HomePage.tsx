@@ -63,29 +63,34 @@ const HomePage = () => {
     const notStarted = backlog.filter(game => game.status === 'notStarted');
 
     return (
-      <div>
-        <div>
-          <h1>Welcome Back</h1>
-          <h2>{username.toUpperCase()}!</h2>
+      <div className="px-4">
+        <div className="py-3">
+          <h1 className="font-bold text-4xl flex justify-center">Welcome Back,</h1>
+          <h2 className="font-bold text-3xl flex justify-center">{username.toUpperCase()}!</h2>
         </div>
+
+        <hr></hr>
+
         <HomeBacklog gameIds={backlog.map(game => game.id)} backlogItems={backlog}/>
         
         {(inProgress.length > 0 || notStarted.length > 0) && (
-          <div>
-            <h4>{inProgress.length === 0 && notStarted.length > 0 ? "Start a New Game from Your Backlog:" : "Other Players Have Completed:"}</h4>
-            <BacklogRecommender userBacklog={backlog}/>
+          <div className="pb-4">
+            <h4 className="font-bold flex justify-center">{inProgress.length === 0 && notStarted.length > 0 ? "Start a New Game from Your Backlog:" : "Recommended Backlog Game to Complete:"}</h4>
+            <div className="flex justify-center"><BacklogRecommender userBacklog={backlog}/></div>
           </div>
         )}
 
+        <hr></hr>
+
         {(inProgress.length === 0 && notStarted.length === 0) && (
-          <div>
+          <div className="py-3">
             <h4>Add Games To Your Backlog To Play!</h4>
           </div>
         )}
 
         {(backlog.length > 0) && (
-          <div>
-            <h4>Recommended New Games Based on Your Backlog History:</h4>
+          <div className="py-3">
+            <h4 className="font-bold flex justify-center">Recommended New Games</h4>
             <HomeRecommender backlogItems={backlog}/>
           </div>
         )}

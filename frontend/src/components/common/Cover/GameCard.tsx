@@ -10,9 +10,8 @@ type GameCardProps = {
 const GameCard = ({game, children}: GameCardProps) => {
   return (
     <>
-      <GameCover game={game} size="med"/>
+      <GameCover game={game} size="med" link={game.slug}/>
       <div>
-        <h2>{game.name}</h2>
         {children}
       </div>
     </>
