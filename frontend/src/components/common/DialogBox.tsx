@@ -25,7 +25,7 @@ const DialogBox = ({ children, dialogOpen, toggleVisibility }: DialogBoxProps) =
   };
 
   return (
-    <dialog ref={dialogRef}>
+    <dialog ref={dialogRef} className="flex flex-col w-96 h-96 bg-slate-800 text-white">
       <button onClick={handleClose}>CLOSE</button>
       {children}
     </dialog>

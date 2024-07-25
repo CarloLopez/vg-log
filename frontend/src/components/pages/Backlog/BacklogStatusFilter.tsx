@@ -23,7 +23,7 @@ const BacklogStatusFilter = ({setFilters}: BacklogStatusFilterProps) => {
   }, [setFilters, inProgress, notStarted, completed, dropped])
 
   return (
-    <ul>
+    <ul className="flex gap-3 mt-3">
       <li>
         <input type="checkbox" name="inProgress" checked={inProgress} onChange={(e => setInProgress(e.target.checked))}/>
         <label htmlFor="inProgress">In Progress</label>

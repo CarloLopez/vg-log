@@ -124,11 +124,11 @@ const EditableButton = ({gameId, categoryId, initialValue, addDisabled, setAddDi
   }
 
   return (
-    <div>
+    <div className="flex gap-2">
       <button onClick={deleteCategory}>DELETE</button>
       {name ? (
         <>
-          <button onClick={setCategory}>{name}</button>
+          <button onClick={setCategory} className="bg-slate-600 rounded px-2">{name}</button>
           <button
             onClick={() => {
               setName(undefined);
@@ -149,6 +149,7 @@ const EditableButton = ({gameId, categoryId, initialValue, addDisabled, setAddDi
             onChange={(e) => {
               setInputValue(e.target.value);
             }}
+            className="text-black"
           />
           <button
             onClick={async () => {

@@ -11,7 +11,7 @@ const GameCard = ({game, children}: GameCardProps) => {
   return (
     <>
       <GameCover game={game} size="med" link={game.slug}/>
-      <div>
+      <div className="h-full flex-grow">
         {children}
       </div>
     </>

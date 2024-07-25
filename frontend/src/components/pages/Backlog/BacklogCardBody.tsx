@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react"
+import React, { useContext, useState, useEffect } from "react"
 import { BacklogPageContext } from "./BacklogPage"
 import { LoginContext } from "../../../App"
 import { BacklogItem } from "../../../../../shared/types/gameTypes"
@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom"
 import changeGameStatus from "../../../api/database/changeGameStatus"
 
 type BacklogCardBodyProps = {
+  gameName: string;
   gameId: number;
   slug: string;
   state: BacklogItem;
@@ -17,7 +18,7 @@ type BacklogCardBodyProps = {
 
 const statusList = statuses.map(status => status.value);
 
-const BacklogCardBody = ({gameId, slug, state}: BacklogCardBodyProps) => {
+const BacklogCardBody = ({gameName, gameId, slug, state}: BacklogCardBodyProps) => {
  
   const {username} = useContext(LoginContext);
   const {setData, setDialogContent, setDialogOpen} = useContext(BacklogPageContext);
@@ -25,6 +26,19 @@ const BacklogCardBody = ({gameId, slug, state}: BacklogCardBodyProps) => {
 
   const [inputsDisabled, setInputsDisabled] = useState(false);
   const [error, setError] = useState('');
+
+  const [nextGoal, setNextGoal] = useState('');
+
+  useEffect(() => {
+    if (state.goals.length > 0) {
+      for (let i = 0; i < state.goals.length; i++) {
+        if (!state.goals[i].completed) {
+          setNextGoal(state.goals[i].content);
+          break;
+        }
+      }
+    }
+  }, [])
   
   const handleStatusChange = async (e: React.ChangeEvent<HTMLSelectElement>) => {
     const status = e.target.value as Status;
@@ -60,28 +74,51 @@ const BacklogCardBody = ({gameId, slug, state}: BacklogCardBodyProps) => {
     navigate(`/game/${slug}?tab=${tab}`);
   }
 
+  const statusColour = () => {
+    switch (state.status) {
+      case 'completed':
+        return '#10B981';
+      case 'dropped':
+        return '#EF4444';
+      case 'inProgress':
+        return '#F97316';
+      case 'notStarted':
+        return '#64748B';
+      default:
+        return '#000000';
+    }
+  };
+
   if (error) {
     return <>{error}</>
   }
 
   return (
-    <>
-      <div>
-        <div>Status: </div>
-        <Dropdown handleChange={handleStatusChange} options={statuses} defaultSelection={state.status} disabled={inputsDisabled}/>
+    <div className="flex flex-col justify-between h-full py-2">
+      <div className="flex flex-col flex-grow">
+        <div style={{color: statusColour()}} className="font-bold text-xl overflow-auto max-h-12">
+          {gameName}
+        </div>
+        <div className="flex gap-2">
+          <Dropdown handleChange={handleStatusChange} options={statuses} defaultSelection={state.status} disabled={inputsDisabled}/>
+        </div>
+        {state.status === 'inProgress' && nextGoal ? <div className="flex-grow break-all overflow-auto max-h-16 italic">{`Next Goal: ${nextGoal}`}</div> : ""}
       </div>
-      {state.status === 'inProgress' && state.goals.length > 0 ? <div>{`Next Goal: ${state.goals[0].content}`}</div> : ""}
-      <div>
-        <button onClick={() => {
-          setDialogContent(<CategoriesContainer gameId={gameId} setDialogOpen={setDialogOpen}/>);
-          setDialogOpen(true);
-        }}>
+
+      <div className="flex gap-2">
+        <button 
+          onClick={() => {
+            setDialogContent(<CategoriesContainer gameId={gameId} setDialogOpen={setDialogOpen}/>);
+            setDialogOpen(true);
+          }}
+          className="bg-slate-800 px-2 rounded hover:scale-105"
+        >
           Category
         </button>
-        <button onClick={() => handleClick('notes')}>Notes</button>
-        <button onClick={() => handleClick('goals')}>Goals</button>
+        {state.status === 'inProgress' ? <button onClick={() => handleClick('notes')} className="bg-slate-800 px-2 rounded hover:scale-105">Notes</button> : ''}
+        {state.status === 'inProgress' ? <button onClick={() => handleClick('goals')} className="bg-slate-800 px-2 rounded hover:scale-105">Goals</button> : ''}
       </div>
-    </>
+    </div>
   )
 }
 

@@ -24,7 +24,7 @@ const CategoriesContainer = ({gameId, setDialogOpen}: CategoriesContainerProps) 
   }, [categories])
 
   return (
-    <div>
+    <div className="flex flex-col gap-2">
         <button 
           disabled={addDisabled}
           onClick={() => {
@@ -34,7 +34,7 @@ const CategoriesContainer = ({gameId, setDialogOpen}: CategoriesContainerProps) 
         >
           ADD NEW
         </button>
-      <ul>
+      <ul className="flex flex-col gap-2">
         {
           localCategories.map(category => {
             return <li key={category.id || 'temp'}><EditableButton gameId={gameId} categoryId={category.id} initialValue={category.name} addDisabled={addDisabled} setAddDisabled={setAddDisabled} setDialogOpen={setDialogOpen}/></li>

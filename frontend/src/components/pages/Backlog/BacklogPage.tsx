@@ -162,10 +162,13 @@ const BacklogPage = () => {
   if (data) {
     return (
       <BacklogPageContext.Provider value={{setOrder, setCategories, categories, setData, setCategory, setDialogOpen, setDialogContent}}>
-        <BacklogOrderDropdown />
-        <BacklogCategoryDropdown />
-        <BacklogStatusFilter setFilters={setFilters}/>
-        <BacklogCardArray items={sortedData}/>
+        <div className="flex gap-3 justify-center w-full mt-3">
+          <BacklogOrderDropdown />
+          <BacklogCategoryDropdown />
+        </div>
+        
+        <div className="flex gap-3 justify-center"><BacklogStatusFilter setFilters={setFilters}/></div>
+        <div className="flex justify-center"><BacklogCardArray items={sortedData}/></div>
         {dialogOpen ? <DialogBox dialogOpen={dialogOpen} toggleVisibility={() => setDialogOpen(false)}>{dialogContent}</DialogBox> : ""}
       </BacklogPageContext.Provider>
     )
