@@ -27,6 +27,7 @@ const SearchBar = ({ onSearch, initialValue }: SearchBarProps) => {
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         placeholder="Search Games..."
+        className="text-black"
       />
     </>
   )

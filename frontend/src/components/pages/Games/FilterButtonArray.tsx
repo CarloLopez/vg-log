@@ -10,8 +10,8 @@ const FilterButtonArray = ({filters, filterName, replace}: FilterButtonArray) =>
   
   return (
     <>
-      <h4>{filterName.charAt(0).toUpperCase() + filterName.slice(1)}</h4>
-      <ul>
+      <h4 className="flex justify-center font-bold">{filterName.charAt(0).toUpperCase() + filterName.slice(1)}</h4>
+      <ul className="flex gap-2 flex-wrap justify-center">
         {
           filters.map((filter) => {
             return (

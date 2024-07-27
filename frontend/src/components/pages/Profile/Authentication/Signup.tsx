@@ -48,15 +48,15 @@ const Signup = () => {
       <form onSubmit={handleSignup}>
         <label>
           Username:
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required />
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required className="text-black"/>
         </label>
         <label>
           Password:
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="text-black"/>
         </label>
         <label>
           Password Again:
-          <input type="password" value={passwordAgain} onChange={(e) => setPasswordAgain(e.target.value)} required />
+          <input type="password" value={passwordAgain} onChange={(e) => setPasswordAgain(e.target.value)} required className="text-black"/>
         </label>
         <button type="submit" disabled={checkButtonDisabled()}>Sign Up</button>
       </form>

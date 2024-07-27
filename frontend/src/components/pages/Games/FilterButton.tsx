@@ -60,7 +60,13 @@ const FilterButton = ({filter, value, name, replace}: FilterButton) => {
 
   return (
     <>
-      <button onClick={() => updateSearchParams()}  style={buttonStyle}>{name}</button>
+      <button 
+        onClick={() => updateSearchParams()}
+        style={buttonStyle}
+        className="bg-gray-700 rounded px-2 hover:scale-105"
+      >
+        {name}
+      </button>
     </>
   )
 }

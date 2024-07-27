@@ -62,13 +62,21 @@ const GamesPage = () => {
 
   return (
     <GamesPageContext.Provider value={{gamesFilter, searchParams, setSearchParams}}>
-      <h2>Search</h2>
-      <GameSearch />
-      <h2>Filters</h2>
-      <FilterContainer />
-      <br></br>
-      <h2>{'Game Results:' + `${searchParams.get('search') ? (` "${searchParams.get('search')}"`) : ""} `}</h2>
-      <GameContainer />
+      <div className="flex flex-col gap-2 py-3">
+        <div className="flex gap-2 justify-center">
+          <h2 className="font-bold">Search</h2>
+          <GameSearch />
+        </div>
+        <div className="flex flex-col justify-center gap-2">
+          <FilterContainer />
+        </div>
+      </div>
+      <hr></hr>
+      <div className="flex flex-col justify-center items-center gap-3 py-3">
+        <h2 className="font-bold ">{'Results' + `${searchParams.get('search') ? (` "${searchParams.get('search')}"`) : ""} `}</h2>
+        <GameContainer />
+      </div>
+      
     </GamesPageContext.Provider>
   )
 }
