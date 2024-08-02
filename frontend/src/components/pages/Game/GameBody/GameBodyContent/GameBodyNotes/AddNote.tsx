@@ -56,8 +56,8 @@ const AddNote = ({toggleVisibility}: AddNoteProps) => {
   }
 
   return (
-    <div>
-      <div>
+    <div className="flex flex-col justify-center items-center gap-2">
+      <div className="flex flex-col">
         <label htmlFor="content">Title</label>
         <input 
           name="conttitleent" 
@@ -65,10 +65,11 @@ const AddNote = ({toggleVisibility}: AddNoteProps) => {
           value={title} 
           placeholder="Enter Title"
           onChange={handleChangeTitle}
+          className="text-black"
         />
       </div>
 
-      <div>
+      <div className="flex flex-col">
         <label>Note</label>
         <input 
           name="content" 
@@ -76,10 +77,11 @@ const AddNote = ({toggleVisibility}: AddNoteProps) => {
           value={content} 
           placeholder="Enter Note"
           onChange={handleChangeContent}
+          className="text-black"
         />
       </div>
 
-      <button onClick={onClick}>CONFIRM</button>
+      <button onClick={onClick} className="hover:scale-105">CONFIRM</button>
     </div>
   )
 }

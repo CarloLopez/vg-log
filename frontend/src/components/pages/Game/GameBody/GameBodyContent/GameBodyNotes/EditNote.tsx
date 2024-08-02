@@ -68,8 +68,8 @@ const EditNote = ({id, currentTitle, currentContent, toggleVisibility}: EditNote
   }
 
   return (
-    <div>
-      <div>
+    <div className="flex flex-col justify-center items-center gap-2">
+      <div className="flex flex-col">
         <label htmlFor="content">Title</label>
         <input 
           name="conttitleent" 
@@ -77,10 +77,11 @@ const EditNote = ({id, currentTitle, currentContent, toggleVisibility}: EditNote
           value={title} 
           placeholder="Enter Title"
           onChange={handleChangeTitle}
+          className="text-black"
         />
       </div>
 
-      <div>
+      <div className="flex flex-col">
         <label>Note</label>
         <input 
           name="content" 
@@ -88,10 +89,11 @@ const EditNote = ({id, currentTitle, currentContent, toggleVisibility}: EditNote
           value={content} 
           placeholder="Enter Note"
           onChange={handleChangeContent}
+          className="text-black"
         />
       </div>
 
-      <button onClick={onClick}>CONFIRM</button>
+      <button onClick={onClick} className="hover:scale-105">CONFIRM</button>
     </div>
   )
 }

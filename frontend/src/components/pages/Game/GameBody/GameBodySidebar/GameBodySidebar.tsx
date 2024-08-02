@@ -16,7 +16,7 @@ const GameBodySidebar = ({ setSearchParams }: GameBodySideBar) => {
         }
         return (
           // update selected state in GameBody when clicked
-          <li key={item.id}><button onClick={onClick}>{item.label}</button></li>
+          <li key={item.id}><button onClick={onClick} className="bg-slate-700 rounded px-2 hover:scale-105">{item.label}</button></li>
         )
       })}
     </ul>

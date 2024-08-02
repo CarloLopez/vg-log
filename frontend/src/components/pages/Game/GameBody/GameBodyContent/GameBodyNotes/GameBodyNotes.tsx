@@ -24,7 +24,7 @@ const GameBodyNotes = () => {
   }
   
   return (
-    <div>
+    <div className="flex flex-col gap-2">
       <button onClick={() => setDialogOpen(true)}>ADD NEW NOTE</button>
       <ul>
         {notes.map(note => {

@@ -17,7 +17,7 @@ const GameCover = ({ game, size, link }: GameCoverProps) => {
   }
 
   return (
-    <img src={url} alt={'Cover Image of ' + game.name} className="h-full object-contain hover:scale-105"/>
+    <img src={url} alt={'Cover Image of ' + game.name} className="h-full object-contain"/>
   );
 }
 

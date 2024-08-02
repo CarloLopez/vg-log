@@ -9,7 +9,7 @@ const GameBodyContent = ({content}: GameBodyContentProps) => {
   const selectedContent: SidebarItem | undefined = SIDEBAR_ITEMS.find((item) => item.id === content);
   
   return (
-    <div>
+    <div className="flex-auto">
       <div>
         {selectedContent ? <selectedContent.component /> : <>Error: No Content Selected.</>}
       </div>

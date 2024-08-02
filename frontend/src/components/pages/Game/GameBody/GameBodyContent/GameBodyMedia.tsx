@@ -8,26 +8,26 @@ const GameBodyMedia = () => {
   const gameData = useContext(GameDataContext);
   
   return (
-    <div>
+    <div className="flex flex-col gap-3">
       
       {gameData.screenshots ? (
-        <div>
-          <h4>Screenshots</h4>
-          <div>{gameData.screenshots.map((screenshot) => <StaticImage key={screenshot.id} image={screenshot} size="screenshot_med"/>)}</div>
+        <div className="flex flex-col gap-2">
+          <h4 className="text-2xl font-bold flex justify-center">Screenshots</h4>
+          <div className="flex gap-2 flex-wrap justify-center">{gameData.screenshots.map((screenshot) => <StaticImage key={screenshot.id} image={screenshot} size="screenshot_med"/>)}</div>
         </div>
       ) : ""}
 
       {gameData.videos ? (
-        <div>
-          <h4>Videos</h4>
-          <div>{gameData.videos.map((video) => <GameVideo key={video.id} video={video}/>)}</div>
+        <div className="flex flex-col gap-2">
+          <h4 className="text-2xl font-bold flex justify-center">Videos</h4>
+          <div className="flex gap-2 flex-wrap justify-center">{gameData.videos.map((video) => <GameVideo key={video.id} video={video}/>)}</div>
         </div>
       ) : ""}
 
       {gameData.artworks ? (
-        <div>
-          <h4>Artwork</h4>
-          <div>{gameData.artworks.map((artwork) => <StaticImage key={artwork.id} image={artwork} size="720p"/>)}</div>
+        <div className="flex flex-col gap-2">
+          <h4 className="text-2xl font-bold flex justify-center">Artwork</h4>
+          <div className="flex gap-2 flex-wrap justify-center">{gameData.artworks.map((artwork) => <StaticImage key={artwork.id} image={artwork} size="720p"/>)}</div>
         </div>
       ) : ""}
 

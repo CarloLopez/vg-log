@@ -45,20 +45,22 @@ const Goal = ({id, content, title}: NoteItem) => {
 
   return (
     <>
-      <div>
+      <div className="flex flex-col gap-1 bg-slate-800 p-2">
         
         <div>
           <label>Title</label>
-          <div>{title}</div>
+          <div className="font-bold">{title}</div>
         </div>
 
         <div>
           <label>Note</label>
-          <div>{content}</div>
+          <div className="font-bold">{content}</div>
         </div>
 
-        <button onClick={() => setDialogOpen(true)}>EDIT</button>
-        <button onClick={deleteNote}>DELETE</button>
+        <div className="flex gap-2">
+          <button onClick={() => setDialogOpen(true)}>EDIT</button>
+          <button onClick={deleteNote}>DELETE</button>
+        </div>
         
       </div>
       <DialogBox dialogOpen={dialogOpen} toggleVisibility={() => setDialogOpen(false)}>

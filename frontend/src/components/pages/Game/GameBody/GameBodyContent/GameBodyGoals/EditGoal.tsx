@@ -84,8 +84,8 @@ const EditGoal = ({goalId, toggleVisibility, currentContent, currentDescription,
   }
 
   return (
-    <div>
-      <div>
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-col">
         <label htmlFor="content">Goal</label>
         <input 
           name="content" 
@@ -93,10 +93,11 @@ const EditGoal = ({goalId, toggleVisibility, currentContent, currentDescription,
           value={content} 
           placeholder="Enter Goal"
           onChange={handleChangeContent}
+          className="text-black"
         />
       </div>
 
-      <div>
+      <div className="flex flex-col">
         <label>Description</label>
         <input 
           name="description" 
@@ -104,15 +105,16 @@ const EditGoal = ({goalId, toggleVisibility, currentContent, currentDescription,
           value={description} 
           placeholder="Enter Description (Optional)"
           onChange={handleChangeDescription}
+          className="text-black"
         />
       </div>
 
-      <div>
+      <div className="flex gap-2">
         <label>Priority</label>
         <Dropdown handleChange={handleChangeDropdown} options={priorities} defaultSelection={priority}/>
       </div>
 
-      <button onClick={onClickEdit} disabled={buttonDisabled}>CONFIRM</button>
+      <button onClick={onClickEdit} disabled={buttonDisabled} className="hover:scale-105">CONFIRM</button>
     </div>
   )
 }

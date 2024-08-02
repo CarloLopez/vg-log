@@ -49,10 +49,9 @@ const Goal = ({id, content, completed, priority, description}: GoalItem) => {
 
   return (
     <>
-      <div>
+      <div className="flex bg-slate-800 gap-2 p-2">
 
-      <div>
-          <label htmlFor="completed">Completed</label>
+      <div className="flex justify-center items-center gap-1">
           <input 
             type="checkbox" 
             name="completed" 
@@ -87,26 +86,32 @@ const Goal = ({id, content, completed, priority, description}: GoalItem) => {
               }
 
             }}
+            className="flex justify-center items-center"
           />
         </div>
-        
-        <div>{content}</div>
-        
-        <div>
-          <label>Priority</label>
-          <div>{priorities.find(item => item.value as Priority === priority)?.label}</div>
-        </div>
 
-        <button onClick={() => setDialogOpen(true)}>EDIT</button>
-        <button onClick={deleteGoal}>DELETE</button>
-        {description && (
-          <div>
-          <button onClick={() => setShowDescription(state => !state)}>{showDescription ? "Hide Description" : "Show Description"}</button>
-          {showDescription ? <div>{description}</div> : ""}
+        <div>
+          <div className="font-bold">{content}</div>
+          {description && (
+            <div>
+            {!showDescription && <button onClick={() => setShowDescription(state => !state)}>{showDescription ? "" : "Show Description"}</button>}
+            {showDescription ? <div>{description}</div> : ""}
+            </div>
+          )}
+          
+          <div className="flex gap-1">
+            <label>Priority -</label>
+            <div>{priorities.find(item => item.value as Priority === priority)?.label}</div>
           </div>
-        )}
+
+          <div className="flex gap-2">
+            <button onClick={() => setDialogOpen(true)}>EDIT</button>
+            <button onClick={deleteGoal}>DELETE</button>
+          </div>
+          
+          </div>
+        </div>
         
-      </div>
       <DialogBox dialogOpen={dialogOpen} toggleVisibility={() => setDialogOpen(false)}>
         <EditGoal goalId={id} currentContent={content} currentDescription={description} currentPriority={priority} completed={completed} toggleVisibility={() => setDialogOpen(false)}/>
       </DialogBox>

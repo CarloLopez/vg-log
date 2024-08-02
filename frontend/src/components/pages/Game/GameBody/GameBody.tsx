@@ -22,7 +22,7 @@ const GameBody = ({searchParams, setSearchParams}: GameBodyProps) => {
   }, [searchParams])
   
   return (
-    <div>
+    <div className="flex gap-2 py-3">
       <GameBodySidebar setSearchParams={setSearchParams}/>
       <GameBodyContent content={currentSelection}/>
     </div>

@@ -12,49 +12,49 @@ const GameBodyInfo = () => {
 
   return (
       <>
-        <ul>
+        <ul className="flex flex-col gap-3">
 
           <li>
-            <h4>Synopsis</h4>
+            <h4 className="font-bold">Synopsis</h4>
             <div>{gameData.storyline || "No Story Synopsis."}</div>
           </li>
 
           <li>
-            <h4>Age Ratings</h4>
+            <h4 className="font-bold">Age Ratings</h4>
             {gameData.age_ratings ? <AgeRatings ageRatings={gameData.age_ratings}/> : "No Information Found."}
           </li>
 
           <li>
-            <h4>Game Modes</h4>
+            <h4 className="font-bold">Game Modes</h4>
             {gameData.game_modes ? <LinkArray items={gameData.game_modes}/> : "No Information Found."}
           </li>
 
           <li>
-            <h4>Player Perspectives</h4>
+            <h4 className="font-bold">Player Perspectives</h4>
             {gameData.player_perspectives ? <LinkArray items={gameData.player_perspectives} /> : "No Information Found."}
           </li>
 
           <li>
-            <h4>Themes</h4>
+            <h4 className="font-bold">Themes</h4>
             {gameData.themes ? <LinkArray items={gameData.themes} /> : "No Information Found."}
           </li>
 
           <li>
-            <h4>Developers</h4>
+            <h4 className="font-bold">Developers</h4>
             {gameData.involved_companies ? (
               <InvolvedCompanies companies={gameData.involved_companies} filter={"developers"} /> 
             ) : "No Information Found."}
           </li>
 
           <li>
-            <h4>Publishers</h4>
+            <h4 className="font-bold">Publishers</h4>
             {gameData.involved_companies ? (
               <InvolvedCompanies companies={gameData.involved_companies} filter={"publishers"} /> 
             ) : "No Information Found."}
           </li>
 
           <li>
-            <h4>Supporting Companies</h4>
+            <h4 className="font-bold">Supporting Companies</h4>
             {gameData.involved_companies ? ( 
               <InvolvedCompanies companies={gameData.involved_companies} filter={"supporters"} /> 
             ) : "No Information Found."}
@@ -66,21 +66,21 @@ const GameBodyInfo = () => {
           
           {gameData.expansions ? (
             <>
-              <h4>Expansions</h4>
+              <h4 className="font-bold">Expansions</h4>
               <GameCoverArray games={gameData.expansions} />
             </>
           ) : ""}
 
           {gameData.dlcs ? (
             <>
-              <h4>DLC</h4>
+              <h4 className="font-bold">DLC</h4>
               <GameCoverArray games={gameData.dlcs} />
             </>
           ) : ""}
 
           {gameData.parent_game ? (
             <>
-              <h4>Parent Game</h4>
+              <h4 className="font-bold">Parent Game</h4>
               <GameCover game={gameData.parent_game} size="small" link={gameData.parent_game.slug}/>
             </>
           ) : ""}

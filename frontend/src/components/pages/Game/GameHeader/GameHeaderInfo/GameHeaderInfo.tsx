@@ -15,25 +15,25 @@ const GameHeaderInfo = () => {
   }
   
   return (
-    <div>
-      <h1>{gameData.name}</h1>
+    <div className="flex flex-col justify-center gap-2 ">
+      <h1 className="font-bold text-4xl">{gameData.name}</h1>
 
-      <div>{date || 'Release Date TBA'}</div>
+      <div className="italic text-lg">{date || 'Release Date TBA'}</div>
 
       <div>
-        <h4>Summary</h4>
+        <h4 className="font-bold">Summary</h4>
         <div>{gameData.summary}</div>
       </div>
 
       <div>
-        <h4>Genres</h4>
+        <h4 className="font-bold">Genres</h4>
         <ul>
           {gameData.genres && <LinkArray items={gameData.genres} />}
         </ul>
       </div>
 
       <div>
-        <h4>Platforms</h4>
+        <h4 className="font-bold">Platforms</h4>
         <ul>
           {gameData.platforms && <GameHeaderPlatforms items={gameData.platforms} />}
         </ul>

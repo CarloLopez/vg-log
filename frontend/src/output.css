@@ -655,6 +655,14 @@ video {
   max-width: 100%;
 }
 
+.max-w-96 {
+  max-width: 24rem;
+}
+
+.flex-auto {
+  flex: 1 1 auto;
+}
+
 .flex-shrink-0 {
   flex-shrink: 0;
 }
@@ -695,8 +703,16 @@ video {
   align-content: center;
 }
 
+.items-start {
+  align-items: flex-start;
+}
+
 .items-center {
   align-items: center;
+}
+
+.justify-start {
+  justify-content: flex-start;
 }
 
 .justify-center {
@@ -915,6 +931,10 @@ video {
   font-weight: 600;
 }
 
+.font-black {
+  font-weight: 900;
+}
+
 .italic {
   font-style: italic;
 }
@@ -979,5 +999,13 @@ video {
 @media (min-width: 768px) {
   .md\:w-96 {
     width: 24rem;
+  }
+
+  .md\:w-auto {
+    width: auto;
+  }
+
+  .md\:flex-nowrap {
+    flex-wrap: nowrap;
   }
 }

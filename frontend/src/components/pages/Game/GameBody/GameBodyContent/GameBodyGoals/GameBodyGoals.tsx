@@ -24,9 +24,9 @@ const GameBodyGoals = () => {
   }
 
   return (
-    <>
+    <div className="flex flex-col gap-2">
       <button onClick={() => setDialogOpen(true)}>ADD GOAL</button>
-      <ul>
+      <ul className="flex flex-col gap-2">
         {sortedGoals.map(goal => {
           return (
           <li key={goal.id}>
@@ -45,7 +45,7 @@ const GameBodyGoals = () => {
       <DialogBox dialogOpen={dialogOpen} toggleVisibility={() => setDialogOpen(false)}>
         <AddGoal toggleVisibility={() => setDialogOpen(false)}/>
       </DialogBox> ) : ""}
-    </>
+    </div>
   )
 }
 

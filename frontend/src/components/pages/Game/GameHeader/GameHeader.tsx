@@ -3,7 +3,7 @@ import GameHeaderInfo from "./GameHeaderInfo/GameHeaderInfo";
 
 const GameHeader = () => {
   return (
-    <div>
+    <div className="flex gap-4 flex-wrap md:flex-nowrap py-3">
       <GameHeaderSide />
       <GameHeaderInfo />
     </div>

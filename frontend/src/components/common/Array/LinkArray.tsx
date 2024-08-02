@@ -7,7 +7,7 @@ type LinkArrayProps = {
 
 const LinkArray = ({ items }: LinkArrayProps) => {
   return (
-    <ul>
+    <ul className="flex gap-2">
       {items.map((item) => {
         return (
           <li key={item.id}>

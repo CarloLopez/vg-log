@@ -52,7 +52,6 @@ const AddGoal = ({toggleVisibility}: AddGoalProps) => {
           return newBacklogData;
         })
 
-
         toggleVisibility();
 
       } catch (error) {
@@ -62,8 +61,8 @@ const AddGoal = ({toggleVisibility}: AddGoalProps) => {
   }
 
   return (
-    <div>
-      <div>
+    <div className="flex flex-col gap-2">
+      <div className="flex flex-col">
         <label htmlFor="content">Goal</label>
         <input 
           name="content" 
@@ -71,10 +70,11 @@ const AddGoal = ({toggleVisibility}: AddGoalProps) => {
           value={content} 
           placeholder="Enter Goal"
           onChange={handleChangeContent}
+          className="text-black"
         />
       </div>
 
-      <div>
+      <div className="flex flex-col">
         <label>Description</label>
         <input 
           name="description" 
@@ -82,15 +82,16 @@ const AddGoal = ({toggleVisibility}: AddGoalProps) => {
           value={description} 
           placeholder="Enter Description (Optional)"
           onChange={handleChangeDescription}
+          className="text-black"
         />
       </div>
 
-      <div>
+      <div className="flex gap-2">
         <label>Priority</label>
         <Dropdown handleChange={handleChangeDropdown} options={priorities} defaultSelection={priority}/>
       </div>
 
-      <button onClick={onClick}>CONFIRM</button>
+      <button onClick={onClick} className="hover:scale-105">CONFIRM</button>
     </div>
   )
 }

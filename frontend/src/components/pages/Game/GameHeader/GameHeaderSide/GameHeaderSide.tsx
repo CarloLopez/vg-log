@@ -16,9 +16,9 @@ const GameHeaderSide = () => {
   }
 
   return (
-    <div>
-      <GameCover game={game} size="big" />
-      <GameRatings rating={gameData.total_rating}  rating_count={gameData.total_rating_count} />
+    <div className="flex flex-col flex-shrink-0 items-center w-full md:w-auto">
+      <GameCover game={game} size="small_2x" />
+      <GameRatings rating={gameData.total_rating} rating_count={gameData.total_rating_count} />
       <GameActions />
     </div>
   );
