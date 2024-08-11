@@ -43,23 +43,26 @@ const Signup = () => {
   };
   
   return (
-    <div>
-      <h2>Signup</h2>
-      <form onSubmit={handleSignup}>
-        <label>
-          Username:
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required className="text-black"/>
-        </label>
-        <label>
-          Password:
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="text-black"/>
-        </label>
-        <label>
-          Password Again:
-          <input type="password" value={passwordAgain} onChange={(e) => setPasswordAgain(e.target.value)} required className="text-black"/>
-        </label>
-        <button type="submit" disabled={checkButtonDisabled()}>Sign Up</button>
-      </form>
+    <div className="flex flex-col gap-2">
+      <h2 className="flex justify-center font-bold text-2xl">Signup</h2>
+      <div className="flex justify-center">
+        <form onSubmit={handleSignup} className="flex flex-col gap-2 items-end w-min">
+          <label>
+            Username:
+            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required className="text-black"/>
+          </label>
+          <label>
+            Password:
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="text-black"/>
+          </label>
+          <label>
+            Password Again:
+            <input type="password" value={passwordAgain} onChange={(e) => setPasswordAgain(e.target.value)} required className="text-black"/>
+          </label>
+          <button type="submit" disabled={checkButtonDisabled()} className="bg-slate-700 rounded hover:scale-105 px-2">Sign Up</button>
+        </form>
+      </div>
+      
     </div>
   );
 }

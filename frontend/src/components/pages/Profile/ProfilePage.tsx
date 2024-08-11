@@ -47,7 +47,7 @@ const ProfilePage = () => {
     return (
       <>
         {selection === 'signUp' ? <Signup /> : <Login />}
-        <button onClick={handleButtonClick}>{selection === 'signUp' ? 'Login Page' : 'Sign Up Page'}</button>
+        <button onClick={handleButtonClick} className="flex justify-center w-full my-10 hover:text-amber-500">Switch To {selection === 'signUp' ? 'Login Page' : 'Sign Up Page'}</button>
       </>
     )
   }

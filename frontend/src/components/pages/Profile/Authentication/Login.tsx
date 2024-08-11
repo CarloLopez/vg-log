@@ -34,19 +34,21 @@ const Login = () => {
   };
 
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <label>
-          Username:
-          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required className="text-black"/>
-        </label>
-        <label>
-          Password:
-          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="text-black"/>
-        </label>
-        <button type="submit">Log In</button>
-      </form>
+    <div className="flex flex-col gap-2">
+      <h2 className="flex justify-center font-bold text-2xl">Login</h2>
+      <div className="flex justify-center">
+        <form onSubmit={handleLogin} className="flex flex-col gap-2 items-center">
+          <label>
+            Username:
+            <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} required className="text-black"/>
+          </label>
+          <label>
+            Password:
+            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} required className="text-black"/>
+          </label>
+          <button type="submit" className="bg-slate-700 rounded hover:scale-105 px-2">Log In</button>
+        </form>
+      </div>
     </div>
   );
 };
