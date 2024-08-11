@@ -11,10 +11,10 @@ const GameBodySimilar = () => {
   return (
     <>
       {gameData.similar_games ? (
-        <>
-          <h4>Similar Games</h4>
+        <div className="flex flex-col justify-center gap-2">
+          <h4 className="flex justify-center w-full font-bold">Similar Games</h4>
           <GameCoverArray games={gameData.similar_games} />
-        </>
+        </div>
       ) : "No Similar Games Listed."}
     </>
   );

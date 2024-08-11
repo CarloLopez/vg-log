@@ -27,10 +27,10 @@ const RecommenderGameContainer = () => {
   }
 
   return (
-    <>
+    <div className="flex flex-col gap-3">
       <div className="flex justify-center"><ToggleSwitch stateA="Regular" stateB="Reverse" handleToggle={handleToggle}/></div>
-      <GameCoverArray games={reverseClicked ? reverse : regular}/>
-    </>
+      <div><GameCoverArray games={reverseClicked ? reverse : regular}/></div>
+    </div>
   )
 }
 

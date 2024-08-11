@@ -7,9 +7,9 @@ type GameRatingsProps = {
 const GameRatings = ({ rating=null, rating_count=null}: GameRatingsProps) => {
 
   return (
-    <div>
-      <div>{rating ? rating.toString() : "N/A"}</div>
-      <div>{rating_count ? rating_count.toString() : "No Ratings"}</div>
+    <div className="flex gap-1">
+      <div className="flex items-center font-bold text-2xl">{rating ? `${Math.floor(rating).toString()}/100` : "N/A"}</div>
+      <div className="flex items-center italic">{rating_count ? `(${rating_count.toString()})` : "No Ratings"}</div>
     </div>
   );
 }

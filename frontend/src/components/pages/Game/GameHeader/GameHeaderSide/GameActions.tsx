@@ -86,6 +86,10 @@ const GameActions = () => {
       setInputsDisabled(false);
     }
   }
+
+  const style = {
+    backgroundColor: inBacklog ? '#991b1b' : '#065f46',
+  }
   
   if (error) {
     return <>{error}</>
@@ -93,7 +97,7 @@ const GameActions = () => {
   
   if (username) {
     return (
-      <div>
+      <div className="flex flex-col gap-1">
         <button 
           onClick={() => {
             setInputsDisabled(true);
@@ -104,12 +108,14 @@ const GameActions = () => {
             }
           }}
           disabled={inputsDisabled}
+          className="rounded px-2 hover:scale-105 bg-"
+          style={style}
         >
           {inBacklog ? "Remove From Backlog" : "Add To Backlog"}
         </button>
         
         {inBacklog && (
-        <div>
+        <div className="flex justify-center w-full">
           <Dropdown options={statuses} handleChange={handleStatusChange} defaultSelection={userGameData ? userGameData.status : 'notStarted'} disabled={inputsDisabled}/>
         </div>
         )}

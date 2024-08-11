@@ -7,7 +7,7 @@ type GameBodySideBar = {
 
 const GameBodySidebar = ({ setSearchParams }: GameBodySideBar) => {
   return (
-    <ul>
+    <ul className="flex flex-col gap-1">
       {SIDEBAR_ITEMS.map((item) => {
         const onClick = () => {
           const newSearchParams = new URLSearchParams();
@@ -16,7 +16,7 @@ const GameBodySidebar = ({ setSearchParams }: GameBodySideBar) => {
         }
         return (
           // update selected state in GameBody when clicked
-          <li key={item.id}><button onClick={onClick} className="bg-slate-700 rounded px-2 hover:scale-105">{item.label}</button></li>
+          <li key={item.id}><button onClick={onClick} className="bg-slate-700 rounded px-2 hover:scale-105 w-full">{item.label}</button></li>
         )
       })}
     </ul>
