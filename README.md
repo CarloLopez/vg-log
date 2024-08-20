@@ -1,6 +1,6 @@
-# Video Game Backlog Management Web App
+# VG-LOG
 
-This web application is designed to help gamers manage their game backlogs, reduce decision paralysis, and provide personalized game recommendations. The app uses collaborative filtering and content-based filtering models to suggest games for users to complete from their backlog and recommend new games to add to their collection.
+This web application is designed to help gamers manage their game backlogs, reduce decision paralysis, and provide personalised game recommendations. The app uses collaborative filtering and content-based filtering models to suggest games for users to complete from their backlog and recommend new games to add to their collection.
 
 ## Features
 
@@ -39,3 +39,11 @@ Make sure you have the following installed on your system:
     ```
 
 4. Access via URL: http://localhost:5000
+
+### Website
+
+The app can also be accessed with a web browser using the following link:
+
+https://vg-log.onrender.com
+
+Note that due to limitations of the free hosting service used, it may take some time to load the site.
