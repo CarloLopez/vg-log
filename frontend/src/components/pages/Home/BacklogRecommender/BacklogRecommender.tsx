@@ -1,4 +1,3 @@
-import GameCoverArray from "../../../common/Cover/GameCoverArray";
 import { CollaborativeGameRecommender } from "../../../../models/CollaborativeGameRecommender";
 import { useState, useEffect } from "react";
 import { Game } from "../../../../../../shared/types/gameTypes";
@@ -49,12 +48,7 @@ const BacklogRecommender = ({userBacklog}: BacklogRecommenderProps) => {
   }
 
   if (random.length > 0) {
-    return (
-      <>
-        <div>Random Backlog Selection, No Similar Users Found</div>
-        <div><GameCoverArray games={random} /></div>
-      </>
-    )
+    return <HomeCard game={random[0]}><div className="italic">Random Suggestion - No Similar Users Found</div></HomeCard>
   }
 
   if (data.length > 0) {

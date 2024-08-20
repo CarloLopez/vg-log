@@ -30,7 +30,7 @@ interface ICategoryItem {
 
 interface IUser extends Document {
   username: string;
-  password: string; // This is for future security implementation
+  password: string;
   backlog: IBacklogItem[];
   categories: ICategoryItem[];
 }
@@ -65,7 +65,7 @@ const CategoryItemSchema = new Schema<ICategoryItem>({
 
 const UserSchema = new Schema<IUser>({
   username: { type: String, required: true, unique: true },
-  password: { type: String, required: true }, // TODO: future security implementation
+  password: { type: String, required: true },
   backlog: { type: [BacklogItemSchema], required: false, default: [] },
   categories: { type: [CategoryItemSchema], required: false, default: [] },
 });

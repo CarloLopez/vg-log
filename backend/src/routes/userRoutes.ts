@@ -3,7 +3,7 @@ import User from '../models/User';
 
 const router = Router();
 
-// Create a new user
+// create a new user
 router.post('/register', async (req: Request, res: Response) => {
   const { username, password } = req.body;
 
@@ -17,7 +17,7 @@ router.post('/register', async (req: Request, res: Response) => {
   }
 });
 
-// Login a user
+// login a user
 router.post('/login', async (req: Request, res: Response) => {
   const { username, password } = req.body;
 
@@ -35,7 +35,7 @@ router.post('/login', async (req: Request, res: Response) => {
   }
 });
 
-// Check if user is logged in
+// check if user is logged in
 router.get('/check-auth', async (req: Request, res: Response) => {
   const username = req.cookies.username;
 
@@ -55,13 +55,13 @@ router.get('/check-auth', async (req: Request, res: Response) => {
   }
 });
 
-// Logout and clear the cookie
+// logout and clear the cookie
 router.post('/logout', (req: Request, res: Response) => {
   res.cookie('username', '', { maxAge: 0, path: '/' });
   res.status(200).json({ message: 'Logged out successfully' });
 });
 
-// Get user data
+// get user data
 router.get('/me', async (req: Request, res: Response) => {
   const username = req.cookies.username;
 
@@ -82,7 +82,7 @@ router.get('/me', async (req: Request, res: Response) => {
   }
 });
 
-// Add game to backlog
+// add game to backlog
 router.post('/:username/backlog', async (req: Request, res: Response) => {
   const { username } = req.params;
   const { game } = req.body;
@@ -102,7 +102,7 @@ router.post('/:username/backlog', async (req: Request, res: Response) => {
   }
 });
 
-// Remove game from backlog
+// remove game from backlog
 router.delete('/:username/backlog/:gameId', async (req: Request, res: Response) => {
   const { username, gameId } = req.params;
 
@@ -121,7 +121,7 @@ router.delete('/:username/backlog/:gameId', async (req: Request, res: Response) 
   }
 });
 
-// Update Game Status
+// update Game Status
 router.put('/:username/backlog/:gameId/status', async (req: Request, res: Response) => {
   const { username, gameId } = req.params;
   const { status } = req.body;
@@ -152,7 +152,7 @@ router.put('/:username/backlog/:gameId/status', async (req: Request, res: Respon
   }
 });
 
-// Add a note to a backlog game
+// add a note to a backlog game
 router.post('/:username/backlog/:gameId/notes', async (req: Request, res: Response) => {
   const { username, gameId } = req.params;
   const { note } = req.body;
@@ -184,7 +184,7 @@ router.post('/:username/backlog/:gameId/notes', async (req: Request, res: Respon
   }
 });
 
-// Remove a note from a backlog game
+// remove a note from a backlog game
 router.delete('/:username/backlog/:gameId/notes/:noteId', async (req: Request, res: Response) => {
   const { username, gameId, noteId } = req.params;
 
@@ -216,7 +216,7 @@ router.delete('/:username/backlog/:gameId/notes/:noteId', async (req: Request, r
   }
 });
 
-// Edit a note in a backlog game
+// edit a note in a backlog game
 router.put('/:username/backlog/:gameId/notes/:noteId', async (req: Request, res: Response) => {
   const { username, gameId, noteId } = req.params;
   const { title, content } = req.body;
@@ -248,7 +248,7 @@ router.put('/:username/backlog/:gameId/notes/:noteId', async (req: Request, res:
   }
 });
 
-// Add a goal to a backlog game
+// add a goal to a backlog game
 router.post('/:username/backlog/:gameId/goals', async (req: Request, res: Response) => {
   const { username, gameId } = req.params;
   const { goal } = req.body;
@@ -279,7 +279,7 @@ router.post('/:username/backlog/:gameId/goals', async (req: Request, res: Respon
   }
 });
 
-// Remove a goal from a backlog game
+// remove a goal from a backlog game
 router.delete('/:username/backlog/:gameId/goals/:goalId', async (req: Request, res: Response) => {
   const { username, gameId, goalId } = req.params;
 
@@ -312,7 +312,7 @@ router.delete('/:username/backlog/:gameId/goals/:goalId', async (req: Request, r
   }
 });
 
-// Edit a goal in a backlog game
+// edit a goal in a backlog game
 router.put('/:username/backlog/:gameId/goals/:goalId', async (req: Request, res: Response) => {
   const { username, gameId, goalId } = req.params;
   const { content, description, completed, priority } = req.body;
@@ -345,7 +345,7 @@ router.put('/:username/backlog/:gameId/goals/:goalId', async (req: Request, res:
   }
 });
 
-// Add a new category
+// add a new category
 router.post('/:username/categories', async (req: Request, res: Response) => {
   const { username } = req.params;
   const { categoryName } = req.body;
@@ -371,7 +371,7 @@ router.post('/:username/categories', async (req: Request, res: Response) => {
   }
 });
 
-// Edit a category
+// edit a category
 router.put('/:username/categories/:categoryId', async (req: Request, res: Response) => {
   const { username, categoryId } = req.params;
   const { name } = req.body;
@@ -396,7 +396,7 @@ router.put('/:username/categories/:categoryId', async (req: Request, res: Respon
   }
 });
 
-// Delete a category and update backlog items
+// delete a category and update backlog items
 router.delete('/:username/categories/:categoryId', async (req: Request, res: Response) => {
   const { username, categoryId } = req.params;
 
@@ -421,7 +421,7 @@ router.delete('/:username/categories/:categoryId', async (req: Request, res: Res
   }
 });
 
-// Update the category of a backlog game
+// update the category of a backlog game
 router.put('/:username/backlog/:gameId/category', async (req: Request, res: Response) => {
   const { username, gameId } = req.params;
   const { categoryId } = req.body;

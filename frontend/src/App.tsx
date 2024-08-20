@@ -21,7 +21,7 @@ const router = createBrowserRouter([
       { path: 'home', element: <HomePage /> },
       { path: 'backlog', element: <BacklogPage /> },
       { path: 'games', element: <GamesPage /> },
-      // Navigating to /game/ without specifying an ID returns you to index.
+      // navigating to /game/ without specifying an ID returns you to index
       { path: 'game', element: <Navigate to='/' replace={true} /> },
       { path: 'game/:gameSlug', element: <GamePage />},
       { path: 'profile', element: <ProfilePage /> },

@@ -1,40 +1,12 @@
-import pandas as pd
 import json
-from sklearn.preprocessing import MultiLabelBinarizer
-from sklearn.cluster import KMeans
 import random
 
-# load JSON
-with open('./backend/games.json', 'r') as f:
-  data = json.load(f)
-
-# create dataframe
-igdb_data = pd.DataFrame(data)
-
-# ensure genres and platforms are lists and handle NaN values
-igdb_data['genres'] = igdb_data['genres'].apply(lambda x: x if isinstance(x, list) else [])
-igdb_data['platforms'] = igdb_data['platforms'].apply(lambda x: x if isinstance(x, list) else [])
-
-# one-hot encoding
-mlb_genres = MultiLabelBinarizer()
-mlb_platforms = MultiLabelBinarizer()
-
-# create matrix
-genre_matrix = mlb_genres.fit_transform(igdb_data['genres'])
-platform_matrix = mlb_platforms.fit_transform(igdb_data['platforms'])
-
-features = pd.concat([
-    pd.DataFrame(genre_matrix, columns=mlb_genres.classes_),
-    pd.DataFrame(platform_matrix, columns=mlb_platforms.classes_)
-], axis=1)
-
-# use K-means clustering
-kmeans = KMeans(n_clusters=10, random_state=42)
-igdb_data['cluster'] = kmeans.fit_predict(features)
-
+# load JSON data
+with open('./games.json', 'r') as f:
+    data = json.load(f)
 
 # create user profiles
-def create_synthetic_users(num_users, igdb_data, genres, platforms):
+def create_synthetic_users(num_users, genres, platforms):
     users = []
     for i in range(num_users):
         user = {
@@ -45,44 +17,57 @@ def create_synthetic_users(num_users, igdb_data, genres, platforms):
         users.append(user)
     return users
 
-genres = mlb_genres.classes_.tolist()
-platforms = mlb_platforms.classes_.tolist()
+# extract unique genres and platforms from the data
+all_genres = list({
+    genre 
+    for game in data 
+    if 'genres' in game 
+    for genre in game['genres']
+})
+
+all_platforms = list({
+    platform 
+    for game in data 
+    if 'platforms' in game 
+    for platform in game['platforms']
+})
 
 # create 1000 synthetic user profiles with preferences
-synthetic_users = create_synthetic_users(1000, igdb_data, genres, platforms)
-
+synthetic_users = create_synthetic_users(1000, all_genres, all_platforms)
 
 # generate synthetic backlogs based on user profiles
-def generate_user_backlog(synthetic_users, igdb_data):
+def generate_user_backlog(synthetic_users, games_data):
     user_backlogs = []
     for user in synthetic_users:
         preferred_genres = user['preferred_genres']
         preferred_platforms = user['preferred_platforms']
         
         # filter games based on user preferred genres and platforms
-        preferred_games = igdb_data[
-            igdb_data['genres'].apply(lambda x: any(genre in x for genre in preferred_genres)) &
-            igdb_data['platforms'].apply(lambda x: any(platform in x for platform in preferred_platforms))
+        preferred_games = [
+            game for game in games_data 
+            if 'genres' in game and 'platforms' in game and
+               any(genre in game['genres'] for genre in preferred_genres) and
+               any(platform in game['platforms'] for platform in preferred_platforms)
         ]
         
-        # weight games by their popularity (total_rating_count)
-        weights = preferred_games['total_rating_count'] / preferred_games['total_rating_count'].sum()
-        
-        # filter out games with zero weights
-        preferred_games = preferred_games[weights > 0]
-        weights = weights[weights > 0]
-        
-        # determine backlog size for the user
-        backlog_size = min(random.randint(5, 20), len(preferred_games))
-        
-        # sample games for the user's backlog without replacement
         if len(preferred_games) > 0:
-            user_backlog = preferred_games.sample(n=backlog_size, weights=weights, replace=False)
+            # weight games by their popularity (total_rating_count)
+            total_rating_sum = sum(game.get('total_rating_count', 0) for game in preferred_games)
+            if total_rating_sum > 0:
+                weights = [game.get('total_rating_count', 0) / total_rating_sum for game in preferred_games]
+            else:
+                weights = [1/len(preferred_games)] * len(preferred_games)
+
+            # determine backlog size for the user
+            backlog_size = min(random.randint(5, 20), len(preferred_games))
+
+            # sample games for the user's backlog without replacement
+            user_backlog = random.choices(preferred_games, weights=weights, k=backlog_size)
         else:
-            user_backlog = preferred_games
-        
+            user_backlog = []
+
         backlog_items = []
-        for _, game in user_backlog.iterrows():
+        for game in user_backlog:
             backlog_items.append({
                 'id': game['id'],
                 'status': random.choices(
@@ -99,8 +84,8 @@ def generate_user_backlog(synthetic_users, igdb_data):
     return user_backlogs
 
 # generate backlogs for synthetic users
-synthetic_user_backlogs = generate_user_backlog(synthetic_users, igdb_data)
+synthetic_user_backlogs = generate_user_backlog(synthetic_users, data)
 
-# output to json
+# output to JSON
 with open('syntheticData.json', 'w') as f:
     json.dump(synthetic_user_backlogs, f, indent=4)

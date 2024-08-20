@@ -9,30 +9,30 @@ import userRoutes from './routes/userRoutes';
 
 dotenv.config();
 
-// Connect to MongoDB
+// connect to MongoDB
 connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+// middleware
 app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 
-// Serve static files from the React app
+// serve static files from React app
 app.use(express.static(path.join(__dirname, '../../frontend/dist')));
 
-// Use the routes
+// use routes
 app.use('/api', igdbRoutes);
 app.use('/users', userRoutes);
 
-// For any request that doesn't match one above, send back React's index.html file.
+// for any request that doesn't match one above, send back React's index.html file
 app.get('*', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '../../frontend/dist/index.html'));
 });
 
-// Start the server
+// start server
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
