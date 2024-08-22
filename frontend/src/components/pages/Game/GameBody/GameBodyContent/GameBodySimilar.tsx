@@ -6,8 +6,6 @@ const GameBodySimilar = () => {
   
   const gameData = useContext(GameDataContext);
 
-  // TODO: Implement the reccommender model here because IGDB reccommender isn't good.
-
   return (
     <>
       {gameData.similar_games ? (

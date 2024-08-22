@@ -19,7 +19,6 @@ const EditableBox = ({initialValue, updateFunction}: EditableBoxProps) => {
   }
 
   const handleBlur = () => {
-    //TODO: PUT UPDATE HANDLE FUNCTION TO BACKEND HERE - updateFunction
     updateFunction();
     if (value) {
       setEditing(false);

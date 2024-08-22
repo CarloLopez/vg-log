@@ -11,7 +11,7 @@ const DialogBox = ({ children, dialogOpen, toggleVisibility }: DialogBoxProps) =
 
   useEffect(() => {
     if (dialogOpen && dialogRef.current) {
-      dialogRef.current.showModal(); // or dialogRef.current.show() for non-modal
+      dialogRef.current.showModal();
     } else if (!dialogOpen && dialogRef.current) {
       dialogRef.current.close();
     }

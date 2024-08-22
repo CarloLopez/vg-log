@@ -21,7 +21,7 @@ const ProfilePage = () => {
     try {
       const response = await fetch('/users/logout', {
         method: 'POST',
-        credentials: 'include', // Include credentials to ensure cookies are sent
+        credentials: 'include', // include credentials to ensure cookies are sent
       });
 
       if (response.ok) {

@@ -21,8 +21,10 @@ Note that due to limitations of the free hosting service used, it may take some 
 
 You can use the following login details to use the site:
 
+```
 Username: test
 Password: test
+```
 
 ## Installation (Local)
 
