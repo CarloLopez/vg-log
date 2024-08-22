@@ -9,14 +9,28 @@ This web application is designed to help gamers manage their game backlogs, redu
 - **Content-Based Filtering**: Receive new game recommendations tailored to your existing game preferences.
 - **User-Friendly Interface**: Easily manage your backlog and explore game recommendations through an intuitive UI.
 
-## Installation
+## Website
+
+For convenience, the app can also be accessed with a web browser using the following link:
+
+https://vg-log.onrender.com
+
+Note that due to limitations of the free hosting service used, it may take some time to load the site.
+
+## Using the Website
+
+You can use the following login details to use the site:
+
+Username: test
+Password: test
+
+## Installation (Local)
 
 ### Prerequisites
 
 Make sure you have the following installed on your system:
 
 - [Node.js](https://nodejs.org/en/download/)
-- [Git](https://git-scm.com/)
 
 ### Running Locally
 
@@ -39,11 +53,3 @@ Make sure you have the following installed on your system:
     ```
 
 4. Access via URL: http://localhost:5000
-
-### Website
-
-The app can also be accessed with a web browser using the following link:
-
-https://vg-log.onrender.com
-
-Note that due to limitations of the free hosting service used, it may take some time to load the site.
